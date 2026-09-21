@@ -11,5 +11,4 @@ Enzo y Bernat.
 Proyecto en desarrollo.
 
 ## UML
-
-![UML Agenda App](docs/uml.svg)
+![Task Management Ecosystem-2026-09-21-003232.png](Task%20Management%20Ecosystem-2026-09-21-003232.png)
