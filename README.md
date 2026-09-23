@@ -1,14 +1,40 @@
-# Agenda-App
+# Agenda App
 
-Aplicación de agenda desarrollada en Java.
+Aplicación de gestión de agenda desarrollada en Java como proyecto grupal.
 
-## Grupo
+La aplicación permitirá gestionar tareas, notas y eventos desde consola, aplicando una arquitectura organizada por funcionalidades y diferentes patrones de diseño.
 
-Enzo y Bernat.
+## Tecnologías utilizadas
 
-## Estado
+- Java 25
+- Maven
+- MySQL 8
+- JDBC
+- Docker
+- Docker Compose
+- JUnit 6
+- Git
+- GitHub
 
-Proyecto en desarrollo.
+## Requisitos previos
+
+Para ejecutar el proyecto es necesario disponer de:
+
+- Java 25
+- Maven
+- Docker y Docker Compose
+- Git
+
+## Configuración
+
+El proyecto utiliza variables de entorno para configurar la conexión con MySQL.
+
+Crear el archivo `.env` a partir del archivo de ejemplo:
+
+### Windows PowerShell
+
+```powershell
+Copy-Item .env.example .env
 
 ## UML
 ![Task Management Ecosystem-2026-09-21-003232.png](Task%20Management%20Ecosystem-2026-09-21-003232.png)
