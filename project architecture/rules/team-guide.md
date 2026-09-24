@@ -261,7 +261,7 @@ No contienen lógica de negocio, SQL ni acceso a repositorios.
 
 ### Task → Note
 ```text
-Task 1 <-- 0 Note
+Task 1 <-- 0..* Note
 ```
 
 Al borrar una Task:
@@ -381,7 +381,7 @@ Crear nuevas solo si representan una regla real.
 
 ## 13. Testing
 - JUnit 6
-- Tests en `../../src/test/java/com/agenda`
+- Tests en `src/test/java/com/agenda/`
 - Naming: `<ClassName>Test`
 
 Ejemplos:
@@ -441,7 +441,7 @@ Comprobar:
 4. ¿Respeta el naming?
 5. ¿Es realmente necesaria?
 
-## 17. Pendiente de revisión
+## 16. Pendiente de revisión
 No implementar por suposición:
 
 ### Proximidad de fecha
