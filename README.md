@@ -35,6 +35,12 @@ Crear el archivo `.env` a partir del archivo de ejemplo:
 
 ```powershell
 Copy-Item .env.example .env
+```
+
+### Terminal Mac
+```terminal
+cp .env.example .env
+```
 
 ## UML
-![Task Management Ecosystem-2026-09-21-003232.png](Task%20Management%20Ecosystem-2026-09-21-003232.png)
+![Agenda-App-UML.svg](docs/Agenda-App-UML.svg)
