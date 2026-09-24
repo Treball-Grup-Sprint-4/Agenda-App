@@ -42,5 +42,19 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
+### IntelliJ IDEA
+
+- Abrir el proyecto como proyecto Maven utilizando `pom.xml`.
+- Usar JDK 25 y Language Level 25.
+- Si Maven no se detecta automáticamente, hacer clic derecho sobre `pom.xml` → `Add as Maven Project`.
+
+Para ejecutar los tests de conexión a MySQL desde IntelliJ, configurar estas variables de entorno en la Run Configuration:
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=agenda-app-database
+DB_USER=root
+DB_PASSWORD=<password definido en .env>
+
 ## UML
 ![Agenda-App-UML.svg](docs/Agenda-App-UML.svg)
