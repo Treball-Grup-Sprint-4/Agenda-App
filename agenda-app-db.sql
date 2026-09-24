@@ -7,11 +7,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema agenda-app-database
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `agenda-app-database` ;
-
--- -----------------------------------------------------
--- Schema agenda-app-database
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `agenda-app-database` DEFAULT CHARACTER SET utf8 ;
 USE `agenda-app-database` ;
 
@@ -19,11 +14,11 @@ USE `agenda-app-database` ;
 -- Table `agenda-app-database`.`event`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `agenda-app-database`.`event` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `text` VARCHAR(256) NOT NULL,
   `date` DATE NOT NULL,
   `created_at` TIMESTAMP NOT NULL,
-  `recurrence` ENUM('NONE', 'ANUAL', 'MONTHLY', 'WEEKLY') NOT NULL,
+  `recurrence` ENUM('NONE', 'ANNUAL', 'MONTHLY', 'WEEKLY') NOT NULL,
   `repeat_until` DATE NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `event_id_UNIQUE` (`id` ASC) VISIBLE)
@@ -34,14 +29,14 @@ ENGINE = InnoDB;
 -- Table `agenda-app-database`.`task`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `agenda-app-database`.`task` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `text` VARCHAR(256) NOT NULL,
   `priority` ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL,
   `status` ENUM('PENDING', 'COMPLETED') NOT NULL,
-  `expiration_date` DATE NOT NULL,
+  `expiration_date` DATE NULL,
   `created_at` TIMESTAMP NOT NULL,
   `completed_at` TIMESTAMP NULL,
-  `event_id` INT NOT NULL,
+  `event_id` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `fk_task_event_idx` (`event_id` ASC) VISIBLE,
@@ -57,9 +52,9 @@ ENGINE = InnoDB;
 -- Table `agenda-app-database`.`note`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `agenda-app-database`.`note` (
-  `id` INT NOT NULL,
-  `content` VARCHAR(800) NULL,
-  `created_at` TIMESTAMP NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `content` VARCHAR(800) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL,
   `task_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
