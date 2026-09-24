@@ -15,10 +15,9 @@ public class Task {
     private LocalDateTime completedAt;
     private EventId eventId;
 
-
     public Task(String text, LocalDate expirationDate) {
 
-        checkInputData(text);
+        checkInputData(text, expirationDate);
 
         this.text = text;
         this.expirationDate = expirationDate;
@@ -30,13 +29,29 @@ public class Task {
         eventId = null;
     }
 
-    private static void checkInputData(String text) {
+    private static void checkInputData(String text, LocalDate expirationDate) {
+        checkInputText(text);
+        checkInputDate(expirationDate);
+    }
+
+    private static void checkInputText(String text) {
         if(text == null) {
             throw new IllegalArgumentException("Text must not be NULL");
         }
 
         if(text.isBlank()) {
             throw new IllegalArgumentException("Text must not be empty");
+        }
+    }
+
+    private static void checkInputDate(LocalDate date) {
+
+        if(date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
+
+        if(date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Expiration date must not be prior current date");
         }
     }
 
@@ -110,5 +125,33 @@ public class Task {
         }
        this.status = TaskStatus.COMPLETED;
         this.completedAt = LocalDateTime.now();
+    }
+
+    /*
+    Using method overload for flexibility, allowing details to be updated depending on the
+    input parameters.
+     */
+
+    public void updateDetails(String text, TaskPriority priority, LocalDate expirationDate) {
+
+        checkInputData(text, expirationDate);
+
+        this.text = text;
+        this.priority = priority;
+        this.expirationDate = expirationDate;
+    }
+
+    public void updateDetails(String text) {
+        checkInputText(text);
+        this.text = text;
+    }
+
+    public void updateDetails(TaskPriority priority) {
+        this.priority = priority;
+    }
+    
+    public void updateDetails(LocalDate expirationDate) {
+        checkInputDate(expirationDate);
+        this.expirationDate = expirationDate;
     }
 }
