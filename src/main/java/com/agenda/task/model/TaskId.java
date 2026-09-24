@@ -1,4 +1,3 @@
 package com.agenda.task.model;
 
-public class TaskId {
-}
+public record TaskId(int value) { }
