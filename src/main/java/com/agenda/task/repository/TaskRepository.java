@@ -10,5 +10,5 @@ public interface TaskRepository {
     void save(Task task);
     List<Task> findAll();
     Optional<Task> findById(TaskId id);
-    void deleteById(TaskId id);
+    boolean deleteById(TaskId id);
 }

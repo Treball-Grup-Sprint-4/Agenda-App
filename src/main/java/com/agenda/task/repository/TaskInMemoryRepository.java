@@ -33,15 +33,7 @@ public class TaskInMemoryRepository implements TaskRepository {
                 .findFirst();
     }
 
-    public void deleteById(TaskId id) {
-        int i = 0;
-        boolean found = false;
-        while(i < this.taskList.size() && !found) {
-            if(this.taskList.get(i).getId().equals(id)) {
-                found = true;
-                this.taskList.remove(i);
-            }
-            i++;
-        }
+    public boolean deleteById(TaskId id) {
+        return this.taskList.removeIf(task -> task.getId().equals(id));
     }
 }
