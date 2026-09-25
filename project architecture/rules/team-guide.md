@@ -74,7 +74,7 @@ src/test/java/com/agenda/
 ```text
 Task
 TaskId
-Priority
+TaskPriority
 TaskStatus
 TaskDto
 TaskConsoleUI
@@ -83,7 +83,7 @@ TaskRepository
 TaskSqlDao
 ```
 
-`Priority`: `LOW`, `MEDIUM`, `HIGH`
+`TaskPriority`: `LOW`, `MEDIUM`, `HIGH`
 
 `TaskStatus`: `PENDING`, `COMPLETED`
 
@@ -92,7 +92,9 @@ Creación:
 - prioridad por defecto `MEDIUM`
 - estado inicial `PENDING`
 - `createdAt` automático
-- `expirationDate` opcional
+- `expirationDate` es opcional (`null`)
+- si se informa, no puede ser anterior a la fecha actual
+- esta regla se aplica tanto al crear como al actualizar una `Task`
 - `completedAt` inicialmente `null`
 
 Métodos de dominio:
@@ -100,6 +102,12 @@ Métodos de dominio:
 markAsCompleted()
 updateDetails(...)
 ```
+
+### Estado de Task
+- `status` no se modifica mediante `updateDetails(...)`
+- una `Task` pasa de `PENDING` a `COMPLETED` mediante `markAsCompleted()`
+- `markAsCompleted()` establece automáticamente `completedAt`
+- si la `Task` ya está completada, `markAsCompleted()` no modifica de nuevo `completedAt`
 
 ### Note
 ```text
@@ -172,6 +180,10 @@ TaskId
 NoteId
 EventId
 ```
+
+Reglas:
+- todos los IDs deben ser mayores que `0`
+- `TaskId`, `NoteId` y `EventId` deben rechazar valores `<= 0`
 
 ## 6. Repositories
 ```text
@@ -277,12 +289,8 @@ ON DELETE CASCADE
 ### Event → Task
 - un Event puede tener varias Tasks
 - una Task puede existir sin Event
-- una Task solo puede pertenecer a un Event
-
-Error al intentar asociarla a otro:
-```text
-"La tarea solo se puede asociar a un evento."
-```
+- una Task solo puede pertenecer a un Event a la vez
+- una Task puede cambiar su asociación de un Event a otro
 
 Al borrar una Task vinculada:
 ```text
@@ -372,7 +380,6 @@ No puede:
 ## 12. Excepciones
 ```text
 TaskNotFoundException
-TaskAlreadyCompletedException
 NoteNotFoundException
 EventNotFoundException
 ```
@@ -452,9 +459,6 @@ Pendiente definir exactamente `filterByDate(...)`.
 LOW / MEDIUM / HIGH
 PENDING / COMPLETED
 ```
-
-### completedAt
-Pendiente definir qué ocurre cuando el estado cambia mediante `update(...)`.
 
 ## Regla final
 ```text
