@@ -42,16 +42,22 @@ public class Task {
         if(text.isBlank()) {
             throw new IllegalArgumentException("Text must not be empty");
         }
+
+        if (text.length() > 256) {
+            throw new IllegalArgumentException("Text must not exceed 256 characters");
+        }
     }
 
     private static void checkInputDate(LocalDate date) {
 
-        if(date == null) {
-            throw new IllegalArgumentException("Date must not be NULL");
-        }
-
-        if(date.isBefore(LocalDate.now())) {
+        if (date != null && date.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Expiration date must not be prior current date");
+        }
+    }
+
+    private static void checkInputPriority(TaskPriority priority) {
+        if (priority == null) {
+            throw new IllegalArgumentException("Priority must not be NULL");
         }
     }
 
@@ -87,34 +93,6 @@ public class Task {
         return this.eventId;
     }
 
-    public void setId(TaskId id) {
-        this.id = id;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setPriority(TaskPriority priority) {
-        this.priority = priority;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
-    }
-
     public void setEventId(EventId id) {
         this.eventId = id;
     }
@@ -133,8 +111,8 @@ public class Task {
      */
 
     public void updateDetails(String text, TaskPriority priority, LocalDate expirationDate) {
-
         checkInputData(text, expirationDate);
+        checkInputPriority(priority);
 
         this.text = text;
         this.priority = priority;
@@ -147,6 +125,7 @@ public class Task {
     }
 
     public void updateDetails(TaskPriority priority) {
+        checkInputPriority(priority);
         this.priority = priority;
     }
     
