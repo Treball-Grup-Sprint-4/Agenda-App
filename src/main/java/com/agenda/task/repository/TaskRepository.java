@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskRepository {
-    void save(Task task);
+    Task save(Task task);
 
     List<Task> findAll();
 
