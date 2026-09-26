@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TaskInMemoryRepository implements TaskRepository {
-    private List<Task> taskList;
+    private final List<Task> taskList;
 
     public TaskInMemoryRepository() {
         taskList = new ArrayList<>();
