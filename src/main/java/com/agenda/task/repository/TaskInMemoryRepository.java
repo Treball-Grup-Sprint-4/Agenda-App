@@ -19,6 +19,12 @@ public class TaskInMemoryRepository implements TaskRepository {
         if (task == null) {
             throw new IllegalArgumentException("Task must not be NULL");
         }
+
+        int pos = this.taskList.indexOf(task);
+        if(pos >= 0) {
+            this.taskList.set(pos, task);
+            return;
+        }
         this.taskList.add(task);
     }
 
