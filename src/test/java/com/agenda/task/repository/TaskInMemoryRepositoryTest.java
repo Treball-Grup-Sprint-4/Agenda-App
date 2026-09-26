@@ -1,11 +1,15 @@
 package com.agenda.task.repository;
 
 import com.agenda.task.model.Task;
+import com.agenda.task.model.TaskId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskInMemoryRepositoryTest {
@@ -28,7 +32,12 @@ class TaskInMemoryRepositoryTest {
 
     @Test
     void findAllShouldReturnExpectedList() {
+        Task tesTask = new Task("DefaultText", LocalDate.of(2026, Month.OCTOBER, 3));
+        sut.save(tesTask);
+        List expectedList = List.of(tesTask);
+        assertThat(expectedList).usingRecursiveComparison().isEqualTo(sut.findAll());
     }
+
 
     @Test
     void findByIdShouldReturnExpectedValue() {
