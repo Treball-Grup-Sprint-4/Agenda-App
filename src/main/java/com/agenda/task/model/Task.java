@@ -1,12 +1,15 @@
 package com.agenda.task.model;
 
 import com.agenda.event.model.EventId;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 
 public class Task {
-    private TaskId id;
+    private final TaskId id;
     private String text;
     private TaskPriority priority;
     private TaskStatus status;
@@ -16,9 +19,24 @@ public class Task {
     private EventId eventId;
 
     public Task(String text, LocalDate expirationDate) {
-
         checkInputData(text, expirationDate);
 
+        this.id = null;
+        this.text = text;
+        this.expirationDate = expirationDate;
+
+        priority = TaskPriority.MEDIUM;
+        status = TaskStatus.PENDING;
+        createdAt = LocalDateTime.now();
+        completedAt = null;
+        eventId = null;
+    }
+
+    /*
+    Private constructor with id setup, only used for testing purposes.
+     */
+    private Task(TaskId id, String text, LocalDate expirationDate) {
+        this.id = id;
         this.text = text;
         this.expirationDate = expirationDate;
 
@@ -109,7 +127,6 @@ public class Task {
     Using method overload for flexibility, allowing details to be updated depending on the
     input parameters.
      */
-
     public void updateDetails(String text, TaskPriority priority, LocalDate expirationDate) {
         checkInputData(text, expirationDate);
         checkInputPriority(priority);
@@ -132,5 +149,31 @@ public class Task {
     public void updateDetails(LocalDate expirationDate) {
         checkInputDate(expirationDate);
         this.expirationDate = expirationDate;
+    }
+
+    /*
+        Ensures an existent ID is not swaped by a new ID. Only updates ID if the current
+        ID is NULL, and it only accepts a valid ID
+     */
+    public Task addId(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Input ID must not be NULL");
+        }
+        if(this.id != null) {
+            throw new IllegalStateException("The task ID must be NULL");
+        }
+        return new Task(id, this.text, this.expirationDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
