@@ -41,14 +41,52 @@ class TaskInMemoryRepositoryTest {
 
     @Test
     void findByIdShouldReturnExpectedValue() {
+
+        TaskId testTaskId = new TaskId(2);
+
+        Task testTask = new Task("DefaultText", LocalDate.of(2026, Month.OCTOBER, 3))
+                .addId(testTaskId);
+
+        sut.save(testTask);
+
+        Optional<Task> foundTask = sut.findById(testTaskId);
+
+        assertTrue(foundTask.isPresent());
+        assertEquals(testTask, foundTask.get());
     }
 
     @Test
     void deleteByIdShouldDecreaseListByOne() {
+        TaskId testTaskId = new TaskId(2);
+        TaskId notAddedTaskId = new TaskId(3);
+
+        sut.save(new Task("DefaultText", LocalDate.of(2026, Month.OCTOBER, 3))
+                .addId(testTaskId));
+
+        int expectedListSize = sut.findAll().size() - 1;
+
+        sut.deleteById(notAddedTaskId);
+        assertNotEquals(expectedListSize, sut.findAll().size());
+
+        sut.deleteById(testTaskId);
+        assertEquals(expectedListSize, sut.findAll().size());
+
     }
 
     @Test
     void deleteByIdShouldEliminateElementFromList() {
 
+        TaskId testTaskId = new TaskId(2);
+
+        Task testTask = new Task("DefaultText", LocalDate.of(2026, Month.OCTOBER, 3))
+                .addId(testTaskId);
+
+        sut.save(testTask);
+
+        assertTrue(sut.findAll().contains(testTask));
+
+        sut.deleteById(testTaskId);
+
+        assertFalse(sut.findAll().contains(testTask));
     }
 }
