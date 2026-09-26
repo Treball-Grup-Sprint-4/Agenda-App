@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskRepository {
-
-    Task save(Task task);
-
-    Optional<Task> findById(TaskId taskId);
+    void save(Task task);
 
     List<Task> findAll();
 
-    void deleteById(TaskId taskId);
+    Optional<Task> findById(TaskId id);
+
+    boolean deleteById(TaskId id);
 }
