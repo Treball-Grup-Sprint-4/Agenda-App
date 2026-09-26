@@ -1,7 +1,6 @@
 package com.agenda.task.model;
 
 import com.agenda.event.model.EventId;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,26 +24,26 @@ public class Task {
         this.text = text;
         this.expirationDate = expirationDate;
 
-        priority = TaskPriority.MEDIUM;
-        status = TaskStatus.PENDING;
-        createdAt = LocalDateTime.now();
-        completedAt = null;
-        eventId = null;
+        this.priority = TaskPriority.MEDIUM;
+        this.status = TaskStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
+        this.completedAt = null;
+        this.eventId = null;
     }
 
     /*
-    Private constructor with id setup, only used for testing purposes.
+    Private constructor used by addId(), to customize an ID of a non-persisted Task
      */
-    private Task(TaskId id, String text, LocalDate expirationDate) {
+    private Task(TaskId id, Task sourceTask) {
         this.id = id;
-        this.text = text;
-        this.expirationDate = expirationDate;
+        this.text = sourceTask.text;
+        this.expirationDate = sourceTask.expirationDate;
 
-        priority = TaskPriority.MEDIUM;
-        status = TaskStatus.PENDING;
-        createdAt = LocalDateTime.now();
-        completedAt = null;
-        eventId = null;
+        this.priority = sourceTask.priority;
+        this.status = sourceTask.status;
+        this.createdAt = sourceTask.createdAt;
+        this.completedAt = sourceTask.completedAt;
+        this.eventId = sourceTask.eventId;
     }
 
     private static void checkInputData(String text, LocalDate expirationDate) {
@@ -152,8 +151,9 @@ public class Task {
     }
 
     /*
-        Ensures an existent ID is not swaped by a new ID. Only updates ID if the current
-        ID is NULL, and it only accepts a valid ID
+        Returns a Task with customized ID. Ensures an existent ID is not swaped by a new ID.
+        Only updates ID if the current ID is NULL, and it only accepts a valid ID. Doesn't
+        allow modification of persisted instances.
      */
     public Task addId(TaskId id) {
         if(id == null) {
@@ -162,18 +162,18 @@ public class Task {
         if(this.id != null) {
             throw new IllegalStateException("The task ID must be NULL");
         }
-        return new Task(id, this.text, this.expirationDate);
+        return new Task(id, this);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id);
+        return this.id != null && Objects.equals(this.id, task.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(this.id);
     }
 }
