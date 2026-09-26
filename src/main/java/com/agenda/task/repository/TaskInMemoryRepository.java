@@ -35,7 +35,7 @@ public class TaskInMemoryRepository implements TaskRepository {
 
         return this.taskList
                 .stream()
-                .filter(task -> task.getId().equals(id))
+                .filter(task -> id.equals(task.getId()))
                 .findFirst();
     }
 
