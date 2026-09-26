@@ -44,6 +44,6 @@ public class TaskInMemoryRepository implements TaskRepository {
         if(id == null) {
             throw new IllegalArgumentException("Task ID must not be NULL");
         }
-        return this.taskList.removeIf(task -> task.getId().equals(id));
+        return this.taskList.removeIf(task -> id.equals(task.getId()));
     }
 }
