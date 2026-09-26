@@ -29,8 +29,11 @@ public class TaskInMemoryRepository implements TaskRepository {
 
     @Override
     public Optional<Task> findById(TaskId id) {
-        return this
-                .findAll()
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        return this.taskList
                 .stream()
                 .filter(task -> task.getId().equals(id))
                 .findFirst();
