@@ -34,7 +34,7 @@ class TaskInMemoryRepositoryTest {
     void findAllShouldReturnExpectedList() {
         Task tesTask = new Task("DefaultText", LocalDate.of(2026, Month.OCTOBER, 3));
         sut.save(tesTask);
-        List expectedList = List.of(tesTask);
+        List <Task> expectedList = List.of(tesTask);
         assertThat(expectedList).usingRecursiveComparison().isEqualTo(sut.findAll());
     }
 
