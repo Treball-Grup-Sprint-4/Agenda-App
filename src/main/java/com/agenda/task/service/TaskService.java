@@ -8,6 +8,7 @@ import com.agenda.task.model.TaskPriority;
 import com.agenda.task.model.TaskStatus;
 import com.agenda.task.repository.TaskRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,7 +101,7 @@ public class TaskService {
         this.taskRepository.save(foundTask);
     }
 
-    List<TaskDto> findAll() {
+    public List<TaskDto> findAll() {
         return this
                 .taskRepository
                 .findAll()
@@ -109,7 +110,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    List<TaskDto> findPending() {
+    public List<TaskDto> findPending() {
         return this
                 .taskRepository
                 .findAll()
@@ -119,7 +120,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    List<TaskDto> findCompleted() {
+    public List<TaskDto> findCompleted() {
         return this
                 .taskRepository
                 .findAll()
@@ -129,7 +130,40 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    
+    public List<TaskDto> filterByPriority(TaskPriority priority) {
+        return this
+                .taskRepository
+                .findAll()
+                .stream()
+                .filter(task -> task.getPriority() == priority)
+                .map(task -> toDto(task))
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskDto> filterByStatus(TaskStatus status) {
+        return this
+                .taskRepository
+                .findAll()
+                .stream()
+                .filter(task-> task.getStatus() == status)
+                .map(task-> toDto(task))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<TaskDto> filterByDate(LocalDate date) {
+        return this
+                .taskRepository
+                .findAll()
+                .stream()
+                .filter(task -> task.getExpirationDate().isEqual(date))
+                .map(task -> toDto(task))
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
     private static TaskDto toDto(Task task) {
         return new TaskDto(
