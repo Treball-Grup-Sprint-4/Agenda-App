@@ -54,7 +54,7 @@ class TaskInMemoryRepositoryTest {
         assertEquals(testTask, foundTask.get());
     }
 
-   /* @Test
+   @Test
     void deleteByIdShouldDecreaseListByOne() {
         TaskId testTaskId = new TaskId(2);
         TaskId notAddedTaskId = new TaskId(3);
@@ -69,9 +69,9 @@ class TaskInMemoryRepositoryTest {
 
         sut.deleteById(testTaskId);
         assertEquals(expectedListSize, sut.findAll().size());
-    }*/
+    }
 
-    /*@Test
+    @Test
     void deleteByIdShouldEliminateElementFromList() {
 
         TaskId testTaskId = new TaskId(2);
@@ -86,5 +86,5 @@ class TaskInMemoryRepositoryTest {
         sut.deleteById(testTaskId);
 
         assertFalse(sut.findAll().contains(testTask));
-    }*/
+    }
 }
