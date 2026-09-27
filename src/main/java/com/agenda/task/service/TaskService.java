@@ -36,7 +36,7 @@ public class TaskService {
     }
 
     public TaskDto update(TaskId id, TaskDto taskDto) {
-        checkInputData(id, taskDto);
+        checkUpdateInputData(id, taskDto);
 
         Optional<Task>foundTask = this.taskRepository.findById(id);
 
@@ -57,7 +57,7 @@ public class TaskService {
         return toDto(savedTask);
     }
 
-    private static void checkInputData(TaskId id, TaskDto taskDto) {
+    private static void checkUpdateInputData(TaskId id, TaskDto taskDto) {
         if(id == null) {
             throw new IllegalArgumentException("Task ID must not be NULL");
         }
@@ -68,10 +68,21 @@ public class TaskService {
     }
 
     public void delete(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        Optional<Task> task = this.taskRepository.findById(id);
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
+        }
         this.taskRepository.deleteById(id);
     }
 
     public void complete(TaskId id) {
+
+
 
         Optional foundTask = this.taskRepository.findById(id);
         Task task;
