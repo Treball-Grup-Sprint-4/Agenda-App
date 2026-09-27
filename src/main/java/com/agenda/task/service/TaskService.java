@@ -156,7 +156,7 @@ public class TaskService {
                 .taskRepository
                 .findAll()
                 .stream()
-                .filter(task -> task.getExpirationDate().equals(date))
+                .filter(task -> date.equals(task.getExpirationDate()))
                 .map(task -> toDto(task))
                 .collect(Collectors.toList());
     }
@@ -172,10 +172,6 @@ public class TaskService {
                 .map(task -> toDto(task))
                 .collect(Collectors.toList());
     }
-
-
-
-
 
     private static TaskDto toDto(Task task) {
         return new TaskDto(
