@@ -162,7 +162,15 @@ public class TaskService {
     }
 
     public List<TaskDto> sortTasks(TaskSortStrategy strategy) {
+        if(strategy == null) {
+            throw new IllegalArgumentException("Strategy must not be NULL");
+        }
+        List<Task> sortedTasks = strategy.sort(this.taskRepository.findAll());
 
+        return sortedTasks
+                .stream()
+                .map(task -> toDto(task))
+                .collect(Collectors.toList());
     }
 
 
