@@ -2,10 +2,7 @@ package com.agenda.task.service;
 
 import com.agenda.common.exception.TaskNotFoundException;
 import com.agenda.task.dto.TaskDto;
-import com.agenda.task.model.Task;
-import com.agenda.task.model.TaskId;
-import com.agenda.task.model.TaskPriority;
-import com.agenda.task.model.TaskStatus;
+import com.agenda.task.model.*;
 import com.agenda.task.repository.TaskRepository;
 
 import java.time.LocalDate;
@@ -162,6 +159,10 @@ public class TaskService {
                 .filter(task -> task.getExpirationDate().equals(date))
                 .map(task -> toDto(task))
                 .collect(Collectors.toList());
+    }
+
+    public List<TaskDto> sortTasks(TaskSortStrategy strategy) {
+
     }
 
 
