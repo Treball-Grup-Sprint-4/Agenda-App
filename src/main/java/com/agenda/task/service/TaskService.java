@@ -21,32 +21,50 @@ public class TaskService {
 
     public TaskDto create(TaskDto taskDto) {
         if(taskDto == null) {
-            throw new IllegalArgumentException("Dto must not be NULL");
+            throw new IllegalArgumentException("Task DTO must not be NULL");
         }
+
         Task task = new Task(taskDto.text(), taskDto.expirationDate());
 
        if(taskDto.priority() != null) {
            task.updateDetails(taskDto.priority());
        }
-       
+
         Task savedTask = this.taskRepository.save(task);
 
         return toDto(savedTask);
     }
 
-    public void update(TaskId id, TaskDto dto) {
+    public TaskDto update(TaskId id, TaskDto taskDto) {
+        checkInputData(id, taskDto);
 
-        Optional foundTask = this.taskRepository.findById(id);
+        Optional<Task>foundTask = this.taskRepository.findById(id);
 
-        if(foundTask.isPresent()) {
-
-            return;
+        if(foundTask.isEmpty()) {
+            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
         }
 
-        // throw exception
+        Task task = foundTask.get();
 
+        if(taskDto.priority() == null) {
+            task.updateDetails(taskDto.text(), taskDto.priority(), taskDto.expirationDate());
+        } else {
+            task.updateDetails(taskDto.text());
+            task.updateDetails(taskDto.expirationDate());
+        }
 
+        this.taskRepository.save(task);
+        return toDto(task);
+    }
 
+    private static void checkInputData(TaskId id, TaskDto taskDto) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        if(taskDto == null) {
+            throw new IllegalArgumentException("Task DTO must not be NULL");
+        }
     }
 
     public void delete(TaskId id) {
