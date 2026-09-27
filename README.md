@@ -42,6 +42,39 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
+## Inicializar la base de datos
+
+Una vez levantados los contenedores con Docker, es necesario ejecutar el script `agenda-app-db.sql` para crear las tablas de la aplicación dentro de MySQL.
+
+Desde la raíz del proyecto, copiar el archivo SQL al contenedor de MySQL:
+
+```bash
+docker cp agenda-app-db.sql mysql-agenda-app-container:/tmp/agenda-app-db.sql
+```
+
+Ejecutar el script dentro del contenedor:
+
+```bash
+docker exec mysql-agenda-app-container sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" < /tmp/agenda-app-db.sql'
+```
+
+Para comprobar que las tablas se han creado correctamente:
+
+```bash
+docker exec mysql-agenda-app-container sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "USE \`agenda-app-database\`; SHOW TABLES;"'
+```
+
+El resultado debe mostrar las siguientes tablas:
+
+```text
+event
+note
+task
+```
+
+> [!NOTE]
+> MySQL puede mostrar el aviso `Using a password on the command line interface can be insecure.` al ejecutar estos comandos. Es únicamente un warning y no impide la ejecución del script.
+
 ### IntelliJ IDEA
 
 - Abrir el proyecto como proyecto Maven utilizando `pom.xml`.
