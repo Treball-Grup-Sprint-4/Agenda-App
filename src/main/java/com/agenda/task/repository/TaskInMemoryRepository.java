@@ -47,10 +47,10 @@ public class TaskInMemoryRepository implements TaskRepository {
     }
 
     @Override
-    public boolean deleteById(TaskId id) {
+    public void deleteById(TaskId id) {
         if(id == null) {
             throw new IllegalArgumentException("Task ID must not be NULL");
         }
-        return this.taskList.removeIf(task -> id.equals(task.getId()));
+        //return this.taskList.removeIf(task -> id.equals(task.getId()));
     }
 }
