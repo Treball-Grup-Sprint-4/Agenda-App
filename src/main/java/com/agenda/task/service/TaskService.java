@@ -46,7 +46,7 @@ public class TaskService {
 
         Task task = foundTask.get();
 
-        if(taskDto.priority() == null) {
+        if(taskDto.priority() != null) {
             task.updateDetails(taskDto.text(), taskDto.priority(), taskDto.expirationDate());
         } else {
             task.updateDetails(taskDto.text());
