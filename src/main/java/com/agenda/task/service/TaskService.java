@@ -152,11 +152,14 @@ public class TaskService {
 
 
     public List<TaskDto> filterByDate(LocalDate date) {
+        if(date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
         return this
                 .taskRepository
                 .findAll()
                 .stream()
-                .filter(task -> task.getExpirationDate().isEqual(date))
+                .filter(task -> task.getExpirationDate().equals(date))
                 .map(task -> toDto(task))
                 .collect(Collectors.toList());
     }
