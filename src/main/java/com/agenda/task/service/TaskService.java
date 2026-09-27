@@ -119,6 +119,18 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    List<TaskDto> findCompleted() {
+        return this
+                .taskRepository
+                .findAll()
+                .stream()
+                .filter(task -> task.getStatus() == TaskStatus.COMPLETED)
+                .map(task-> toDto(task))
+                .collect(Collectors.toList());
+    }
+
+    
+
     private static TaskDto toDto(Task task) {
         return new TaskDto(
                 task.getId(),
