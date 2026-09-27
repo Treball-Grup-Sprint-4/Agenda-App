@@ -53,8 +53,8 @@ public class TaskService {
             task.updateDetails(taskDto.expirationDate());
         }
 
-        this.taskRepository.save(task);
-        return toDto(task);
+        Task savedTask = this.taskRepository.save(task);
+        return toDto(savedTask);
     }
 
     private static void checkInputData(TaskId id, TaskDto taskDto) {
