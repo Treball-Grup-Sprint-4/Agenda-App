@@ -150,6 +150,15 @@ public class TaskConsoleUI {
         taskLister(pendingTasks);
     }
 
+    public void listCompletedTasks() {
+        List<TaskDto> completedTasks = service.findCompleted();
+        if(completedTasks.isEmpty()) {
+            System.out.print("No completed tasks found");
+            return;
+        }
+        taskLister(completedTasks);
+    }
+
     public void listTasksByPriority() {
         System.out.print("Task priority (LOW, MEDIUM, HIGH)");
 
