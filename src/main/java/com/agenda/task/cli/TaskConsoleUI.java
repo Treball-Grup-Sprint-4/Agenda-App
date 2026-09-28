@@ -274,18 +274,13 @@ public class TaskConsoleUI {
                 System.out.format("%s\n", taskDto.completedAt());
             }
 
-            System.out.println("Event ID: ");
+            System.out.print("Event ID: ");
             if(taskDto.eventId() == null) {
                 System.out.println("-");
             } else {
                 System.out.format("%d\n", taskDto.eventId().value());
             }
-
-            if(taskDto.eventId() == null) {
-                System.out.println("-");
-            } else {
-                System.out.format("%d", taskDto.eventId().value());
-            }
+            System.out.println();
         });
     }
 
