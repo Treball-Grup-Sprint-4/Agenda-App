@@ -225,7 +225,7 @@ class TaskServiceTest {
         sut.create(testTaskDto("Medium", TaskPriority.MEDIUM, null));
 
         List<TaskDto> sorted = sut.sortTasks(new PrioritySortStrategy());
-        
+
         assertEquals("Low", sorted.get(0).text());
         assertEquals("Medium", sorted.get(1).text());
         assertEquals("High", sorted.get(2).text());
