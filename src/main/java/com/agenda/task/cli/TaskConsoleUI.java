@@ -87,8 +87,10 @@ public class TaskConsoleUI {
 
         TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
 
+        TaskDto task = service.findById(taskId);
 
-        // System.out.format("Task: %s", )
+
+
     }
 
     private LocalDate readDate() {
