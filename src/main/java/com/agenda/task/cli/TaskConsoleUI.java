@@ -1,5 +1,6 @@
 package com.agenda.task.cli;
 
+import com.agenda.note.dto.NoteDto;
 import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.TaskId;
 import com.agenda.task.model.TaskPriority;
@@ -8,6 +9,7 @@ import com.agenda.task.service.TaskService;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class TaskConsoleUI {
@@ -117,6 +119,20 @@ public class TaskConsoleUI {
 
         service.complete(taskId);
         System.out.print("Marked as Complete");
+    }
+
+    public void listTasks() {
+
+        List<TaskDto> tasks = service.findAll();
+
+        if(tasks.isEmpty()) {
+            System.out.print("No tasks found");
+            return;
+        }
+
+        tasks.forEach(taskDto -> System.out.format(
+                "ID: %d\nText: %s\nCreated at: %s\nEvent ID: %d",
+                taskDto.id().value(), taskDto.text(), taskDto.createdAt(), taskDto.eventId().value()));
     }
 
     private LocalDate readDate() {
