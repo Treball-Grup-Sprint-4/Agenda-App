@@ -113,19 +113,11 @@ public class TaskConsoleUI {
             return null;
         }
 
-        switch (userPriority) {
-            case "low": {
-                return TaskPriority.LOW;
-            }
-            case "medium": {
-                return TaskPriority.MEDIUM;
-            }
-            case "high": {
-                return TaskPriority.HIGH;
-            }
-            default: {
-                throw new IllegalArgumentException("User priority must be LOW, MEDUM or HIGH");
-            }
-        }
+        return switch (userPriority) {
+            case "low" -> TaskPriority.LOW;
+            case "medium" -> TaskPriority.MEDIUM;
+            case "high" -> TaskPriority.HIGH;
+            default -> throw new IllegalArgumentException("User priority must be LOW, MEDUM or HIGH");
+        };
     }
 }
