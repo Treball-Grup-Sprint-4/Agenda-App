@@ -242,9 +242,8 @@ public class TaskConsoleUI {
         try {
             return LocalDate.parse(userInput, DATE_FORMATTER);
         } catch(DateTimeException e) {
-            System.out.println("Date must follow the pattern dd-MM-yyyy");
+            throw new DateTimeException("Date must follow the pattern dd-MM-yyyy");
         }
-        return null;
     }
 
     private TaskPriority readPriority() {
