@@ -53,7 +53,7 @@ public class TaskConsoleUI {
 
         TaskDto createdTask = this.service.create(taskDto);
 
-        System.out.format("Task created successfully. ID: %d", createdTask.id().value());
+        System.out.format("Task created successfully. ID: %d\n", createdTask.id().value());
     }
 
     public void updateTask() {
@@ -63,7 +63,7 @@ public class TaskConsoleUI {
 
         TaskDto currentTask = service.findById(taskId);
 
-        System.out.format("Current text:\n%s", currentTask.text());
+        System.out.format("Current text:\n%s\n", currentTask.text());
         System.out.println("New text (Press Enter to skip):");
 
         String text = scanner.nextLine();
@@ -71,13 +71,19 @@ public class TaskConsoleUI {
         if(text.isBlank()) {
             text = currentTask.text();
         }
-        System.out.format("Current priority:\n%s", currentTask.priority().name());
-        System.out.print("New priority (Press Enter to skip)");
+        System.out.format("Current priority:\n%s\n", currentTask.priority().name());
+        System.out.println("New priority (Press Enter to skip)");
 
         TaskPriority priority = readPriority();
 
-        System.out.format("Current expiration date: %s", currentTask.expirationDate());
-        System.out.print("New expiration date (Press Enter to skip)");
+        System.out.print("Current expiration date: ");
+
+        if(currentTask.expirationDate() == null) {
+            System.out.println("-");
+        } else {
+            System.out.format("%s\n", currentTask.expirationDate());
+        }
+        System.out.println("New expiration date (Press Enter to skip)\n");
 
         LocalDate expirationDate = readDate();
 
@@ -90,7 +96,7 @@ public class TaskConsoleUI {
 
         service.update(taskId, task);
 
-        System.out.println("Note updated successfully");
+        System.out.println("Task updated successfully");
     }
 
     public void deleteTask() {
@@ -247,12 +253,40 @@ public class TaskConsoleUI {
     }
 
 
-
-
     private static void taskLister(List<TaskDto> tasks) {
-        tasks.forEach(taskDto -> System.out.format(
-                "ID: %d\nText: %s\nCreated at: %s\nEvent ID: %d",
-                taskDto.id().value(), taskDto.text(), taskDto.createdAt(), taskDto.eventId().value()));
+        tasks.forEach((taskDto) -> { System.out.format(
+                "ID: %d\nText: %s\nCreated at: %s\nPriority: %s\nStatus: %s\n",
+                taskDto.id().value(),
+                taskDto.text(),
+                taskDto.createdAt(),
+                taskDto.priority().name(),
+                taskDto.status().name());
+            System.out.print("Expiration date: ");
+            if(taskDto.expirationDate() == null) {
+                System.out.println("-");
+            } else {
+                System.out.format("%s\n", taskDto.expirationDate());
+            }
+            System.out.print("Completed at: ");
+            if(taskDto.completedAt() == null) {
+                System.out.println("-");
+            } else {
+                System.out.format("%s\n", taskDto.completedAt());
+            }
+
+            System.out.println("Event ID: ");
+            if(taskDto.eventId() == null) {
+                System.out.println("-");
+            } else {
+                System.out.format("%d\n", taskDto.eventId().value());
+            }
+
+            if(taskDto.eventId() == null) {
+                System.out.println("-");
+            } else {
+                System.out.format("%d", taskDto.eventId().value());
+            }
+        });
     }
 
     private LocalDate readDate() {
