@@ -72,12 +72,12 @@ public class TaskConsoleUI {
             text = currentTask.text();
         }
         System.out.format("Current priority:\n%s", currentTask.priority().name());
-        System.out.print("New priority (Press Enter to skip");
+        System.out.print("New priority (Press Enter to skip)");
 
         TaskPriority priority = readPriority();
 
         System.out.format("Current expiration date: %s", currentTask.expirationDate());
-        System.out.print("New expiration date (Press Enter to skip");
+        System.out.print("New expiration date (Press Enter to skip)");
 
         LocalDate expirationDate = readDate();
 
@@ -215,7 +215,7 @@ public class TaskConsoleUI {
     }
 
     public void listSortedTasks() {
-        System.out.print("Sort by (PRIORITY, STATUS, DATE");
+        System.out.print("Sort by (PRIORITY, STATUS, DATE)");
 
         String userChoice = scanner.nextLine().trim().toLowerCase();
 
@@ -278,7 +278,7 @@ public class TaskConsoleUI {
             case "low" -> TaskPriority.LOW;
             case "medium" -> TaskPriority.MEDIUM;
             case "high" -> TaskPriority.HIGH;
-            default -> throw new IllegalArgumentException("Task priority must be LOW, MEDUM or HIGH");
+            default -> throw new IllegalArgumentException("Task priority must be LOW, MEDIUM or HIGH");
         };
     }
 
