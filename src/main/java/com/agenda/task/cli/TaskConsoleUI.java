@@ -89,8 +89,15 @@ public class TaskConsoleUI {
 
         TaskDto task = service.findById(taskId);
 
+        System.out.format("Task: %s.\nAre you sure you want to delete this task? (Y/N)\n", task.text());
+        String confirmation = scanner.nextLine().trim();
 
-
+        if(!confirmation.equalsIgnoreCase("y")) {
+            System.out.print("Deletion canceled");
+            return;
+        }
+        service.delete(taskId);
+        System.out.print("Task deleted successfully");
     }
 
     private LocalDate readDate() {
