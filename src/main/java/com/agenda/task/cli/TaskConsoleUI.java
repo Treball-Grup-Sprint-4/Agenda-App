@@ -4,6 +4,7 @@ import com.agenda.note.dto.NoteDto;
 import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.TaskId;
 import com.agenda.task.model.TaskPriority;
+import com.agenda.task.model.TaskStatus;
 import com.agenda.task.service.TaskService;
 
 import java.time.DateTimeException;
@@ -148,7 +149,6 @@ public class TaskConsoleUI {
         if(userTaskPriority == null) {
             throw new IllegalArgumentException("Task priority must be LOW, MEDIUM or HIGH");
         }
-
         List<TaskDto> tasksByPriority = service.filterByPriority(userTaskPriority);
 
         if(tasksByPriority.isEmpty()) {
@@ -156,6 +156,40 @@ public class TaskConsoleUI {
         }
         taskLister(tasksByPriority);
     }
+
+    public void listTasksByStatus() {
+        System.out.print("Task status (PENDING, COMPLETED)");
+
+        TaskStatus userTaskStatus = readStatus();
+
+        if(userTaskStatus == null) {
+            throw new IllegalArgumentException("Task status must be PENDING or COMPLETED");
+        }
+
+        List<TaskDto> tasksByStatus = service.filterByStatus(userTaskStatus);
+
+        if(tasksByStatus.isEmpty()) {
+            System.out.format("No tasks found with %s status", userTaskStatus.name());
+        }
+    }
+
+    public void listTasksByDate() {
+        System.out.print("Task date (dd-MM-yyyy):");
+
+        LocalDate userTaskDate = readDate();
+
+        if(userTaskDate == null) {
+            return;
+        }
+
+        List<TaskDto> listsByDate = service.filterByDate(userTaskDate);
+
+        if(listsByDate.isEmpty()) {
+            System.out.format("No tasks found on %s", userTaskDate);
+        }
+    }
+
+    
 
     private static void taskLister(List<TaskDto> pendingTasks) {
         pendingTasks.forEach(taskDto -> System.out.format(
@@ -169,7 +203,6 @@ public class TaskConsoleUI {
         if(userInput.isBlank()) {
             return null;
         }
-
         try {
             return LocalDate.parse(userInput, DATE_FORMATTER);
         } catch(DateTimeException e) {
@@ -179,17 +212,29 @@ public class TaskConsoleUI {
     }
 
     private TaskPriority readPriority() {
-        String userPriority = scanner.nextLine().trim().toLowerCase();
+        String userTaskPriority = scanner.nextLine().trim().toLowerCase();
 
-        if(userPriority.isBlank()) {
+        if(userTaskPriority.isBlank()) {
             return null;
         }
-
-        return switch (userPriority) {
+        return switch (userTaskPriority) {
             case "low" -> TaskPriority.LOW;
             case "medium" -> TaskPriority.MEDIUM;
             case "high" -> TaskPriority.HIGH;
-            default -> throw new IllegalArgumentException("User priority must be LOW, MEDUM or HIGH");
+            default -> throw new IllegalArgumentException("Task priority must be LOW, MEDUM or HIGH");
+        };
+    }
+
+    private TaskStatus readStatus() {
+        String userTaskStatus = scanner.nextLine().trim().toLowerCase();
+
+        if(userTaskStatus.isBlank()) {
+            return null;
+        }
+        return switch (userTaskStatus) {
+            case "pending" -> TaskStatus.PENDING;
+            case "completed" -> TaskStatus.COMPLETED;
+            default -> throw new IllegalArgumentException("Task status must be PENDING or COMPLETED");
         };
     }
 }
