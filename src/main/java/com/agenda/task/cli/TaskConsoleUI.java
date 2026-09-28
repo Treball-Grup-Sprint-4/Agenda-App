@@ -122,15 +122,27 @@ public class TaskConsoleUI {
     }
 
     public void listTasks() {
-
         List<TaskDto> tasks = service.findAll();
 
         if(tasks.isEmpty()) {
             System.out.print("No tasks found");
             return;
         }
+        taskLister(tasks);
+    }
 
-        tasks.forEach(taskDto -> System.out.format(
+    public void listPendingTasks() {
+        List<TaskDto> pendingTasks = service.findPending();
+        if(pendingTasks.isEmpty()) {
+            System.out.print("No pending tasks found");
+            return;
+        }
+        taskLister(pendingTasks);
+    }
+    
+
+    private static void taskLister(List<TaskDto> pendingTasks) {
+        pendingTasks.forEach(taskDto -> System.out.format(
                 "ID: %d\nText: %s\nCreated at: %s\nEvent ID: %d",
                 taskDto.id().value(), taskDto.text(), taskDto.createdAt(), taskDto.eventId().value()));
     }
