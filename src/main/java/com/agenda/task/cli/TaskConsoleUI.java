@@ -168,6 +168,8 @@ public class TaskConsoleUI {
         if(tasksByStatus.isEmpty()) {
             System.out.format("No tasks found with %s status", userTaskStatus.name());
         }
+
+        taskLister(tasksByStatus);
     }
 
     public void listTasksByDate() {
@@ -184,6 +186,8 @@ public class TaskConsoleUI {
         if(listsByDate.isEmpty()) {
             System.out.format("No tasks found on %s", userTaskDate);
         }
+
+        taskLister(listsByDate);
     }
 
     public void listSortedTasks() {
