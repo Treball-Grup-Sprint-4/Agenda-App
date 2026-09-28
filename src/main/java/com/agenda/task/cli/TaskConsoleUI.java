@@ -139,7 +139,23 @@ public class TaskConsoleUI {
         }
         taskLister(pendingTasks);
     }
-    
+
+    public void listTasksByPriority() {
+        System.out.print("Task priority (LOW, MEDIUM, HIGH)");
+
+        TaskPriority userTaskPriority = readPriority();
+
+        if(userTaskPriority == null) {
+            throw new IllegalArgumentException("Task priority must be LOW, MEDIUM or HIGH");
+        }
+
+        List<TaskDto> tasksByPriority = service.filterByPriority(userTaskPriority);
+
+        if(tasksByPriority.isEmpty()) {
+            System.out.format("No tasks found with %s priority", userTaskPriority.name());
+        }
+        taskLister(tasksByPriority);
+    }
 
     private static void taskLister(List<TaskDto> pendingTasks) {
         pendingTasks.forEach(taskDto -> System.out.format(
