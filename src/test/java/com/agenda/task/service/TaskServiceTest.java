@@ -88,10 +88,8 @@ class TaskServiceTest {
     LocalDate expirationDate = LocalDate.now().plusMonths(2);
 
     @Test
-
+// verificar con MOCKITO
     void createShouldInitializeFieldsWithExpectedValues() {
-
-
         TaskDto task = sut.create(testTaskDto("Default text", TaskPriority.HIGH, expirationDate));
 
         assertEquals(1, task.id().value());
@@ -108,6 +106,7 @@ class TaskServiceTest {
         TaskId nonExistingId = new TaskId(38);
         TaskDto dto = testTaskDto("New text", TaskPriority.LOW, expirationDate);
 
+        // check no se guarda en el save
         assertThrows(TaskNotFoundException.class, ()-> sut.update(nonExistingId, dto));
 
     }
