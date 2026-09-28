@@ -1,6 +1,5 @@
 package com.agenda.task.cli;
 
-import com.agenda.note.dto.NoteDto;
 import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.*;
 import com.agenda.task.service.TaskService;
@@ -214,8 +213,9 @@ public class TaskConsoleUI {
 
         if(sortedTasks.isEmpty()) {
             System.out.print("No tasks found");
+            return;
         }
-        listTasks();
+        taskLister(sortedTasks);
     }
 
 
