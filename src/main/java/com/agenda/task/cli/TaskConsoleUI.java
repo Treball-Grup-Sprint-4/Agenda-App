@@ -61,22 +61,34 @@ public class TaskConsoleUI {
 
         TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
 
-        System.out.print("New text (Press Enter to skip): ");
+        TaskDto currentTask = service.findById(taskId);
+
+        System.out.format("Current text:\n%s", currentTask.text());
+        System.out.println("New text (Press Enter to skip):");
 
         String text = scanner.nextLine();
 
+        if(text.isBlank()) {
+            text = currentTask.text();
+        }
+        System.out.format("Current priority:\n%s", currentTask.priority().name());
         System.out.print("New priority (Press Enter to skip");
 
         TaskPriority priority = readPriority();
 
+        System.out.format("Current expiration date: %s", currentTask.expirationDate());
         System.out.print("New expiration date (Press Enter to skip");
 
         LocalDate expirationDate = readDate();
 
+        if(expirationDate == null) {
+            expirationDate = currentTask.expirationDate();
+        }
+
         TaskDto task = new TaskDto(null, text, priority, null,
                 expirationDate, null, null, null);
 
-        TaskDto updatedTask = service.update(taskId, task);
+        service.update(taskId, task);
 
         System.out.println("Note updated successfully");
     }
@@ -227,8 +239,9 @@ public class TaskConsoleUI {
 
 
 
-    private static void taskLister(List<TaskDto> pendingTasks) {
-        pendingTasks.forEach(taskDto -> System.out.format(
+
+    private static void taskLister(List<TaskDto> tasks) {
+        tasks.forEach(taskDto -> System.out.format(
                 "ID: %d\nText: %s\nCreated at: %s\nEvent ID: %d",
                 taskDto.id().value(), taskDto.text(), taskDto.createdAt(), taskDto.eventId().value()));
     }
@@ -242,7 +255,7 @@ public class TaskConsoleUI {
         try {
             return LocalDate.parse(userInput, DATE_FORMATTER);
         } catch(DateTimeException e) {
-            throw new DateTimeException("Date must follow the pattern dd-MM-yyyy");
+            throw new IllegalArgumentException("Date must follow the pattern dd-MM-yyyy");
         }
     }
 
