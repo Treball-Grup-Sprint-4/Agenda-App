@@ -1,6 +1,7 @@
 package com.agenda.task.cli;
 
 import com.agenda.task.dto.TaskDto;
+import com.agenda.task.model.TaskId;
 import com.agenda.task.model.TaskPriority;
 import com.agenda.task.service.TaskService;
 
@@ -10,12 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class TaskConsoleUI {
-    private final TaskService taskService;
+    private final TaskService service;
     private final Scanner scanner;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public TaskConsoleUI(TaskService taskService, Scanner scanner) {
-        this.taskService = taskService;
+        this.service = taskService;
         this.scanner = scanner;
     }
 
@@ -44,16 +45,50 @@ public class TaskConsoleUI {
         System.out.print("Priority (LOW, MEDIUM, HIGH, press Enter for MEDIUM): ");
             TaskPriority priority = readPriority();
 
-            System.out.print("Expiration date (dd-MM-yyyy, press Enter for none)");
+            System.out.print("Expiration date (dd-MM-yyyy, press Enter for none): ");
             LocalDate expirationDate = readDate();
 
         TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate,
                 null, null, null);
 
-        TaskDto createdTask = this.taskService.create(taskDto);
+        TaskDto createdTask = this.service.create(taskDto);
 
         System.out.format("Task created successfully. ID: %d", createdTask.id().value());
+    }
 
+    public void updateTask() {
+        System.out.print("Task ID:");
+
+        TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
+
+        System.out.print("New text (Press Enter to skip): ");
+
+        String text = scanner.nextLine();
+
+        System.out.print("New priority (Press Enter to skip");
+
+        TaskPriority priority = readPriority();
+
+        System.out.print("New expiration date (Press Enter to skip");
+
+        LocalDate expirationDate = readDate();
+
+        TaskDto task = new TaskDto(null, text, priority, null,
+                expirationDate, null, null, null);
+
+        TaskDto updatedTask = service.update(taskId, task);
+
+        System.out.println("Note updated successfully");
+    }
+
+    public void deleteTask() {
+
+        System.out.print("Task ID: ");
+
+        TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
+
+
+        // System.out.format("Task: %s", )
     }
 
     private LocalDate readDate() {
