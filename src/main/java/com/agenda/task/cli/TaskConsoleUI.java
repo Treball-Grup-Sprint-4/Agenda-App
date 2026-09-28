@@ -1,14 +1,18 @@
 package com.agenda.task.cli;
 
+import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.TaskPriority;
-import com.agenda.task.model.TaskStatus;
 import com.agenda.task.service.TaskService;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class TaskConsoleUI {
     private final TaskService taskService;
     private final Scanner scanner;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public TaskConsoleUI(TaskService taskService, Scanner scanner) {
         this.taskService = taskService;
@@ -37,31 +41,42 @@ public class TaskConsoleUI {
         System.out.print("Text: ");
         String text = scanner.nextLine();
 
-        System.out.print("Priority (LOW, MEDIUM, HIGH): ");
+        System.out.print("Priority (LOW, MEDIUM, HIGH, press Enter for MEDIUM): ");
             TaskPriority priority = readPriority();
 
-            System.out.print("Status (PENDING, COMPLETED)");
-        TaskStatus status = readStatus();
+            System.out.print("Expiration date (dd-MM-yyyy, press Enter for none)");
+            LocalDate expirationDate = readDate();
+
+        TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate,
+                null, null, null);
+
+        TaskDto createdTask = this.taskService.create(taskDto);
+
+        System.out.format("Task created successfully. ID: %d", createdTask.id().value());
+
     }
 
-    private TaskStatus readStatus() {
-        String userStatus = scanner.nextLine();
-        userStatus.toLowerCase();
+    private LocalDate readDate() {
+        String userInput = scanner.nextLine().trim();
 
-        switch(userStatus) {
-            case "pending": {
-                return TaskStatus.PENDING;
-            }
-            case "completed": {
-                return TaskStatus.COMPLETED;
-            }
-            default: return null;
+        if(userInput.isBlank()) {
+            return null;
         }
+
+        try {
+            return LocalDate.parse(userInput, DATE_FORMATTER);
+        } catch(DateTimeException e) {
+            System.out.println("Date must follow the pattern dd-MM-yyyy");
+        }
+        return null;
     }
 
     private TaskPriority readPriority() {
-        String userPriority = scanner.nextLine();
-        userPriority.toLowerCase();
+        String userPriority = scanner.nextLine().trim().toLowerCase();
+
+        if(userPriority.isBlank()) {
+            return null;
+        }
 
         switch (userPriority) {
             case "low": {
@@ -73,11 +88,9 @@ public class TaskConsoleUI {
             case "high": {
                 return TaskPriority.HIGH;
             }
-            default: return null;
+            default: {
+                throw new IllegalArgumentException("User priority must be LOW, MEDUM or HIGH");
+            }
         }
     }
-
-
-
-
 }
