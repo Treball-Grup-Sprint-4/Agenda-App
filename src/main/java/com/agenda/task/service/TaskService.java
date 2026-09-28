@@ -108,6 +108,10 @@ public class TaskService {
     }
 
     public TaskDto findById(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         Optional<Task> task = taskRepository.findById(id);
         if(task.isEmpty()) {
             throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
