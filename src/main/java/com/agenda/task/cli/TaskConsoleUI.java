@@ -150,6 +150,7 @@ public class TaskConsoleUI {
 
         if(tasksByPriority.isEmpty()) {
             System.out.format("No tasks found with %s priority", userTaskPriority.name());
+            return;
         }
         taskLister(tasksByPriority);
     }
@@ -167,6 +168,7 @@ public class TaskConsoleUI {
 
         if(tasksByStatus.isEmpty()) {
             System.out.format("No tasks found with %s status", userTaskStatus.name());
+            return;
         }
 
         taskLister(tasksByStatus);
@@ -185,6 +187,7 @@ public class TaskConsoleUI {
 
         if(listsByDate.isEmpty()) {
             System.out.format("No tasks found on %s", userTaskDate);
+            return;
         }
 
         taskLister(listsByDate);
