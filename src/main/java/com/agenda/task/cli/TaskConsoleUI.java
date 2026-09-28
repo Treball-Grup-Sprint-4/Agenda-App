@@ -197,7 +197,6 @@ public class TaskConsoleUI {
             System.out.format("No tasks found with %s status", userTaskStatus.name());
             return;
         }
-
         taskLister(tasksByStatus);
     }
 
