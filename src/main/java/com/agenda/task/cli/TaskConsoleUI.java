@@ -2,9 +2,7 @@ package com.agenda.task.cli;
 
 import com.agenda.note.dto.NoteDto;
 import com.agenda.task.dto.TaskDto;
-import com.agenda.task.model.TaskId;
-import com.agenda.task.model.TaskPriority;
-import com.agenda.task.model.TaskStatus;
+import com.agenda.task.model.*;
 import com.agenda.task.service.TaskService;
 
 import java.time.DateTimeException;
@@ -189,7 +187,38 @@ public class TaskConsoleUI {
         }
     }
 
-    
+    public void listSortedTasks() {
+        System.out.print("Sort by (PRIORITY, STATUS, DATE");
+
+        String userChoice = scanner.nextLine().trim().toLowerCase();
+
+        TaskSortStrategy sortStrategy;
+
+        switch (userChoice) {
+            case "priority": {
+                sortStrategy = new PrioritySortStrategy();
+                break;
+            }
+            case "status": {
+                sortStrategy = new StatusSortStrategy();
+                break;
+            }
+            case "date": {
+                sortStrategy = new DateSortStrategy();
+                break;
+            }
+            default: throw new IllegalArgumentException("Sort option must be PRIORITY, STATUS or DATE");
+        }
+
+        List<TaskDto> sortedTasks = service.sortTasks(sortStrategy);
+
+        if(sortedTasks.isEmpty()) {
+            System.out.print("No tasks found");
+        }
+        listTasks();
+    }
+
+
 
     private static void taskLister(List<TaskDto> pendingTasks) {
         pendingTasks.forEach(taskDto -> System.out.format(
