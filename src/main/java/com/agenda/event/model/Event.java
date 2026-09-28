@@ -162,4 +162,8 @@ public class Event {
         this.repeatUntil = repeatUntil;
     }
 
+    public void removeTask(TaskId taskId) {
+        taskIds.remove(taskId);
+    }
+
 }

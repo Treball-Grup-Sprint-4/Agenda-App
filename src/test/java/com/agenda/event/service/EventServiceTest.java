@@ -344,50 +344,6 @@ class EventServiceTest {
     }
 
     @Test
-    void shouldDeleteAssociatedTasksWhenDeletingEvent() {
-        EventRepository eventRepository = new FakeEventRepository();
-        FakeTaskRepository taskRepository = new FakeTaskRepository();
-        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
-
-        EventDto event = service.create(new EventDto(null, "Event",
-                LocalDate.of(2026, 11, 11), null, RecurrenceType.NONE, null,
-                List.of()));
-
-        TaskId taskId = new TaskId(1);
-        taskRepository.addTask(taskId);
-
-        service.addTask(event.eventId(), taskId);
-
-        service.delete(event.eventId());
-
-        assertTrue(taskRepository.findById(taskId).isEmpty());
-    }
-
-    @Test
-    void shouldNotDeleteUnassociatedTasksWhenDeletingEvent() {
-        EventRepository eventRepository = new FakeEventRepository();
-        FakeTaskRepository taskRepository = new FakeTaskRepository();
-        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
-
-        EventDto event = service.create(new EventDto(null, "Event",
-                LocalDate.of(2026, 12, 6), null, RecurrenceType.NONE, null,
-                List.of()));
-
-        TaskId associatedTaskId = new TaskId(1);
-        TaskId unassociatedTaskId = new TaskId(2);
-
-        taskRepository.addTask(associatedTaskId);
-        taskRepository.addTask(unassociatedTaskId);
-
-        service.addTask(event.eventId(), associatedTaskId);
-
-        service.delete(event.eventId());
-
-        assertTrue(taskRepository.findById(associatedTaskId).isEmpty());
-        assertTrue(taskRepository.findById(unassociatedTaskId).isPresent());
-    }
-
-    @Test
     void shouldConfigureEventRecurrence() {
         EventRepository eventRepository = new FakeEventRepository();
         FakeTaskRepository taskRepository = new FakeTaskRepository();
@@ -576,6 +532,39 @@ class EventServiceTest {
 
         assertEquals(1, firstObserver.notifiedEvents.size());
         assertEquals(1, secondObserver.notifiedEvents.size());
+    }
+
+    @Test
+    void shouldRemoveTaskFromEvent() {
+        EventRepository eventRepository = new FakeEventRepository();
+        FakeTaskRepository taskRepository = new FakeTaskRepository();
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        EventDto event = service.create(new EventDto(null, "Event",
+                LocalDate.of(2026, 10, 10), null, RecurrenceType.NONE, null,
+                List.of()));
+
+        TaskId taskId = new TaskId(1);
+        taskRepository.addTask(taskId);
+
+        service.addTask(event.eventId(), taskId);
+
+        service.removeTask(event.eventId(), taskId);
+
+        EventDto updatedEvent = service.findById(event.eventId());
+
+        assertTrue(updatedEvent.taskIds().isEmpty());
+        assertTrue(taskRepository.findById(taskId).isPresent());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRemovingTaskFromNonExistingEvent() {
+        EventRepository eventRepository = new FakeEventRepository();
+        FakeTaskRepository taskRepository = new FakeTaskRepository();
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(EventNotFoundException.class, () ->
+                service.removeTask(new EventId(5), new TaskId(1)));
     }
 
 }

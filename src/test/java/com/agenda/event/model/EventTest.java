@@ -230,4 +230,16 @@ class EventTest {
                         LocalDateTime.now(), RecurrenceType.NONE, LocalDate.of(2026, 12, 10),
                         List.of()));
     }
+
+    @Test
+    void shouldRemoveTaskFromEvent() {
+        Event event = new Event("Event", LocalDate.of(2026, 10, 10));
+        TaskId taskId = new TaskId(1);
+
+        event.addTask(taskId);
+
+        event.removeTask(taskId);
+
+        assertTrue(event.getTaskIds().isEmpty());
+    }
 }

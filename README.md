@@ -46,6 +46,8 @@ cp .env.example .env
 
 Una vez levantados los contenedores con Docker, es necesario ejecutar el script `agenda-app-db.sql` para crear las tablas de la aplicación dentro de MySQL.
 
+Los siguientes comandos funcionan tanto en Windows PowerShell como en Terminal de macOS.
+
 Desde la raíz del proyecto, copiar el archivo SQL al contenedor de MySQL:
 
 ```bash

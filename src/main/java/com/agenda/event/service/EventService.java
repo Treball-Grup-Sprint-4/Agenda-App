@@ -80,14 +80,9 @@ public class EventService {
     }
 
     public void delete(EventId eventId) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
-
-        List<TaskId> taskIds = List.copyOf(event.getTaskIds());
+        eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event with ID not found"));
 
         eventRepository.deleteById(eventId);
-
-        taskIds.forEach(taskRepository::deleteById);
     }
 
     public List<EventDto> findAll() {
@@ -149,6 +144,15 @@ public class EventService {
                 observers.forEach(observer -> observer.notify(dto));
             }
         });
+    }
+
+    public void removeTask(EventId eventId, TaskId taskId) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() ->
+                new EventNotFoundException("Event with ID not found"));
+
+        event.removeTask(taskId);
+
+        eventRepository.save(event);
     }
 
 }

@@ -6,46 +6,69 @@ import com.agenda.event.model.Event;
 import com.agenda.event.model.EventId;
 import com.agenda.event.model.RecurrenceType;
 import com.agenda.event.repository.EventRepository;
+import com.agenda.task.model.TaskId;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 public class EventSqlDao implements EventRepository {
 
     private Event insert(Event event) {
         String sql = """
-        INSERT INTO event (text, date, created_at, recurrence, repeat_until)
-        VALUES (?, ?, ?, ?, ?)
-        """;
+            INSERT INTO event (text, date, created_at, recurrence, repeat_until)
+            VALUES (?, ?, ?, ?, ?)
+            """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
 
-            statement.setString(1, event.getText());
-            statement.setDate(2, Date.valueOf(event.getEventDate()));
-            statement.setTimestamp(3, Timestamp.valueOf(event.getCreatedAt()));
-            statement.setString(4, event.getRecurrenceType().name());
+            connection.setAutoCommit(false);
 
-            if (event.getRepeatUntil() != null) {
-                statement.setDate(5, Date.valueOf(event.getRepeatUntil()));
-            } else {
-                statement.setNull(5, java.sql.Types.DATE);
-            }
+            try (PreparedStatement statement =
+                         connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            statement.executeUpdate();
+                statement.setString(1, event.getText());
+                statement.setDate(2, Date.valueOf(event.getEventDate()));
+                statement.setTimestamp(3, Timestamp.valueOf(event.getCreatedAt()));
+                statement.setString(4, event.getRecurrenceType().name());
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (event.getRepeatUntil() != null) {
+                    statement.setDate(5, Date.valueOf(event.getRepeatUntil()));
+                } else {
+                    statement.setNull(5, java.sql.Types.DATE);
+                }
+
+                statement.executeUpdate();
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+
+                    if (!generatedKeys.next()) {
+                        throw new SQLException("Failed to retrieve generated Event ID");
+                    }
+
                     EventId eventId = new EventId(generatedKeys.getInt(1));
 
-                    return new Event(eventId, event.getText(), event.getEventDate(), event.getCreatedAt(),
-                            event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds());
-                }
-            }
+                    Event savedEvent = new Event(
+                            eventId,
+                            event.getText(),
+                            event.getEventDate(),
+                            event.getCreatedAt(),
+                            event.getRecurrenceType(),
+                            event.getRepeatUntil(),
+                            event.getTaskIds()
+                    );
 
-            throw new PersistenceException("Failed to retrieve generated Event ID");
+                    updateTaskAssociations(connection, savedEvent);
+
+                    connection.commit();
+
+                    return savedEvent;
+                }
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to save event", e);
@@ -54,44 +77,108 @@ public class EventSqlDao implements EventRepository {
 
     private Event update(Event event) {
         String sql = """
-        UPDATE event
-        SET text = ?, date = ?, recurrence = ?, repeat_until = ?
-        WHERE id = ?
-        """;
+            UPDATE event
+            SET text = ?, date = ?, recurrence = ?, repeat_until = ?
+            WHERE id = ?
+            """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
 
-            statement.setString(1, event.getText());
-            statement.setDate(2, Date.valueOf(event.getEventDate()));
-            statement.setString(3, event.getRecurrenceType().name());
+            connection.setAutoCommit(false);
 
-            if (event.getRepeatUntil() != null) {
-                statement.setDate(4, Date.valueOf(event.getRepeatUntil()));
-            } else {
-                statement.setNull(4, java.sql.Types.DATE);
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+                statement.setString(1, event.getText());
+                statement.setDate(2, Date.valueOf(event.getEventDate()));
+                statement.setString(3, event.getRecurrenceType().name());
+
+                if (event.getRepeatUntil() != null) {
+                    statement.setDate(4, Date.valueOf(event.getRepeatUntil()));
+                } else {
+                    statement.setNull(4, java.sql.Types.DATE);
+                }
+
+                statement.setInt(5, event.getEventId().value());
+
+                statement.executeUpdate();
+
+                updateTaskAssociations(connection, event);
+
+                connection.commit();
+
+                return event;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
-
-            statement.setInt(5, event.getEventId().value());
-
-            statement.executeUpdate();
-
-            return event;
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to update event", e);
         }
     }
 
-    private Event mapEvent(ResultSet resultSet) throws SQLException {
-        Date repeatUntil = resultSet.getDate("repeat_until");
+    private void updateTaskAssociations(Connection connection, Event event) throws SQLException {
+        String removeSql = """
+        UPDATE task
+        SET event_id = NULL
+        WHERE event_id = ?
+        """;
 
-        return new Event(new EventId(resultSet.getInt("id")), resultSet.getString("text"),
+        try (PreparedStatement statement = connection.prepareStatement(removeSql)) {
+            statement.setInt(1, event.getEventId().value());
+            statement.executeUpdate();
+        }
+
+        String addSql = """
+        UPDATE task
+        SET event_id = ?
+        WHERE id = ?
+        """;
+
+        try (PreparedStatement statement = connection.prepareStatement(addSql)) {
+            for (TaskId taskId : event.getTaskIds()) {
+                statement.setInt(1, event.getEventId().value());
+                statement.setInt(2, taskId.value());
+                statement.addBatch();
+            }
+
+            statement.executeBatch();
+        }
+    }
+
+    private List<TaskId> findTaskIds(Connection connection, EventId eventId) throws SQLException {
+        String sql = """
+            SELECT id
+            FROM task
+            WHERE event_id = ?
+            """;
+
+        List<TaskId> taskIds = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, eventId.value());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    taskIds.add(new TaskId(resultSet.getInt("id")));
+                }
+            }
+        }
+
+        return taskIds;
+    }
+
+    private Event mapEvent(Connection connection, ResultSet resultSet) throws SQLException {
+        Date repeatUntil = resultSet.getDate("repeat_until");
+        EventId eventId = new EventId(resultSet.getInt("id"));
+
+        return new Event(eventId, resultSet.getString("text"),
                 resultSet.getDate("date").toLocalDate(),
                 resultSet.getTimestamp("created_at").toLocalDateTime(),
                 RecurrenceType.valueOf(resultSet.getString("recurrence")),
-                repeatUntil != null ? repeatUntil.toLocalDate() : null,
-                List.of());
+                repeatUntil != null ? repeatUntil.toLocalDate() : null, findTaskIds(connection, eventId));
     }
 
     @Override
@@ -118,7 +205,7 @@ public class EventSqlDao implements EventRepository {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return Optional.of(mapEvent(resultSet));
+                    return Optional.of(mapEvent(connection, resultSet));
                 }
             }
 
@@ -132,21 +219,50 @@ public class EventSqlDao implements EventRepository {
     @Override
     public List<Event> findAll() {
         String sql = """
-        SELECT id, text, date, created_at, recurrence, repeat_until
-        FROM event
-        """;
+            SELECT
+                e.id AS event_id,
+                e.text,
+                e.date,
+                e.created_at,
+                e.recurrence,
+                e.repeat_until,
+                t.id AS task_id
+            FROM event e
+            LEFT JOIN task t ON t.event_id = e.id
+            ORDER BY e.id
+            """;
 
-        List<Event> events = new ArrayList<>();
+        Map<EventId, Event> events = new LinkedHashMap<>();
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                events.add(mapEvent(resultSet));
+                EventId eventId = new EventId(resultSet.getInt("event_id"));
+
+                Event event = events.get(eventId);
+
+                if (event == null) {
+                    Date repeatUntil = resultSet.getDate("repeat_until");
+
+                    event = new Event(eventId, resultSet.getString("text"),
+                            resultSet.getDate("date").toLocalDate(),
+                            resultSet.getTimestamp("created_at").toLocalDateTime(),
+                            RecurrenceType.valueOf(resultSet.getString("recurrence")),
+                            repeatUntil != null ? repeatUntil.toLocalDate() : null, List.of());
+
+                    events.put(eventId, event);
+                }
+
+                int taskId = resultSet.getInt("task_id");
+
+                if (!resultSet.wasNull()) {
+                    event.addTask(new TaskId(taskId));
+                }
             }
 
-            return events;
+            return new ArrayList<>(events.values());
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to find all events", e);
