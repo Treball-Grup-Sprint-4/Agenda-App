@@ -100,6 +100,25 @@ public class TaskConsoleUI {
         System.out.print("Task deleted successfully");
     }
 
+    public void completeTask() {
+        System.out.print("Task ID: ");
+
+        TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
+
+        TaskDto task = service.findById(taskId);
+
+        System.out.format("Task: %s.\nMark as completed? (Y/N)\n", task.text());
+
+        String confirmation = scanner.nextLine().trim();
+
+        if(!confirmation.equalsIgnoreCase("y")) {
+            return;
+        }
+
+        service.complete(taskId);
+        System.out.print("Marked as Complete");
+    }
+
     private LocalDate readDate() {
         String userInput = scanner.nextLine().trim();
 
