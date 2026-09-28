@@ -107,6 +107,14 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public TaskDto findById(TaskId id) {
+        Optional<Task> task = taskRepository.findById(id);
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
+        }
+        return toDto((Task)task.get());
+    }
+
     public List<TaskDto> findPending() {
         return this
                 .taskRepository
