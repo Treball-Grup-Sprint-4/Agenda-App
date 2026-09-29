@@ -16,9 +16,16 @@ public class NoteService {
     private final TaskRepository taskRepository;
 
     public NoteService(NoteRepository noteRepository, TaskRepository taskRepository) {
+        if (noteRepository == null) {
+            throw new IllegalArgumentException("NoteRepository must not be NULL");
+        }
+
+        if (taskRepository == null) {
+            throw new IllegalArgumentException("TaskRepository must not be NULL");
+        }
+
         this.noteRepository = noteRepository;
         this.taskRepository = taskRepository;
-
     }
 
     public NoteDto create(NoteDto noteDto) {

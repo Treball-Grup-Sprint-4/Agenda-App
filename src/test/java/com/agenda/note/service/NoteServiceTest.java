@@ -253,5 +253,17 @@ class NoteServiceTest {
 
         assertThrows(NoteNotFoundException.class, () -> noteService.findById(noteId));
     }
+
+    @Test
+    void shouldThrowExceptionWhenNoteRepositoryIsNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new NoteService(null, new FakeTaskRepository()));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenTaskRepositoryIsNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new NoteService(new FakeNoteRepository(), null));
+    }
 }
 

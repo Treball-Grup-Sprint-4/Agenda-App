@@ -61,7 +61,11 @@ public class NoteSqlDao implements NoteRepository {
             statement.setInt(2, note.getTaskId().value());
             statement.setInt(3, note.getNoteId().value());
 
-            statement.executeUpdate();
+            int updatedRows = statement.executeUpdate();
+
+            if (updatedRows == 0) {
+                throw new PersistenceException("Failed to update note: Note ID not found");
+            }
 
             return note;
 
@@ -72,6 +76,10 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public Note save(Note note) {
+        if (note == null) {
+            throw new IllegalArgumentException("Note must not be NULL");
+        }
+
         if (note.getNoteId() == null) {
             return insert(note);
         }
@@ -87,11 +95,15 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public Optional<Note> findById(NoteId noteId) {
+        if (noteId == null) {
+            throw new IllegalArgumentException("NoteId must not be NULL");
+        }
+
         String sql = """
-            SELECT id, content, created_at, task_id
-            FROM note
-            WHERE id = ?
-            """;
+        SELECT id, content, created_at, task_id
+        FROM note
+        WHERE id = ?
+        """;
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -165,16 +177,24 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public void deleteById(NoteId noteId) {
+        if (noteId == null) {
+            throw new IllegalArgumentException("NoteId must not be NULL");
+        }
+
         String sql = """
-            DELETE FROM note
-            WHERE id = ?
-            """;
+        DELETE FROM note
+        WHERE id = ?
+        """;
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, noteId.value());
 
-            statement.executeUpdate();
+            int deletedRows = statement.executeUpdate();
+
+            if (deletedRows == 0) {
+                throw new PersistenceException("Failed to delete note: Note ID not found");
+            }
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to delete note", e);

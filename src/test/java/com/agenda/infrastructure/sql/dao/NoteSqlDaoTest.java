@@ -1,7 +1,9 @@
 package com.agenda.infrastructure.sql.dao;
 
+import com.agenda.common.exception.PersistenceException;
 import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.note.model.Note;
+import com.agenda.note.model.NoteId;
 import com.agenda.task.model.TaskId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +76,11 @@ class NoteSqlDaoTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenSavingNullNote() {
+        assertThrows(IllegalArgumentException.class, () -> noteSqlDao.save(null));
+    }
+
+    @Test
     void shouldFindNoteById() {
         Note savedNote = noteSqlDao.save(new Note("Test", taskId));
 
@@ -82,6 +90,7 @@ class NoteSqlDaoTest {
         assertEquals("Test", foundNote.getContent());
         assertEquals(taskId, foundNote.getTaskId());
     }
+
     @Test
     void shouldUpdateNote() {
         Note savedNote = noteSqlDao.save(new Note("Original", taskId));
@@ -92,6 +101,13 @@ class NoteSqlDaoTest {
         Note updatedNote = noteSqlDao.findById(savedNote.getNoteId()).orElseThrow();
 
         assertEquals("Updated", updatedNote.getContent());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingNonExistingNote() {
+        Note note = new Note(new NoteId(87), "Updated", LocalDateTime.now(), taskId);
+
+        assertThrows(PersistenceException.class, () -> noteSqlDao.save(note));
     }
 
     @Test
@@ -125,5 +141,20 @@ class NoteSqlDaoTest {
         assertTrue(notes.stream().anyMatch(note -> note.getNoteId().equals(firstNote.getNoteId())));
 
         assertTrue(notes.stream().anyMatch(note -> note.getNoteId().equals(secondNote.getNoteId())));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullNoteId() {
+        assertThrows(IllegalArgumentException.class, () -> noteSqlDao.findById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingByNullNoteId() {
+        assertThrows(IllegalArgumentException.class, () -> noteSqlDao.deleteById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistingNote() {
+        assertThrows(PersistenceException.class, () -> noteSqlDao.deleteById(new NoteId(34)));
     }
 }
