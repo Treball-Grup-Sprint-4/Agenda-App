@@ -1,45 +1,162 @@
-/*package com.agenda.infrastructure.sql.dao;
+package com.agenda.infrastructure.sql.dao;
 
+import com.agenda.common.exception.PersistenceException;
 import com.agenda.common.persistence.DatabaseConnection;
+import com.agenda.event.model.EventId;
 import com.agenda.task.model.Task;
 import com.agenda.task.model.TaskId;
+import com.agenda.task.model.TaskPriority;
+import com.agenda.task.model.TaskStatus;
 import com.agenda.task.repository.TaskRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+
 public class TaskSqlDao implements TaskRepository {
 
-*//*    @Override
+    @Override
     public Task save(Task task) {
         if(task == null) {
             throw new IllegalArgumentException("Task must not be NULL");
         }
 
         if(task.getId() == null) {
-            return;
+            return insert(task);
         }
 
-        return null;
-    }*//*
+        return update(task);
+    }
 
-   *//* private Task insert(Task task) {
+   private Task insert(Task task) {
         String sql = """
                 INSERT INTO task (text, priority, status, expiration_date, completed_at, event_id, created_at)
                 VALUES ((?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            fillCommonFields(statement, task);
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, task.getText());
+            statement.setString(2, task.getPriority().name());
+            statement.setString(3, task.getStatus().name());
+
+            if(task.getExpirationDate() == null) {
+                statement.setNull(4, Types.DATE);
+            } else {
+                statement.setDate(4, Date.valueOf(task.getExpirationDate()));
+            }
+
+            if(task.getCompletedAt() == null) {
+                statement.setNull(5, Types.TIMESTAMP);
+            } else {
+                statement.setTimestamp(5, Timestamp.valueOf(task.getCompletedAt()));
+            }
+
+            if(task.getEventId() == null) {
+                statement.setNull(6, Types.INTEGER);
+            } else {
+                statement.setInt(6, task.getEventId().value());
+            }
+
+            statement.setInt(7, task.getId().value());
+
+            int updatedRows = statement.executeUpdate();
+
+            if(updatedRows == 0) {
+                throw  new PersistenceException(String.format("Task with ID %d not found", task.getId().value()));
+            }
+
+            return task;
+        } catch(SQLException e) {
+            throw new PersistenceException("Error updating task");
+       }
+    }
+
+    private Task update(Task task) {
+        String sql = """
+                UPDATE task
+                SET text = ?, priority = ?, status = ?, expiration_date = ?, completed_at = ?, event_id = ?
+                WHERE ID = ?
+                """;
+
+        try(Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, task.getText());
+            statement.setString(2, task.getPriority().name());
+            statement.setString(3, task.getStatus().name());
+
+            if(task.getExpirationDate() == null) {
+                statement.setNull(4, Types.DATE);
+            } else {
+                statement.setDate(4, Date.valueOf(task.getExpirationDate()));
+            }
+            if(task.getCompletedAt() == null) {
+                statement.setNull(5, Types.TIMESTAMP );
+            } else {
+                statement.setTimestamp(5, Timestamp.valueOf(task.getCompletedAt()));
+            }
+
+            if(task.getEventId() == null) {
+                statement.setNull(6, Types.INTEGER);
+            } else {
+                statement.setInt(6, task.getEventId().value());
+            }
+
+            statement.setInt(7, task.getId().value());
+
+            int updateRows = statement.executeUpdate();
+
+            if(updateRows == 0) {
+                throw new PersistenceException(String.format("Task with ID %d not found", task.getId().value()));
+            }
+            return task;
+        } catch (SQLException e) {
+            throw  new PersistenceException("Error updating Task");
         }
-    }*//*
+    }
 
     @Override
     public List<Task> findAll() {
-        return List.of();
+        String sql = """
+                SELECT id, text, priority, status, expiration_date, created_at, completed_at, event_id
+                FROM task
+                """;
+
+        List<Task> tasks = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()) {
+
+            while(resultSet.next()){
+                tasks.add(mapTask(resultSet));
+            }
+            return tasks;
+        } catch (SQLException e) {
+            throw new PersistenceException("Error finding tasks");
+        }
+    }
+
+    private Task mapTask(ResultSet resultSet) throws  SQLException {
+        Date expirationDate = resultSet.getDate("expiration_date");
+        Timestamp completedAt = resultSet.getTimestamp("completed_at");
+        Integer eventId = resultSet.getObject("expiration_date", Integer.class);
+
+        return new Task(
+                new TaskId(resultSet.getInt("id")),
+                resultSet.getString("text"),
+                TaskPriority.valueOf(resultSet.getString("priority")),
+                TaskStatus.valueOf(resultSet.getString("status")),
+                expirationDate == null ? null : expirationDate.toLocalDate(),
+                resultSet.getTimestamp("created_at").toLocalDateTime(),
+                completedAt == null ? null : completedAt.toLocalDateTime(),
+                eventId == null ? null : new EventId(eventId)
+        );
     }
 
     @Override
@@ -49,6 +166,22 @@ public class TaskSqlDao implements TaskRepository {
 
     @Override
     public void deleteById(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
 
+        String sql = """
+                DELETE FROM task
+                WHERE id = ?
+                """;
+
+        try(Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id.value());
+
+            statement.executeUpdate();
+        } catch(SQLException e) {
+            throw new PersistenceException("Error deleting task");
+        }
     }
-}*/
+}
