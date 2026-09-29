@@ -4,18 +4,25 @@ Esta guía resume las decisiones principales del proyecto para que todo el equip
 
 ## 1. Arquitectura
 ```text
+Main
+  ↓
+ApplicationMenu
+  ↓
 ConsoleUI
-   ↓
+  ↓
 Service
-   ↓
+  ↓
 Repository
-   ↓
+  ↓
 SqlDao
-   ↓
+  ↓
 MySQL
 ```
 
 Reglas:
+- Main: punto de entrada de la aplicación y montaje de dependencias.
+- ApplicationMenu: menú principal y navegación entre las distintas ConsoleUI.
+- ConsoleExceptionHandler: gestión común de excepciones de consola.
 - UI: entrada/salida por consola.
 - Service: lógica de aplicación.
 - Repository: interfaz de persistencia.
@@ -69,6 +76,28 @@ src/test/java/com/agenda/
 
 
 ## 4. Clases principales
+
+### Application
+```text
+Main
+ApplicationMenu
+ConsoleExceptionHandler
+```
+
+Main
+- arranca la aplicación
+- crea y conecta dependencias
+- inicia ApplicationMenu
+
+ApplicationMenu
+- start()
+- muestra el menú principal
+- dirige a TaskConsoleUI, NoteConsoleUI y EventConsoleUI
+
+ConsoleExceptionHandler
+- execute(Runnable action)
+- captura errores esperados de consola
+- evita que una entrada inválida cierre la aplicación
 
 ### Task
 ```text
@@ -245,6 +274,7 @@ NoteService
 - delete(...)
 - findAll()
 - findByTaskId(...)
+- findById(NoteId)
 
 EventService
 - create(...)
@@ -382,6 +412,7 @@ No puede:
 TaskNotFoundException
 NoteNotFoundException
 EventNotFoundException
+PersistenceException
 ```
 
 Crear nuevas solo si representan una regla real.
