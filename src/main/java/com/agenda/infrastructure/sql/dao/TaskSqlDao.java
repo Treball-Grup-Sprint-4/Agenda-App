@@ -34,11 +34,11 @@ public class TaskSqlDao implements TaskRepository {
    private Task insert(Task task) {
         String sql = """
                 INSERT INTO task (text, priority, status, expiration_date, completed_at, event_id, created_at)
-                VALUES ((?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, task.getText());
             statement.setString(2, task.getPriority().name());
@@ -62,17 +62,20 @@ public class TaskSqlDao implements TaskRepository {
                 statement.setInt(6, task.getEventId().value());
             }
 
-            statement.setInt(7, task.getId().value());
+            statement.setTimestamp(7, Timestamp.valueOf(task.getCreatedAt()));
 
-            int updatedRows = statement.executeUpdate();
+            statement.executeUpdate();
 
-            if(updatedRows == 0) {
-                throw  new PersistenceException(String.format("Task with ID %d not found", task.getId().value()));
+            try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if(generatedKeys.next()) {
+                    return task.addId(new TaskId(generatedKeys.getInt(1)));
+                }
             }
 
-            return task;
+            throw new PersistenceException("Error fetching task ID");
+
         } catch(SQLException e) {
-            throw new PersistenceException("Error updating task");
+            throw new PersistenceException("Error saving task", e);
        }
     }
 
@@ -80,7 +83,7 @@ public class TaskSqlDao implements TaskRepository {
         String sql = """
                 UPDATE task
                 SET text = ?, priority = ?, status = ?, expiration_date = ?, completed_at = ?, event_id = ?
-                WHERE ID = ?
+                WHERE id = ?
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
@@ -115,8 +118,9 @@ public class TaskSqlDao implements TaskRepository {
                 throw new PersistenceException(String.format("Task with ID %d not found", task.getId().value()));
             }
             return task;
+
         } catch (SQLException e) {
-            throw  new PersistenceException("Error updating Task");
+            throw  new PersistenceException("Error updating Task", e);
         }
     }
 
@@ -138,14 +142,14 @@ public class TaskSqlDao implements TaskRepository {
             }
             return tasks;
         } catch (SQLException e) {
-            throw new PersistenceException("Error finding tasks");
+            throw new PersistenceException("Error finding tasks", e);
         }
     }
 
     private Task mapTask(ResultSet resultSet) throws  SQLException {
         Date expirationDate = resultSet.getDate("expiration_date");
         Timestamp completedAt = resultSet.getTimestamp("completed_at");
-        Integer eventId = resultSet.getObject("expiration_date", Integer.class);
+        Integer eventId = resultSet.getObject("event_id", Integer.class);
 
         return new Task(
                 new TaskId(resultSet.getInt("id")),
@@ -161,7 +165,33 @@ public class TaskSqlDao implements TaskRepository {
 
     @Override
     public Optional<Task> findById(TaskId id) {
-        return Optional.empty();
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        String sql = """
+                SELECT id, text, priority, status, expiration_date, created_at, completed_at, event_id 
+                FROM task
+                WHERE id = ?
+                """;
+
+        try(Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id.value());
+
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    return Optional.of(mapTask(resultSet));
+                }
+            }
+            return Optional.empty();
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Error finding task", e);
+        }
+
+
     }
 
     @Override
@@ -181,7 +211,7 @@ public class TaskSqlDao implements TaskRepository {
 
             statement.executeUpdate();
         } catch(SQLException e) {
-            throw new PersistenceException("Error deleting task");
+            throw new PersistenceException("Error deleting task", e);
         }
     }
 }
