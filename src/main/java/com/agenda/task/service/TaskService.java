@@ -188,8 +188,7 @@ public class TaskService {
                 task.getStatus(),
                 task.getExpirationDate(),
                 task.getCreatedAt(),
-                task.getCompletedAt(),
-                task.getEventId()
+                task.getCompletedAt()
         );
     }
 }
