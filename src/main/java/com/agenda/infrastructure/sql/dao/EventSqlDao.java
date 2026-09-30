@@ -100,7 +100,13 @@ public class EventSqlDao implements EventRepository {
 
                 statement.setInt(5, event.getEventId().value());
 
-                statement.executeUpdate();
+                int updatedRows = statement.executeUpdate();
+
+                if (updatedRows == 0) {
+                    throw new SQLException("Event not found");
+                }
+
+                updateTaskAssociations(connection, event);
 
                 updateTaskAssociations(connection, event);
 
@@ -137,13 +143,22 @@ public class EventSqlDao implements EventRepository {
         """;
 
         try (PreparedStatement statement = connection.prepareStatement(addSql)) {
-            for (TaskId taskId : event.getTaskIds()) {
+
+            List<TaskId> taskIds = event.getTaskIds();
+
+            for (TaskId taskId : taskIds) {
                 statement.setInt(1, event.getEventId().value());
                 statement.setInt(2, taskId.value());
                 statement.addBatch();
             }
 
-            statement.executeBatch();
+            int[] updatedRows = statement.executeBatch();
+
+            for (int rows : updatedRows) {
+                if (rows == 0) {
+                    throw new SQLException("Task not found");
+                }
+            }
         }
     }
 

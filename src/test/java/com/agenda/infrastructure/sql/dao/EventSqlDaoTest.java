@@ -1,7 +1,9 @@
 package com.agenda.infrastructure.sql.dao;
 
+import com.agenda.common.exception.PersistenceException;
 import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.event.model.Event;
+import com.agenda.event.model.EventId;
 import com.agenda.event.model.RecurrenceType;
 import com.agenda.task.model.TaskId;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -178,6 +181,24 @@ class EventSqlDaoTest {
         assertEquals(LocalDate.of(2026, 12, 21), updatedEvent.getEventDate());
         assertEquals(RecurrenceType.MONTHLY, updatedEvent.getRecurrenceType());
         assertEquals(LocalDate.of(2027, 1, 21), updatedEvent.getRepeatUntil());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingNonExistingEvent() {
+        Event event = new Event(new EventId(999999), "EventSqlDaoTest Non existing",
+                LocalDate.of(2026, 12, 8), LocalDateTime.now(), RecurrenceType.NONE,
+                null, List.of());
+
+        assertThrows(PersistenceException.class, () -> eventSqlDao.save(event));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAssociatingNonExistingTask() {
+        Event event = new Event("EventSqlDaoTest Invalid task", LocalDate.of(2026, 11, 10));
+
+        event.addTask(new TaskId(999999));
+
+        assertThrows(PersistenceException.class, () -> eventSqlDao.save(event));
     }
 
     @Test
