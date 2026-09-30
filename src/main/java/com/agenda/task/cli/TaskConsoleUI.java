@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class TaskConsoleUI {
     private final TaskService service;
     private final Scanner scanner;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public TaskConsoleUI(TaskService taskService, Scanner scanner) {
         this.service = taskService;
@@ -46,7 +45,7 @@ public class TaskConsoleUI {
         System.out.print("Priority (LOW, MEDIUM, HIGH, press Enter for MEDIUM): ");
             TaskPriority priority = readPriority();
 
-            System.out.print("Expiration date (dd-MM-yyyy, press Enter for none): ");
+            System.out.print("Expiration date (yyyy-MM-dd, press Enter for none): ");
             LocalDate expirationDate = readDate();
 
         TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate,
@@ -84,7 +83,7 @@ public class TaskConsoleUI {
         } else {
             System.out.format("%s\n", currentTask.expirationDate());
         }
-        System.out.println("New expiration date (Press Enter to skip)\n");
+        System.out.println("New expiration date (yyyy-MM-dd, Press Enter to skip)\n");
 
         LocalDate expirationDate = readDate();
 
@@ -202,7 +201,7 @@ public class TaskConsoleUI {
     }
 
     public void listTasksByDate() {
-        System.out.print("Task date (dd-MM-yyyy):");
+        System.out.print("Task date (yyyy-MM-dd):");
 
         LocalDate userTaskDate = readDate();
 
@@ -290,11 +289,7 @@ public class TaskConsoleUI {
         if(userInput.isBlank()) {
             return null;
         }
-        try {
-            return LocalDate.parse(userInput, DATE_FORMATTER);
-        } catch(DateTimeException e) {
-            throw new IllegalArgumentException("Date must follow the pattern dd-MM-yyyy");
-        }
+        return LocalDate.parse(userInput);
     }
 
     private TaskPriority readPriority() {
