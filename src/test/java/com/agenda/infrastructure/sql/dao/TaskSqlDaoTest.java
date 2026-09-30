@@ -2,6 +2,7 @@ package com.agenda.infrastructure.sql.dao;
 
 import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.event.model.EventId;
+import com.agenda.note.model.Note;
 import com.agenda.task.model.Task;
 import com.agenda.task.model.TaskId;
 import org.junit.jupiter.api.AfterEach;
@@ -85,7 +86,6 @@ class TaskSqlDaoTest {
 
         savedTasksIds.add(savedTask.getId());
 
-
         Optional<Task> task = sut.findById(savedTask.getId());
 
         assertTrue(task.isPresent());
@@ -95,6 +95,12 @@ class TaskSqlDaoTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdShouldReturnEmptyAfterSearchingById() {
+
+        Task savedTask = sut.save(new Task("Default Text", null));
+
+        sut.deleteById(savedTask.getId());
+
+        assertTrue(sut.findById(savedTask.getId()).isEmpty());
     }
 }
