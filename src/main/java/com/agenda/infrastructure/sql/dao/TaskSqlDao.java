@@ -70,6 +70,17 @@ public class TaskSqlDao implements TaskRepository {
             try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if(generatedKeys.next()) {
 
+                    Task insertedTask = new Task(
+                            new TaskId(generatedKeys.getInt(1)),
+                                    task.getText(),
+                                    task.getPriority(),
+                                    task.getStatus(),
+                                    task.getExpirationDate(),
+                                    task.getCreatedAt(),
+                                    task.getCompletedAt(),
+                                    task.getEventId()
+                    );
+
 
                     return task.addId(new TaskId(generatedKeys.getInt(1)));
                 }
