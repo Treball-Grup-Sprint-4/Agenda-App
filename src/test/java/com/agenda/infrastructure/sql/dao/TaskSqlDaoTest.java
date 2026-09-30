@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +22,13 @@ class TaskSqlDaoTest {
 
     private TaskSqlDao sut;
     private TaskId savedTaskId;
+    private List<TaskId> savedTasksIds;
 
 
     @BeforeEach
     void setup() {
         sut = new TaskSqlDao();
+        savedTasksIds = new ArrayList<>();
     }
 
     @AfterEach
@@ -76,7 +80,18 @@ class TaskSqlDaoTest {
     }
 
     @Test
-    void findById() {
+    void findByIdShouldReturnExpectedTasks() {
+        Task savedTask = sut.save(new Task("Default text", null));
+
+        savedTasksIds.add(savedTask.getId());
+
+
+        Optional<Task> task = sut.findById(savedTask.getId());
+
+        assertTrue(task.isPresent());
+        assertEquals(savedTask.getId(), task.get().getId());
+        assertEquals("Default text", task.get().getText());
+
     }
 
     @Test

@@ -133,6 +133,8 @@ class NoteSqlDaoTest {
 
     @Test
     void shouldFindNotesByTaskId() {
+
+
         Note firstNote = noteSqlDao.save(new Note("First", taskId));
         Note secondNote = noteSqlDao.save(new Note("Second", taskId));
 
