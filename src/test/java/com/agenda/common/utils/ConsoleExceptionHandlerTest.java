@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,6 +33,13 @@ class ConsoleExceptionHandlerTest {
         });
 
         assertTrue(output.toString().contains("Input must be a valid number."));
+    }
+
+    @Test
+    void shouldHandleInvalidDate() {
+        ConsoleExceptionHandler.execute(() -> {throw new DateTimeParseException("Invalid date", "test", 0);});
+
+        assertTrue(output.toString().contains("Input must be a valid date (YYYY-MM-DD)."));
     }
 
     @Test

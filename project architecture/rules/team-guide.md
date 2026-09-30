@@ -192,6 +192,7 @@ Métodos:
 updateDetails(...)
 configureRecurrence(...)
 addTask(...)
+removeTask(...)
 ```
 
 ## 5. IDs
@@ -282,6 +283,7 @@ EventService
 - delete(...)
 - findUpcoming(...)
 - addTask(...)
+- removeTask(...)
 - configureRecurrence(...)
 - addObserver(...)
 - checkUpcomingEvents(...)
