@@ -54,7 +54,7 @@ public class TaskConsoleUI {
 
         TaskDto createdTask = this.service.create(taskDto);
 
-        System.out.format("Task created successfully. ID: %d\n", createdTask.id().value());
+        System.out.format("Task created successfully. ID: %d\n", createdTask.taskId().value());
     }
 
     public void updateTask() {
@@ -256,7 +256,7 @@ public class TaskConsoleUI {
     private static void taskLister(List<TaskDto> tasks) {
         tasks.forEach((taskDto) -> { System.out.format(
                 "ID: %d\nText: %s\nCreated at: %s\nPriority: %s\nStatus: %s\n",
-                taskDto.id().value(),
+                taskDto.taskId().value(),
                 taskDto.text(),
                 taskDto.createdAt(),
                 taskDto.priority().name(),
