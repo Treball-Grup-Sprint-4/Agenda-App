@@ -108,7 +108,6 @@ public class EventSqlDao implements EventRepository {
 
                 updateTaskAssociations(connection, event);
 
-                updateTaskAssociations(connection, event);
 
                 connection.commit();
 
