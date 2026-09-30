@@ -53,7 +53,7 @@ public class TaskConsoleUI {
 
         TaskDto createdTask = this.service.create(taskDto);
 
-        System.out.format("Task created successfully. ID: %d", createdTask.id().value());
+        System.out.format("Task created successfully. ID: %d", createdTask.taskId().value());
     }
 
     public void updateTask() {

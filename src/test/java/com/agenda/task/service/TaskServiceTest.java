@@ -37,18 +37,22 @@ class TaskServiceTest {
                 throw new IllegalArgumentException("Task must not be NULL");
             }
 
-            if(task.getId() == null) {
-                Task savedTask = task.addId(new TaskId(nextId++));
-                this.taskList.add(savedTask);
+            if (task.getId() == null) {
+                Task savedTask = new Task(new TaskId(nextId++), task.getText(), task.getPriority(), task.getStatus(),
+                        task.getExpirationDate(), task.getCreatedAt(), task.getCompletedAt(), task.getEventId());
+
+                taskList.add(savedTask);
                 return savedTask;
             }
 
-            int pos = this.taskList.indexOf(task);
-            if (pos >= 0) {
-                this.taskList.set(pos, task);
-            } else {
-                this.taskList.add(task);
+            for (int i = 0; i < taskList.size(); i++) {
+                if (taskList.get(i).getId().equals(task.getId())) {
+                    taskList.set(i, task);
+                    return task;
+                }
             }
+
+            taskList.add(task);
             return task;
         }
 
@@ -92,7 +96,7 @@ class TaskServiceTest {
     void createShouldInitializeFieldsWithExpectedValues() {
         TaskDto task = sut.create(testTaskDto("Default text", TaskPriority.HIGH, expirationDate));
 
-        assertEquals(1, task.id().value());
+        assertEquals(1, task.taskId().value());
         assertEquals("Default text", task.text());
         assertEquals(TaskPriority.HIGH, task.priority());
         assertEquals(TaskStatus.PENDING, task.status());
@@ -117,7 +121,7 @@ class TaskServiceTest {
 
         assertFalse(sut.findAll().isEmpty());
 
-        sut.delete(createdTaskDto.id());
+        sut.delete(createdTaskDto.taskId());
 
         assertTrue(sut.findAll().isEmpty());
 
@@ -134,7 +138,7 @@ class TaskServiceTest {
     void completeShouldSetTaskStatusToCompleted() {
         TaskDto created = sut.create(testTaskDto("Default02", null, expirationDate));
 
-        sut.complete(created.id());
+        sut.complete(created.taskId());
 
         TaskDto completed = sut.findAll().getFirst();
 
@@ -159,11 +163,11 @@ class TaskServiceTest {
         TaskDto first = sut.create(testTaskDto("Pending", null, null));
         TaskDto second = sut.create(testTaskDto("Complete", null, null));
 
-        sut.complete(second.id());
+        sut.complete(second.taskId());
 
         List<TaskDto> pending = sut.findPending();
 
-        assertEquals(first.id(), pending.getFirst().id());
+        assertEquals(first.taskId(), pending.getFirst().taskId());
     }
 
     @Test
@@ -172,11 +176,11 @@ class TaskServiceTest {
         sut.create(testTaskDto("Pending02", null, null));
         TaskDto second = sut.create(testTaskDto("Completed02", null, null));
 
-        sut.complete(second.id());
+        sut.complete(second.taskId());
 
         List<TaskDto> completed = sut.findCompleted();
 
-        assertEquals(second.id(), completed.getFirst().id());
+        assertEquals(second.taskId(), completed.getFirst().taskId());
     }
 
     @Test
@@ -195,12 +199,12 @@ class TaskServiceTest {
 
         TaskDto done = sut.create(testTaskDto("Default Text 02", null, null));
 
-        sut.complete(done.id());
+        sut.complete(done.taskId());
 
         List<TaskDto> completed = sut.filterByStatus(TaskStatus.COMPLETED);
 
         assertEquals(1, completed.size());
-        assertEquals(done.id(), completed.getFirst().id());
+        assertEquals(done.taskId(), completed.getFirst().taskId());
     }
 
     @Test
