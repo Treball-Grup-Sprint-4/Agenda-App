@@ -1,7 +1,5 @@
 package com.agenda.task.model;
 
-import com.agenda.event.model.EventId;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -13,7 +11,6 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDate expirationDate;
     private LocalDateTime completedAt;
-    private EventId eventId;
 
     public Task(String text, LocalDate expirationDate) {
         checkInputData(text, expirationDate);
@@ -25,12 +22,10 @@ public class Task {
         this.createdAt = LocalDateTime.now();
         this.expirationDate = expirationDate;
         this.completedAt = null;
-        this.eventId = null;
     }
 
-    public Task(TaskId id, String text, TaskPriority priority, TaskStatus status,
-                LocalDate expirationDate, LocalDateTime createdAt,
-                LocalDateTime completedAt, EventId eventId) {
+    public Task(TaskId id, String text, TaskPriority priority, TaskStatus status, LocalDate expirationDate,
+            LocalDateTime createdAt, LocalDateTime completedAt) {
 
         checkInputText(text);
         checkInputPriority(priority);
@@ -54,7 +49,6 @@ public class Task {
         this.expirationDate = expirationDate;
         this.createdAt = createdAt;
         this.completedAt = completedAt;
-        this.eventId = eventId;
     }
 
     private static void checkInputData(String text, LocalDate expirationDate) {
@@ -115,14 +109,6 @@ public class Task {
 
     public LocalDateTime getCompletedAt() {
         return this.completedAt;
-    }
-
-    public EventId getEventId() {
-        return this.eventId;
-    }
-
-    public void setEventId(EventId id) {
-        this.eventId = id;
     }
 
     public void markAsCompleted() {
