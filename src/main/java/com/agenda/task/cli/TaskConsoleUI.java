@@ -4,9 +4,7 @@ import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.*;
 import com.agenda.task.service.TaskService;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -219,7 +217,7 @@ public class TaskConsoleUI {
         taskLister(listsByDate);
     }
 
-    public void listSortedTasks() {
+    public void sortTasks() {
         System.out.print("Sort by (PRIORITY, STATUS, DATE)");
 
         String userChoice = scanner.nextLine().trim().toLowerCase();
