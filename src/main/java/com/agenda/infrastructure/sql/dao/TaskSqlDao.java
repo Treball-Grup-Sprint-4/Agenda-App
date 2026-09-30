@@ -1,6 +1,7 @@
 package com.agenda.infrastructure.sql.dao;
 
 import com.agenda.common.exception.PersistenceException;
+import com.agenda.common.exception.TaskNotFoundException;
 import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.event.model.EventId;
 import com.agenda.task.model.Task;
@@ -209,7 +210,12 @@ public class TaskSqlDao implements TaskRepository {
         PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id.value());
 
-            statement.executeUpdate();
+            int updatedRows = statement.executeUpdate();
+
+            if(updatedRows == 0) {
+                throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
+            }
+
         } catch(SQLException e) {
             throw new PersistenceException("Error deleting task", e);
         }
