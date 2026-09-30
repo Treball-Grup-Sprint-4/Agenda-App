@@ -83,10 +83,9 @@ class TaskServiceTest {
 
     }
 
-
     TaskDto testTaskDto(String text, TaskPriority priority, LocalDate expirationDate){
         return new TaskDto(null, text, priority, null, expirationDate,
-                null, null, null);
+                null, null);
     }
 
     LocalDate expirationDate = LocalDate.now().plusMonths(2);
