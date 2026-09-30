@@ -188,13 +188,4 @@ class TaskTest {
         assertThrows(IllegalArgumentException.class, () ->
                 task.updateDetails("Siesta", null, newDate));
     }
-
-    @Test
-    void shouldCreateTaskWithoutEvent() {
-        Task task = new Task("Lavar ropa", null);
-
-        assertNull(task.getEventId());
-    }
-
-
 }

@@ -1,32 +1,54 @@
 package com.agenda.task.model;
 
-import com.agenda.event.model.EventId;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Task {
-    private TaskId id;
+    private final TaskId id;
     private String text;
     private TaskPriority priority;
     private TaskStatus status;
     private LocalDateTime createdAt;
     private LocalDate expirationDate;
     private LocalDateTime completedAt;
-    private EventId eventId;
 
     public Task(String text, LocalDate expirationDate) {
-
         checkInputData(text, expirationDate);
 
+        this.id = null;
         this.text = text;
+        this.priority = TaskPriority.MEDIUM;
+        this.status = TaskStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
         this.expirationDate = expirationDate;
+        this.completedAt = null;
+    }
 
-        priority = TaskPriority.MEDIUM;
-        status = TaskStatus.PENDING;
-        createdAt = LocalDateTime.now();
-        completedAt = null;
-        eventId = null;
+    public Task(TaskId id, String text, TaskPriority priority, TaskStatus status, LocalDate expirationDate,
+            LocalDateTime createdAt, LocalDateTime completedAt) {
+
+        checkInputText(text);
+        checkInputPriority(priority);
+
+        if (id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        if (status == null) {
+            throw new IllegalArgumentException("Status must not be NULL");
+        }
+
+        if (createdAt == null) {
+            throw new IllegalArgumentException("CreatedAt must not be NULL");
+        }
+
+        this.id = id;
+        this.text = text;
+        this.priority = priority;
+        this.status = status;
+        this.expirationDate = expirationDate;
+        this.createdAt = createdAt;
+        this.completedAt = completedAt;
     }
 
     private static void checkInputData(String text, LocalDate expirationDate) {
@@ -35,11 +57,11 @@ public class Task {
     }
 
     private static void checkInputText(String text) {
-        if(text == null) {
+        if (text == null) {
             throw new IllegalArgumentException("Text must not be NULL");
         }
 
-        if(text.isBlank()) {
+        if (text.isBlank()) {
             throw new IllegalArgumentException("Text must not be empty");
         }
 
@@ -89,19 +111,11 @@ public class Task {
         return this.completedAt;
     }
 
-    public EventId getEventId() {
-        return this.eventId;
-    }
-
-    public void setEventId(EventId id) {
-        this.eventId = id;
-    }
-
     public void markAsCompleted() {
-        if(this.getStatus() == TaskStatus.COMPLETED) {
+        if (this.getStatus() == TaskStatus.COMPLETED) {
             return;
         }
-       this.status = TaskStatus.COMPLETED;
+        this.status = TaskStatus.COMPLETED;
         this.completedAt = LocalDateTime.now();
     }
 
@@ -109,7 +123,6 @@ public class Task {
     Using method overload for flexibility, allowing details to be updated depending on the
     input parameters.
      */
-
     public void updateDetails(String text, TaskPriority priority, LocalDate expirationDate) {
         checkInputData(text, expirationDate);
         checkInputPriority(priority);
@@ -128,7 +141,7 @@ public class Task {
         checkInputPriority(priority);
         this.priority = priority;
     }
-    
+
     public void updateDetails(LocalDate expirationDate) {
         checkInputDate(expirationDate);
         this.expirationDate = expirationDate;
