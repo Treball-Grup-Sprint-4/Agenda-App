@@ -34,6 +34,7 @@ public class TaskConsoleUI {
             8. Filter by priority
             9. Filter by status
             10. Filter by date
+            11. Sort tasks
             0. Back
             """);
     }
