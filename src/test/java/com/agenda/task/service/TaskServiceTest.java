@@ -39,7 +39,7 @@ class TaskServiceTest {
 
             if (task.getId() == null) {
                 Task savedTask = new Task(new TaskId(nextId++), task.getText(), task.getPriority(), task.getStatus(),
-                        task.getExpirationDate(), task.getCreatedAt(), task.getCompletedAt(), task.getEventId());
+                        task.getExpirationDate(), task.getCreatedAt(), task.getCompletedAt());
 
                 taskList.add(savedTask);
                 return savedTask;
