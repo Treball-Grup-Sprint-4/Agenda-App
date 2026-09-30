@@ -9,7 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskSqlDaoTest {
@@ -53,12 +57,22 @@ class TaskSqlDaoTest {
 
         assertNotNull(savedTask.getId());
         assertEquals("Default Text", savedTask.getText());
-
-
     }
 
     @Test
     void findAllShouldReturnAllTasks() {
+        Task firstTask = sut.save(new Task("First task's text", null));
+        Task secondTask = sut.save(new Task("Second task's text", null));
+
+        List<Task> tasks = sut.findAll();
+
+        assertTrue(tasks
+                .stream()
+                .anyMatch(task -> task.getId().equals(firstTask.getId())));
+
+        assertTrue(tasks
+                .stream()
+                .anyMatch(note -> note.getId().equals(secondTask.getId())));
     }
 
     @Test
