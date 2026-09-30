@@ -48,8 +48,8 @@ public class TaskConsoleUI {
             System.out.print("Expiration date (dd-MM-yyyy, press Enter for none): ");
             LocalDate expirationDate = readDate();
 
-        TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate,
-                null, null, null);
+        TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate, null,
+                null);
 
         TaskDto createdTask = this.service.create(taskDto);
 
@@ -73,8 +73,8 @@ public class TaskConsoleUI {
 
         LocalDate expirationDate = readDate();
 
-        TaskDto task = new TaskDto(null, text, priority, null,
-                expirationDate, null, null, null);
+        TaskDto task = new TaskDto(null, text, priority, null, expirationDate, null,
+                null);
 
         TaskDto updatedTask = service.update(taskId, task);
 
