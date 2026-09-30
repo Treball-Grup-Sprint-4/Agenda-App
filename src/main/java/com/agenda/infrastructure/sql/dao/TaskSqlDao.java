@@ -81,7 +81,6 @@ public class TaskSqlDao implements TaskRepository {
                                     task.getEventId()
                     );
 
-
                     return task.addId(new TaskId(generatedKeys.getInt(1)));
                 }
             }
