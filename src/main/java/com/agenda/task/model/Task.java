@@ -1,11 +1,7 @@
 package com.agenda.task.model;
 
-import com.agenda.event.model.EventId;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
-
 
 public class Task {
     private final TaskId id;
@@ -15,35 +11,44 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDate expirationDate;
     private LocalDateTime completedAt;
-    private EventId eventId;
 
     public Task(String text, LocalDate expirationDate) {
         checkInputData(text, expirationDate);
 
         this.id = null;
         this.text = text;
-        this.expirationDate = expirationDate;
-
         this.priority = TaskPriority.MEDIUM;
         this.status = TaskStatus.PENDING;
         this.createdAt = LocalDateTime.now();
+        this.expirationDate = expirationDate;
         this.completedAt = null;
-        this.eventId = null;
     }
 
-    /*
-    Private constructor used by addId(), to customize an ID of a non-persisted Task
-     */
-    private Task(TaskId id, Task sourceTask) {
-        this.id = id;
-        this.text = sourceTask.text;
-        this.expirationDate = sourceTask.expirationDate;
+    public Task(TaskId id, String text, TaskPriority priority, TaskStatus status, LocalDate expirationDate,
+            LocalDateTime createdAt, LocalDateTime completedAt) {
 
-        this.priority = sourceTask.priority;
-        this.status = sourceTask.status;
-        this.createdAt = sourceTask.createdAt;
-        this.completedAt = sourceTask.completedAt;
-        this.eventId = sourceTask.eventId;
+        checkInputText(text);
+        checkInputPriority(priority);
+
+        if (id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        if (status == null) {
+            throw new IllegalArgumentException("Status must not be NULL");
+        }
+
+        if (createdAt == null) {
+            throw new IllegalArgumentException("CreatedAt must not be NULL");
+        }
+
+        this.id = id;
+        this.text = text;
+        this.priority = priority;
+        this.status = status;
+        this.expirationDate = expirationDate;
+        this.createdAt = createdAt;
+        this.completedAt = completedAt;
     }
 
     private static void checkInputData(String text, LocalDate expirationDate) {
@@ -52,11 +57,11 @@ public class Task {
     }
 
     private static void checkInputText(String text) {
-        if(text == null) {
+        if (text == null) {
             throw new IllegalArgumentException("Text must not be NULL");
         }
 
-        if(text.isBlank()) {
+        if (text.isBlank()) {
             throw new IllegalArgumentException("Text must not be empty");
         }
 
@@ -106,19 +111,11 @@ public class Task {
         return this.completedAt;
     }
 
-    public EventId getEventId() {
-        return this.eventId;
-    }
-
-    public void setEventId(EventId id) {
-        this.eventId = id;
-    }
-
     public void markAsCompleted() {
-        if(this.getStatus() == TaskStatus.COMPLETED) {
+        if (this.getStatus() == TaskStatus.COMPLETED) {
             return;
         }
-       this.status = TaskStatus.COMPLETED;
+        this.status = TaskStatus.COMPLETED;
         this.completedAt = LocalDateTime.now();
     }
 
@@ -144,41 +141,9 @@ public class Task {
         checkInputPriority(priority);
         this.priority = priority;
     }
-    
+
     public void updateDetails(LocalDate expirationDate) {
         checkInputDate(expirationDate);
         this.expirationDate = expirationDate;
-    }
-
-    /*
-        Returns a Task with customized ID. Ensures an existent ID is not swaped by a new ID.
-        Only updates ID if the current ID is NULL, and it only accepts a valid ID. Doesn't
-        allow modification of persisted instances.
-     */
-    public Task addId(TaskId id) {
-        if(id == null) {
-            throw new IllegalArgumentException("Input ID must not be NULL");
-        }
-        if(this.id != null) {
-            throw new IllegalStateException("The task ID must be NULL");
-        }
-        return new Task(id, this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if(this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Task task = (Task) o;
-        return this.id != null && Objects.equals(this.id, task.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.id);
     }
 }

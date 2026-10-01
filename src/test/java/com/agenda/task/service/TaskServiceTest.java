@@ -37,18 +37,22 @@ class TaskServiceTest {
                 throw new IllegalArgumentException("Task must not be NULL");
             }
 
-            if(task.getId() == null) {
-                Task savedTask = task.addId(new TaskId(nextId++));
-                this.taskList.add(savedTask);
+            if (task.getId() == null) {
+                Task savedTask = new Task(new TaskId(nextId++), task.getText(), task.getPriority(), task.getStatus(),
+                        task.getExpirationDate(), task.getCreatedAt(), task.getCompletedAt());
+
+                taskList.add(savedTask);
                 return savedTask;
             }
 
-            int pos = this.taskList.indexOf(task);
-            if (pos >= 0) {
-                this.taskList.set(pos, task);
-            } else {
-                this.taskList.add(task);
+            for (int i = 0; i < taskList.size(); i++) {
+                if (taskList.get(i).getId().equals(task.getId())) {
+                    taskList.set(i, task);
+                    return task;
+                }
             }
+
+            taskList.add(task);
             return task;
         }
 
@@ -79,10 +83,9 @@ class TaskServiceTest {
 
     }
 
-
     TaskDto testTaskDto(String text, TaskPriority priority, LocalDate expirationDate){
         return new TaskDto(null, text, priority, null, expirationDate,
-                null, null, null);
+                null, null);
     }
 
     LocalDate expirationDate = LocalDate.now().plusMonths(2);

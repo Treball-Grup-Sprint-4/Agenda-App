@@ -140,6 +140,10 @@ public class TaskService {
     }
 
     public List<TaskDto> filterByPriority(TaskPriority priority) {
+
+        if(priority == null) {
+            throw new IllegalArgumentException("Priority must not be NULL");
+        }
         return this
                 .taskRepository
                 .findAll()
@@ -150,6 +154,9 @@ public class TaskService {
     }
 
     public List<TaskDto> filterByStatus(TaskStatus status) {
+        if(status == null) {
+            throw new IllegalArgumentException("Status must not be NULL");
+        }
         return this
                 .taskRepository
                 .findAll()
@@ -193,8 +200,7 @@ public class TaskService {
                 task.getStatus(),
                 task.getExpirationDate(),
                 task.getCreatedAt(),
-                task.getCompletedAt(),
-                task.getEventId()
+                task.getCompletedAt()
         );
     }
 }

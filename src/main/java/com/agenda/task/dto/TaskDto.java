@@ -1,6 +1,5 @@
 package com.agenda.task.dto;
 
-import com.agenda.event.model.EventId;
 import com.agenda.task.model.TaskId;
 import com.agenda.task.model.TaskPriority;
 import com.agenda.task.model.TaskStatus;
@@ -15,6 +14,5 @@ public record TaskDto(
         TaskStatus status,
         LocalDate expirationDate,
         LocalDateTime createdAt,
-        LocalDateTime completedAt,
-        EventId eventId
+        LocalDateTime completedAt
 ) { }
