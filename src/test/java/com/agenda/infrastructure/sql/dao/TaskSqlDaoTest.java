@@ -3,11 +3,12 @@ package com.agenda.infrastructure.sql.dao;
 import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.task.model.Task;
 import com.agenda.task.model.TaskId;
+import com.agenda.event.model.Event;
+import com.agenda.common.exception.PersistenceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.agenda.event.model.Event;
-import com.agenda.common.exception.PersistenceException;
+
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -86,7 +87,7 @@ class TaskSqlDaoTest {
 
         assertTrue(tasks.stream().anyMatch(task -> task.getId().equals(firstTask.getId())));
 
-        assertTrue(tasks.stream().anyMatch(note -> note.getId().equals(secondTask.getId())));
+        assertTrue(tasks.stream().anyMatch(task -> task.getId().equals(secondTask.getId())));
     }
 
     @Test
