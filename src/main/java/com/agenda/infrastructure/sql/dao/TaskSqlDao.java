@@ -1,9 +1,7 @@
 package com.agenda.infrastructure.sql.dao;
 
 import com.agenda.common.exception.PersistenceException;
-import com.agenda.common.exception.TaskNotFoundException;
 import com.agenda.common.persistence.DatabaseConnection;
-import com.agenda.event.model.EventId;
 import com.agenda.task.model.Task;
 import com.agenda.task.model.TaskId;
 import com.agenda.task.model.TaskPriority;
@@ -14,8 +12,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-
 
 public class TaskSqlDao implements TaskRepository {
 
@@ -34,8 +30,8 @@ public class TaskSqlDao implements TaskRepository {
 
    private Task insert(Task task) {
         String sql = """
-                INSERT INTO task (text, priority, status, expiration_date, completed_at, event_id, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO task (text, priority, status, expiration_date, completed_at, created_at)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
@@ -57,31 +53,16 @@ public class TaskSqlDao implements TaskRepository {
                 statement.setTimestamp(5, Timestamp.valueOf(task.getCompletedAt()));
             }
 
-            if(task.getEventId() == null) {
-                statement.setNull(6, Types.INTEGER);
-            } else {
-                statement.setInt(6, task.getEventId().value());
-            }
-
-            statement.setTimestamp(7, Timestamp.valueOf(task.getCreatedAt()));
+            statement.setTimestamp(6, Timestamp.valueOf(task.getCreatedAt()));
 
             statement.executeUpdate();
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if(generatedKeys.next()) {
+                if (generatedKeys.next()) {
 
-                    Task insertedTask = new Task(
-                            new TaskId(generatedKeys.getInt(1)),
-                                    task.getText(),
-                                    task.getPriority(),
-                                    task.getStatus(),
-                                    task.getExpirationDate(),
-                                    task.getCreatedAt(),
-                                    task.getCompletedAt(),
-                                    task.getEventId()
-                    );
-
-                    return task.addId(new TaskId(generatedKeys.getInt(1)));
+                    return new Task(
+                            new TaskId(generatedKeys.getInt(1)), task.getText(), task.getPriority(),
+                            task.getStatus(), task.getExpirationDate(), task.getCreatedAt(), task.getCompletedAt());
                 }
             }
 
@@ -95,7 +76,7 @@ public class TaskSqlDao implements TaskRepository {
     private Task update(Task task) {
         String sql = """
                 UPDATE task
-                SET text = ?, priority = ?, status = ?, expiration_date = ?, completed_at = ?, event_id = ?
+                SET text = ?, priority = ?, status = ?, expiration_date = ?, completed_at = ?
                 WHERE id = ?
                 """;
 
@@ -117,13 +98,7 @@ public class TaskSqlDao implements TaskRepository {
                 statement.setTimestamp(5, Timestamp.valueOf(task.getCompletedAt()));
             }
 
-            if(task.getEventId() == null) {
-                statement.setNull(6, Types.INTEGER);
-            } else {
-                statement.setInt(6, task.getEventId().value());
-            }
-
-            statement.setInt(7, task.getId().value());
+            statement.setInt(6, task.getId().value());
 
             int updateRows = statement.executeUpdate();
 
@@ -140,7 +115,7 @@ public class TaskSqlDao implements TaskRepository {
     @Override
     public List<Task> findAll() {
         String sql = """
-                SELECT id, text, priority, status, expiration_date, created_at, completed_at, event_id
+                SELECT id, text, priority, status, expiration_date, created_at, completed_at
                 FROM task
                 """;
 
@@ -162,18 +137,13 @@ public class TaskSqlDao implements TaskRepository {
     private Task mapTask(ResultSet resultSet) throws  SQLException {
         Date expirationDate = resultSet.getDate("expiration_date");
         Timestamp completedAt = resultSet.getTimestamp("completed_at");
-        Integer eventId = resultSet.getObject("event_id", Integer.class);
 
-        return new Task(
-                new TaskId(resultSet.getInt("id")),
-                resultSet.getString("text"),
+        return new Task(new TaskId(resultSet.getInt("id")), resultSet.getString("text"),
                 TaskPriority.valueOf(resultSet.getString("priority")),
                 TaskStatus.valueOf(resultSet.getString("status")),
                 expirationDate == null ? null : expirationDate.toLocalDate(),
                 resultSet.getTimestamp("created_at").toLocalDateTime(),
-                completedAt == null ? null : completedAt.toLocalDateTime(),
-                eventId == null ? null : new EventId(eventId)
-        );
+                completedAt == null ? null : completedAt.toLocalDateTime());
     }
 
     @Override
@@ -183,7 +153,7 @@ public class TaskSqlDao implements TaskRepository {
         }
 
         String sql = """
-                SELECT id, text, priority, status, expiration_date, created_at, completed_at, event_id 
+                SELECT id, text, priority, status, expiration_date, created_at, completed_at
                 FROM task
                 WHERE id = ?
                 """;
@@ -225,7 +195,7 @@ public class TaskSqlDao implements TaskRepository {
             int updatedRows = statement.executeUpdate();
 
             if(updatedRows == 0) {
-                throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
+                throw new PersistenceException(String.format("Task with ID %d not found", id.value()));
             }
 
         } catch(SQLException e) {
