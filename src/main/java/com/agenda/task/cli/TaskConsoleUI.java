@@ -81,12 +81,18 @@ public class TaskConsoleUI {
         } else {
             System.out.format("%s\n", currentTask.expirationDate());
         }
-        System.out.println("New expiration date (yyyy-MM-dd, Press Enter to skip)\n");
+        System.out.println("New expiration date (yyyy-MM-dd, Enter to keep, - to remove):");
 
-        LocalDate expirationDate = readDate();
+        String dateInput = scanner.nextLine().trim();
 
-        if(expirationDate == null) {
+        LocalDate expirationDate;
+
+        if (dateInput.isBlank()) {
             expirationDate = currentTask.expirationDate();
+        } else if (dateInput.equals("-")) {
+            expirationDate = null;
+        } else {
+            expirationDate = LocalDate.parse(dateInput);
         }
 
         TaskDto task = new TaskDto(null, text, priority, null,
