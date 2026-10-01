@@ -116,7 +116,7 @@ public class TaskService {
         if(task.isEmpty()) {
             throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
         }
-        return toDto((Task)task.get());
+        return toDto(task.get());
     }
 
     public List<TaskDto> findPending() {
