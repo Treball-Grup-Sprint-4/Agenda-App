@@ -47,7 +47,7 @@ public class TaskConsoleUI {
             LocalDate expirationDate = readDate();
 
         TaskDto taskDto = new TaskDto(null, text, priority, null, expirationDate,
-                null, null, null);
+                null, null);
 
         TaskDto createdTask = this.service.create(taskDto);
 
@@ -90,7 +90,7 @@ public class TaskConsoleUI {
         }
 
         TaskDto task = new TaskDto(null, text, priority, null,
-                expirationDate, null, null, null);
+                expirationDate, null, null);
 
         service.update(taskId, task);
 
@@ -106,12 +106,14 @@ public class TaskConsoleUI {
         TaskDto task = service.findById(taskId);
 
         System.out.format("Task: %s.\nAre you sure you want to delete this task? (Y/N)\n", task.text());
+
         String confirmation = scanner.nextLine().trim();
 
         if(!confirmation.equalsIgnoreCase("y")) {
             System.out.print("Deletion canceled");
             return;
         }
+
         service.delete(taskId);
         System.out.print("Task deleted successfully");
     }
@@ -269,13 +271,6 @@ public class TaskConsoleUI {
                 System.out.println("-");
             } else {
                 System.out.format("%s\n", taskDto.completedAt());
-            }
-
-            System.out.print("Event ID: ");
-            if(taskDto.eventId() == null) {
-                System.out.println("-");
-            } else {
-                System.out.format("%d\n", taskDto.eventId().value());
             }
             System.out.println();
         });
