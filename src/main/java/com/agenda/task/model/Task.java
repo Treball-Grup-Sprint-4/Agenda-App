@@ -8,7 +8,7 @@ public class Task {
     private String text;
     private TaskPriority priority;
     private TaskStatus status;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDate expirationDate;
     private LocalDateTime completedAt;
 
