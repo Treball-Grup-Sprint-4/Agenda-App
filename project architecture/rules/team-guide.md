@@ -262,6 +262,7 @@ TaskService
 - delete(...)
 - complete(...)
 - findAll()
+- findById(TaskId)
 - findPending()
 - findCompleted()
 - filterByPriority(...)
