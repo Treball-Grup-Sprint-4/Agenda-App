@@ -158,6 +158,11 @@ class TaskServiceTest {
     }
 
     @Test
+    void findByIdShouldThrowExceptionWhenIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> sut.findById(null));
+    }
+
+    @Test
     void findPendingShouldReturnExpectedList() {
         TaskDto first = sut.create(testTaskDto("Pending", null, null));
         TaskDto second = sut.create(testTaskDto("Complete", null, null));
@@ -218,6 +223,21 @@ class TaskServiceTest {
 
         assertEquals(1, filtered.size());
         assertEquals("Target date", filtered.get(0).text());
+    }
+
+    @Test
+    void findByIdShouldReturnExistingTask() {
+        TaskDto created = sut.create(testTaskDto("Task", TaskPriority.HIGH, expirationDate));
+
+        TaskDto found = sut.findById(created.taskId());
+
+        assertEquals(created.taskId(), found.taskId());
+        assertEquals("Task", found.text());
+    }
+
+    @Test
+    void findByIdShouldThrowExceptionWhenTaskDoesNotExist() {
+        assertThrows(TaskNotFoundException.class, () -> sut.findById(new TaskId(999)));
     }
 
     @Test
