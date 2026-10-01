@@ -290,6 +290,8 @@ EventService
 - checkUpcomingEvents(...)
 ```
 
+`filterByDate(LocalDate date)` devuelve las Tasks cuya `expirationDate` coincide exactamente con la fecha indicada.
+
 ## 8. DTOs
 Solo:
 ```text
@@ -353,6 +355,10 @@ PrioritySortStrategy
 StatusSortStrategy
 DateSortStrategy
 ```
+
+Orden:
+Priority: LOW → MEDIUM → HIGH
+Status: PENDING → COMPLETED
 
 ### Factory
 ```text
@@ -481,18 +487,6 @@ Comprobar:
 3. ¿Está en el package correcto?
 4. ¿Respeta el naming?
 5. ¿Es realmente necesaria?
-
-## 16. Pendiente de revisión
-No implementar por suposición:
-
-### Proximidad de fecha
-Pendiente definir exactamente `filterByDate(...)`.
-
-### Ordenación
-```text
-LOW / MEDIUM / HIGH
-PENDING / COMPLETED
-```
 
 ## Regla final
 ```text
