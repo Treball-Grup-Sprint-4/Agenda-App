@@ -265,5 +265,37 @@ class NoteServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new NoteService(new FakeNoteRepository(), null));
     }
+
+    @Test
+    void shouldThrowExceptionWhenCreatingWithNullDto() {
+        assertThrows(IllegalArgumentException.class, () -> noteService.create(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingWithNullDto() {
+        assertThrows(IllegalArgumentException.class, () -> noteService.update(new NoteId(1), null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingWithNullNoteId() {
+        NoteDto noteDto = new NoteDto(null, "Note", null, new TaskId(1));
+
+        assertThrows(IllegalArgumentException.class, () -> noteService.update(null, noteDto));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingWithNullNoteId() {
+        assertThrows(IllegalArgumentException.class, () -> noteService.delete(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullTaskId() {
+        assertThrows(IllegalArgumentException.class, () -> noteService.findByTaskId(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullNoteId() {
+        assertThrows(IllegalArgumentException.class, () -> noteService.findById(null));
+    }
 }
 
