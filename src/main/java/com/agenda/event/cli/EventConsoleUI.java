@@ -30,7 +30,7 @@ public class EventConsoleUI {
             5. Add task to event
             6. Remove task from event
             7. Configure recurrence
-            0. Back
+            0. Return to main menu
             """);
     }
 
