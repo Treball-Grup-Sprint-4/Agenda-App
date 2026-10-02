@@ -444,4 +444,19 @@ class EventSqlDaoTest {
             }
         }
     }
+
+    @Test
+    void shouldThrowExceptionWhenSavingNullEvent() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.save(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullEventId() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.findById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingByNullEventId() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.deleteById(null));
+    }
 }
