@@ -1,5 +1,6 @@
 package com.agenda.task.cli;
 
+import com.agenda.common.utils.ConsoleExceptionHandler;
 import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.*;
 import com.agenda.task.service.TaskService;
@@ -17,7 +18,7 @@ public class TaskConsoleUI {
         this.scanner = scanner;
     }
 
-    public void showMenu() {
+    private void showMenu() {
         System.out.println("""
           
             --- TASK ---
@@ -35,8 +36,73 @@ public class TaskConsoleUI {
             0. Back
             """);
     }
+    public void runTaskConsole() {
 
-    public void createTask() {
+        boolean exit = false;
+
+        while(!exit) {
+
+            showMenu();
+
+            System.out.print("Choose an option");
+            String userOption = scanner.nextLine();
+
+
+            switch(userOption.trim()) {
+                case "1": {
+                    ConsoleExceptionHandler.execute(()->this.createTask());
+                    break;
+                }
+                case "2": {
+                    ConsoleExceptionHandler.execute(()->updateTask());
+                    break;
+                }
+                case "3": {
+                    ConsoleExceptionHandler.execute(()->deleteTask());
+                    break;
+                }
+                case "4": {
+                    ConsoleExceptionHandler.execute(()->listTasks());
+                    break;
+                }
+                case "5": {
+                    ConsoleExceptionHandler.execute(()->completeTask());
+                    break;
+                }
+                case "6": {
+                    ConsoleExceptionHandler.execute(()->listPendingTasks());
+                    break;
+                }
+                case "7": {
+                    ConsoleExceptionHandler.execute(()->listCompletedTasks());
+                    break;
+                }
+                case "8": {
+                    ConsoleExceptionHandler.execute(()->listTasksByPriority());
+                    break;
+                }
+                case "9": {
+                    ConsoleExceptionHandler.execute(()->listTasksByStatus());
+                    break;
+                }
+                case "10": {
+                    ConsoleExceptionHandler.execute(()->listTasksByDate());
+                    break;
+                }
+                case "11": {
+                    ConsoleExceptionHandler.execute(()->sortTasks());
+                    break;
+                }
+                case "0": {
+                    exit = true;
+                    break;
+                }
+                default: System.out.println("Wrong option (choose a number from 0 to 11)");
+            }
+        }
+    }
+
+    private void createTask() {
         System.out.print("Text: ");
         String text = scanner.nextLine();
 
@@ -54,7 +120,7 @@ public class TaskConsoleUI {
         System.out.format("Task created successfully. ID: %d\n", createdTask.taskId().value());
     }
 
-    public void updateTask() {
+    private void updateTask() {
         System.out.print("Task ID:");
 
         TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
@@ -103,7 +169,7 @@ public class TaskConsoleUI {
         System.out.println("Task updated successfully");
     }
 
-    public void deleteTask() {
+    private void deleteTask() {
 
         System.out.print("Task ID: ");
 
@@ -124,7 +190,7 @@ public class TaskConsoleUI {
         System.out.print("Task deleted successfully");
     }
 
-    public void completeTask() {
+    private void completeTask() {
         System.out.print("Task ID: ");
 
         TaskId taskId = new TaskId(Integer.parseInt(scanner.nextLine()));
@@ -143,7 +209,7 @@ public class TaskConsoleUI {
         System.out.print("Marked as Complete");
     }
 
-    public void listTasks() {
+    private void listTasks() {
         List<TaskDto> tasks = service.findAll();
 
         if(tasks.isEmpty()) {
@@ -153,7 +219,7 @@ public class TaskConsoleUI {
         taskLister(tasks);
     }
 
-    public void listPendingTasks() {
+    private void listPendingTasks() {
         List<TaskDto> pendingTasks = service.findPending();
         if(pendingTasks.isEmpty()) {
             System.out.print("No pending tasks found");
@@ -162,7 +228,7 @@ public class TaskConsoleUI {
         taskLister(pendingTasks);
     }
 
-    public void listCompletedTasks() {
+    private void listCompletedTasks() {
         List<TaskDto> completedTasks = service.findCompleted();
         if(completedTasks.isEmpty()) {
             System.out.print("No completed tasks found");
@@ -171,7 +237,7 @@ public class TaskConsoleUI {
         taskLister(completedTasks);
     }
 
-    public void listTasksByPriority() {
+    private void listTasksByPriority() {
         System.out.print("Task priority (LOW, MEDIUM, HIGH)");
 
         TaskPriority userTaskPriority = readPriority();
@@ -188,7 +254,7 @@ public class TaskConsoleUI {
         taskLister(tasksByPriority);
     }
 
-    public void listTasksByStatus() {
+    private void listTasksByStatus() {
         System.out.print("Task status (PENDING, COMPLETED)");
 
         TaskStatus userTaskStatus = readStatus();
@@ -206,7 +272,7 @@ public class TaskConsoleUI {
         taskLister(tasksByStatus);
     }
 
-    public void listTasksByDate() {
+    private void listTasksByDate() {
         System.out.print("Task date (yyyy-MM-dd):");
 
         LocalDate userTaskDate = readDate();
@@ -225,7 +291,7 @@ public class TaskConsoleUI {
         taskLister(listsByDate);
     }
 
-    public void sortTasks() {
+    private void sortTasks() {
         System.out.print("Sort by (PRIORITY, STATUS, DATE)");
 
         String userChoice = scanner.nextLine().trim().toLowerCase();
