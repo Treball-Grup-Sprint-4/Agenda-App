@@ -118,13 +118,20 @@ public class EventService {
     }
 
     public List<EventDto> findUpcoming(LocalDate date) {
-        return eventRepository.findAll().stream().filter(event -> {
-                    RecurrencePolicy policy = recurrenceFactory.create(event.getRecurrenceType());
+        List<EventDto> upcomingEvents = new ArrayList<>();
 
-                    LocalDate nextDate = policy.nextDate(event.getEventDate(), date, event.getRepeatUntil());
+        for (Event event : eventRepository.findAll()) {
+            RecurrencePolicy policy = recurrenceFactory.create(event.getRecurrenceType());
 
-                    return nextDate != null;
-        }).map(this::toDto).toList();
+            LocalDate nextDate = policy.nextDate(event.getEventDate(), date, event.getRepeatUntil());
+
+            if (nextDate != null) {
+                upcomingEvents.add(new EventDto(event.getEventId(), event.getText(), nextDate, event.getCreatedAt(),
+                        event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds()));
+            }
+        }
+
+        return upcomingEvents;
     }
 
     public void addObserver(EventObserver observer) {
@@ -140,7 +147,9 @@ public class EventService {
             LocalDate nextDate = policy.nextDate(event.getEventDate(), notificationDate, event.getRepeatUntil());
 
             if (notificationDate.equals(nextDate)) {
-                EventDto dto = toDto(event);
+                EventDto dto = new EventDto(event.getEventId(), event.getText(), nextDate, event.getCreatedAt(),
+                        event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds());
+
                 observers.forEach(observer -> observer.notify(dto));
             }
         });
