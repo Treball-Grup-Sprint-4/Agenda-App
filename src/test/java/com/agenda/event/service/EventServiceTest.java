@@ -613,4 +613,137 @@ class EventServiceTest {
                 service.removeTask(new EventId(5), new TaskId(1)));
     }
 
+    @Test
+    void shouldThrowExceptionWhenCreatingWithNullDto() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.create(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.findById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingWithNullDto() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.update(new EventId(1), null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingWithNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        EventDto dto = new EventDto(null, "Event", LocalDate.of(2026, 10, 10),
+                null, RecurrenceType.NONE, null, List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.update(null, dto));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingWithNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.delete(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAddingTaskWithNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.addTask(null, new TaskId(1)));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAddingNullTaskId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.addTask(new EventId(1), null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenConfiguringRecurrenceWithNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.configureRecurrence(null, RecurrenceType.NONE, null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingUpcomingWithNullDate() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.findUpcoming(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCheckingUpcomingEventsWithNullDate() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.checkUpcomingEvents(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAddingNullObserver() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.addObserver(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRemovingTaskWithNullEventId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.removeTask(null, new TaskId(1)));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRemovingNullTaskId() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> service.removeTask(new EventId(1), null));
+    }
 }
