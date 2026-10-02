@@ -28,7 +28,7 @@ services:
       DB_NAME: ${MYSQL_DATABASE}
       DB_USER: root
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    depends_on:
+    depends_on :
       agenda-app-database:
         condition: service_healthy
     
