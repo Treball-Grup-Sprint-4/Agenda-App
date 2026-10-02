@@ -165,4 +165,9 @@ class NoteSqlDaoTest {
 
         assertThrows(PersistenceException.class, () -> noteSqlDao.deleteById(savedNote.getNoteId()));
     }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullTaskId() {
+        assertThrows(IllegalArgumentException.class, () -> noteSqlDao.findByTaskId(null));
+    }
 }
