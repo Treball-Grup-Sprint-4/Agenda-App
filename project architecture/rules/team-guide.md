@@ -22,7 +22,8 @@ MySQL
 ```
 
 Reglas:
-- Main: punto de entrada de la aplicación y montaje de dependencias.
+- Main: punto de entrada de la aplicación.
+- ApplicationLauncher: montaje y conexión de dependencias.
 - ApplicationMenu: menú principal y navegación entre las distintas ConsoleUI.
 - ConsoleExceptionHandler: gestión común de excepciones de consola.
 - UI: entrada/salida por consola.
@@ -83,14 +84,14 @@ src/test/java/com/agenda/
 ### Application
 ```text
 Main
+ApplicationLauncher
 ApplicationMenu
 ConsoleExceptionHandler
 ```
 
 Main
-- arranca la aplicación
-- crea y conecta dependencias
-- inicia ApplicationMenu
+- punto de entrada de la aplicación
+- inicia ApplicationLauncher
 
 ApplicationLauncher
 - monta las dependencias de la aplicación
