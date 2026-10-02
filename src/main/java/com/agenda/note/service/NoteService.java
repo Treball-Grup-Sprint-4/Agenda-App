@@ -34,6 +34,10 @@ public class NoteService {
             throw new IllegalArgumentException("Note DTO must not be NULL");
         }
 
+        if (noteDto.taskId() == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         taskRepository.findById(noteDto.taskId()).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + noteDto.taskId().value() + " not found"));
 
@@ -56,6 +60,10 @@ public class NoteService {
 
         if (noteId == null) {
             throw new IllegalArgumentException("Note ID must not be NULL");
+        }
+
+        if (noteDto.taskId() == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
         }
 
         Note note = noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note with ID " +
