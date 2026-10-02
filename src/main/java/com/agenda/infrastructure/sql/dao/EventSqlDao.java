@@ -14,6 +14,18 @@ import java.util.*;
 
 public class EventSqlDao implements EventRepository {
 
+    private static void checkEvent(Event event) {
+        if (event == null) {
+            throw new IllegalArgumentException("Event must not be NULL");
+        }
+    }
+
+    private static void checkEventId(EventId eventId) {
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+    }
+
     private Event insert(Event event) {
         String sql = """
             INSERT INTO event (text, date, created_at, recurrence, repeat_until)
@@ -198,9 +210,7 @@ public class EventSqlDao implements EventRepository {
     @Override
     public Event save(Event event) {
 
-        if (event == null) {
-            throw new IllegalArgumentException("Event must not be NULL");
-        }
+        checkEvent(event);
 
         if (event.getEventId() == null) {
             return insert(event);
@@ -212,9 +222,7 @@ public class EventSqlDao implements EventRepository {
     @Override
     public Optional<Event> findById(EventId eventId) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
         String sql = """
         SELECT id, text, date, created_at, recurrence, repeat_until
@@ -296,9 +304,7 @@ public class EventSqlDao implements EventRepository {
     @Override
     public void deleteById(EventId eventId) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
         String sql = """
         DELETE FROM event
