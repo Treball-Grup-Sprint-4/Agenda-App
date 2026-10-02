@@ -459,4 +459,14 @@ class EventSqlDaoTest {
     void shouldThrowExceptionWhenDeletingByNullEventId() {
         assertThrows(IllegalArgumentException.class, () -> eventSqlDao.deleteById(null));
     }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistingEvent() {
+        Event savedEvent = eventSqlDao.save(new Event("EventSqlDaoTest Deleted event",
+                LocalDate.of(2026, 12, 8)));
+
+        eventSqlDao.deleteById(savedEvent.getEventId());
+
+        assertThrows(PersistenceException.class, () -> eventSqlDao.deleteById(savedEvent.getEventId()));
+    }
 }
