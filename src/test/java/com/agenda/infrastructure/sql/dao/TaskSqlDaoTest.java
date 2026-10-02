@@ -139,7 +139,11 @@ class TaskSqlDaoTest {
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingTask() {
-        assertThrows(PersistenceException.class, () -> sut.deleteById(new TaskId(997)));
+        Task savedTask = sut.save(new Task("TaskSqlDaoTest Deleted task", null));
+
+        sut.deleteById(savedTask.getId());
+
+        assertThrows(PersistenceException.class, () -> sut.deleteById(savedTask.getId()));
     }
 
     @Test
