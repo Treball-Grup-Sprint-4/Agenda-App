@@ -6,6 +6,8 @@ Esta guía resume las decisiones principales del proyecto para que todo el equip
 ```text
 Main
   ↓
+ApplicationLauncher
+  ↓
 ApplicationMenu
   ↓
 ConsoleUI
@@ -36,6 +38,7 @@ Reglas:
 src/main/java/com/agenda/
 ├── application/
 │   ├── Main.java
+│   ├── launcher.java
 │   └── menu/
 ├── common/
 │   ├── exception/
@@ -89,8 +92,14 @@ Main
 - crea y conecta dependencias
 - inicia ApplicationMenu
 
+ApplicationLauncher
+- monta las dependencias de la aplicación
+- crea repositories, services y ConsoleUI
+- crea ApplicationMenu
+- inicia la aplicación con run()
+
 ApplicationMenu
-- start()
+- run()
 - muestra el menú principal
 - dirige a TaskConsoleUI, NoteConsoleUI y EventConsoleUI
 
