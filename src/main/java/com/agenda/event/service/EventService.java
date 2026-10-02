@@ -50,6 +50,11 @@ public class EventService {
     }
 
     public EventDto create(EventDto dto) {
+
+        if (dto == null) {
+            throw new IllegalArgumentException("Event DTO must not be NULL");
+        }
+
         Event event = new Event(dto.text(), dto.eventDate());
 
         event.configureRecurrence(dto.recurrenceType(), dto.repeatUntil());
@@ -60,6 +65,11 @@ public class EventService {
     }
 
     public EventDto findById(EventId eventId) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
@@ -67,6 +77,15 @@ public class EventService {
     }
 
     public EventDto update(EventId eventId, EventDto dto) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
+        if (dto == null) {
+            throw new IllegalArgumentException("Event DTO must not be NULL");
+        }
+
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
@@ -80,6 +99,11 @@ public class EventService {
     }
 
     public void delete(EventId eventId) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event with ID not found"));
 
         eventRepository.deleteById(eventId);
@@ -90,6 +114,15 @@ public class EventService {
     }
 
     public void addTask(EventId eventId, TaskId taskId) {
+
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
@@ -109,6 +142,11 @@ public class EventService {
     }
 
     public void configureRecurrence(EventId eventId, RecurrenceType recurrenceType, LocalDate repeatUntil) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
@@ -118,6 +156,11 @@ public class EventService {
     }
 
     public List<EventDto> findUpcoming(LocalDate date) {
+
+        if (date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
+
         List<EventDto> upcomingEvents = new ArrayList<>();
 
         for (Event event : eventRepository.findAll()) {
@@ -135,10 +178,20 @@ public class EventService {
     }
 
     public void addObserver(EventObserver observer) {
+
+        if (observer == null) {
+            throw new IllegalArgumentException("Observer must not be NULL");
+        }
+
         observers.add(observer);
     }
 
     public void checkUpcomingEvents(LocalDate date) {
+
+        if (date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
+
         LocalDate notificationDate = date.plusDays(1);
 
         eventRepository.findAll().forEach(event -> {
@@ -156,6 +209,15 @@ public class EventService {
     }
 
     public void removeTask(EventId eventId, TaskId taskId) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
