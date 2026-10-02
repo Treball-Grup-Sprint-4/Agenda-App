@@ -7,7 +7,6 @@ import com.agenda.task.repository.TaskRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TaskService {
@@ -20,16 +19,31 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public TaskDto create(TaskDto taskDto) {
+    private static void checkTaskId(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+    }
+
+    private static void checkTaskDto(TaskDto taskDto) {
         if(taskDto == null) {
             throw new IllegalArgumentException("Task DTO must not be NULL");
         }
+    }
+
+    private Task findTaskOrThrow(TaskId id) {
+        return this.taskRepository.findById(id).orElseThrow(() ->
+                new TaskNotFoundException(String.format("Task with ID %d not found", id.value())));
+    }
+
+    public TaskDto create(TaskDto taskDto) {
+        checkTaskDto(taskDto);
 
         Task task = new Task(taskDto.text(), taskDto.expirationDate());
 
-       if(taskDto.priority() != null) {
-           task.updateDetails(taskDto.priority());
-       }
+        if(taskDto.priority() != null) {
+            task.updateDetails(taskDto.priority());
+        }
 
         Task savedTask = this.taskRepository.save(task);
 
@@ -39,13 +53,7 @@ public class TaskService {
     public TaskDto update(TaskId id, TaskDto taskDto) {
         checkUpdateInputData(id, taskDto);
 
-        Optional<Task>foundTask = this.taskRepository.findById(id);
-
-        if(foundTask.isEmpty()) {
-            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
-        }
-
-        Task task = foundTask.get();
+        Task task = findTaskOrThrow(id);
 
         if(taskDto.priority() != null) {
             task.updateDetails(taskDto.text(), taskDto.priority(), taskDto.expirationDate());
@@ -59,41 +67,24 @@ public class TaskService {
     }
 
     private static void checkUpdateInputData(TaskId id, TaskDto taskDto) {
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
-
-        if(taskDto == null) {
-            throw new IllegalArgumentException("Task DTO must not be NULL");
-        }
+        checkTaskId(id);
+        checkTaskDto(taskDto);
     }
 
     public void delete(TaskId id) {
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(id);
 
-        Optional<Task> task = this.taskRepository.findById(id);
+        findTaskOrThrow(id);
 
-        if(task.isEmpty()) {
-            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
-        }
         this.taskRepository.deleteById(id);
     }
 
     public void complete(TaskId id) {
 
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(id);
 
-        Optional<Task> task = this.taskRepository.findById(id);
+        Task foundTask = findTaskOrThrow(id);
 
-        if(task.isEmpty()) {
-            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
-        }
-
-        Task foundTask = task.get();
         foundTask.markAsCompleted();
         this.taskRepository.save(foundTask);
     }
@@ -108,15 +99,11 @@ public class TaskService {
     }
 
     public TaskDto findById(TaskId id) {
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(id);
 
-        Optional<Task> task = taskRepository.findById(id);
-        if(task.isEmpty()) {
-            throw new TaskNotFoundException(String.format("Task with ID %d not found", id.value()));
-        }
-        return toDto(task.get());
+        Task task = findTaskOrThrow(id);
+
+        return toDto(task);
     }
 
     public List<TaskDto> findPending() {
