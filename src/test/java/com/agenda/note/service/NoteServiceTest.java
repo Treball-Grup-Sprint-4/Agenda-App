@@ -297,5 +297,19 @@ class NoteServiceTest {
     void shouldThrowExceptionWhenFindingByNullNoteId() {
         assertThrows(IllegalArgumentException.class, () -> noteService.findById(null));
     }
+
+    @Test
+    void shouldThrowExceptionWhenCreatingWithNullTaskId() {
+        NoteDto noteDto = new NoteDto(null, "Note", null, null);
+
+        assertThrows(IllegalArgumentException.class, () -> noteService.create(noteDto));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingWithNullTaskId() {
+        NoteDto noteDto = new NoteDto(null, "Updated note", null, null);
+
+        assertThrows(IllegalArgumentException.class, () -> noteService.update(new NoteId(1), noteDto));
+    }
 }
 
