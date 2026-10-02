@@ -32,7 +32,7 @@ public class TaskConsoleUI {
             9. Filter by status
             10. Filter by date
             11. Sort tasks
-            0. Back
+            0. Return to main menu
             """);
     }
 
