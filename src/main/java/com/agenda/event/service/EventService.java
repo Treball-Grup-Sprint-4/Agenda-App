@@ -159,6 +159,13 @@ public class EventService {
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new EventNotFoundException("Event with ID not found"));
 
+        taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task with ID not found"));
+
+        if (!event.getTaskIds().contains(taskId)) {
+            throw new IllegalArgumentException("Task is not assigned to this event");
+        }
+
         event.removeTask(taskId);
 
         eventRepository.save(event);
