@@ -197,6 +197,11 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public Event save(Event event) {
+
+        if (event == null) {
+            throw new IllegalArgumentException("Event must not be NULL");
+        }
+
         if (event.getEventId() == null) {
             return insert(event);
         }
@@ -206,6 +211,11 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public Optional<Event> findById(EventId eventId) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         String sql = """
         SELECT id, text, date, created_at, recurrence, repeat_until
         FROM event
@@ -285,6 +295,11 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public void deleteById(EventId eventId) {
+
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+
         String sql = """
         DELETE FROM event
         WHERE id = ?
