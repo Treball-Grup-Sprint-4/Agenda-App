@@ -575,6 +575,35 @@ class EventServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenRemovingNonExistingTaskFromEvent() {
+        EventRepository eventRepository = new FakeEventRepository();
+        FakeTaskRepository taskRepository = new FakeTaskRepository();
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        EventDto event = service.create(new EventDto(null, "Event",
+                LocalDate.of(2026, 10, 10), null, RecurrenceType.NONE, null,
+                List.of()));
+
+        assertThrows(TaskNotFoundException.class, () -> service.removeTask(event.eventId(), new TaskId(1)));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenTaskIsNotAssignedToEvent() {
+        EventRepository eventRepository = new FakeEventRepository();
+        FakeTaskRepository taskRepository = new FakeTaskRepository();
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        EventDto event = service.create(new EventDto(null, "Event",
+                LocalDate.of(2026, 10, 10), null, RecurrenceType.NONE, null,
+                List.of()));
+
+        TaskId taskId = new TaskId(1);
+        taskRepository.addTask(taskId);
+
+        assertThrows(IllegalArgumentException.class, () -> service.removeTask(event.eventId(), taskId));
+    }
+
+    @Test
     void shouldThrowExceptionWhenRemovingTaskFromNonExistingEvent() {
         EventRepository eventRepository = new FakeEventRepository();
         FakeTaskRepository taskRepository = new FakeTaskRepository();
