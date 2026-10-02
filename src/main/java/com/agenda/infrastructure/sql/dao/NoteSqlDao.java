@@ -19,6 +19,12 @@ import java.util.Optional;
 
 public class NoteSqlDao implements NoteRepository {
 
+    private static void checkNoteId(NoteId noteId) {
+        if (noteId == null) {
+            throw new IllegalArgumentException("NoteId must not be NULL");
+        }
+    }
+
     private Note insert(Note note) {
         String sql = """
             INSERT INTO note (content, created_at, task_id)
@@ -26,7 +32,7 @@ public class NoteSqlDao implements NoteRepository {
             """;
 
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, note.getContent());
             statement.setTimestamp(2, Timestamp.valueOf(note.getCreatedAt()));
             statement.setInt(3, note.getTaskId().value());
@@ -56,7 +62,7 @@ public class NoteSqlDao implements NoteRepository {
             """;
 
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, note.getContent());
             statement.setInt(2, note.getTaskId().value());
             statement.setInt(3, note.getNoteId().value());
@@ -95,9 +101,7 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public Optional<Note> findById(NoteId noteId) {
-        if (noteId == null) {
-            throw new IllegalArgumentException("NoteId must not be NULL");
-        }
+        checkNoteId(noteId);
 
         String sql = """
         SELECT id, content, created_at, task_id
@@ -149,6 +153,11 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public List<Note> findByTaskId(TaskId taskId) {
+
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         String sql = """
             SELECT id, content, created_at, task_id
             FROM note
@@ -177,9 +186,7 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public void deleteById(NoteId noteId) {
-        if (noteId == null) {
-            throw new IllegalArgumentException("NoteId must not be NULL");
-        }
+        checkNoteId(noteId);
 
         String sql = """
         DELETE FROM note
@@ -187,7 +194,7 @@ public class NoteSqlDao implements NoteRepository {
         """;
 
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, noteId.value());
 
             int deletedRows = statement.executeUpdate();

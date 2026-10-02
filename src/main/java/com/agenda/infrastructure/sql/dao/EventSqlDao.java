@@ -14,6 +14,18 @@ import java.util.*;
 
 public class EventSqlDao implements EventRepository {
 
+    private static void checkEvent(Event event) {
+        if (event == null) {
+            throw new IllegalArgumentException("Event must not be NULL");
+        }
+    }
+
+    private static void checkEventId(EventId eventId) {
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+    }
+
     private Event insert(Event event) {
         String sql = """
             INSERT INTO event (text, date, created_at, recurrence, repeat_until)
@@ -197,6 +209,9 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public Event save(Event event) {
+
+        checkEvent(event);
+
         if (event.getEventId() == null) {
             return insert(event);
         }
@@ -206,6 +221,9 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public Optional<Event> findById(EventId eventId) {
+
+        checkEventId(eventId);
+
         String sql = """
         SELECT id, text, date, created_at, recurrence, repeat_until
         FROM event
@@ -285,6 +303,9 @@ public class EventSqlDao implements EventRepository {
 
     @Override
     public void deleteById(EventId eventId) {
+
+        checkEventId(eventId);
+
         String sql = """
         DELETE FROM event
         WHERE id = ?
@@ -295,7 +316,11 @@ public class EventSqlDao implements EventRepository {
 
             statement.setInt(1, eventId.value());
 
-            statement.executeUpdate();
+            int deletedRows = statement.executeUpdate();
+
+            if (deletedRows == 0) {
+                throw new PersistenceException("Failed to delete event: Event ID not found");
+            }
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to delete event", e);

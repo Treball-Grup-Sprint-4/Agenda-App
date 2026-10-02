@@ -105,9 +105,13 @@ class NoteSqlDaoTest {
 
     @Test
     void shouldThrowExceptionWhenUpdatingNonExistingNote() {
-        Note note = new Note(new NoteId(87), "Updated", LocalDateTime.now(), taskId);
+        Note savedNote = noteSqlDao.save(new Note("Deleted note", taskId));
 
-        assertThrows(PersistenceException.class, () -> noteSqlDao.save(note));
+        noteSqlDao.deleteById(savedNote.getNoteId());
+
+        savedNote.updateContent("Updated");
+
+        assertThrows(PersistenceException.class, () -> noteSqlDao.save(savedNote));
     }
 
     @Test
@@ -155,6 +159,15 @@ class NoteSqlDaoTest {
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingNote() {
-        assertThrows(PersistenceException.class, () -> noteSqlDao.deleteById(new NoteId(34)));
+        Note savedNote = noteSqlDao.save(new Note("Note for delete twice", taskId));
+
+        noteSqlDao.deleteById(savedNote.getNoteId());
+
+        assertThrows(PersistenceException.class, () -> noteSqlDao.deleteById(savedNote.getNoteId()));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullTaskId() {
+        assertThrows(IllegalArgumentException.class, () -> noteSqlDao.findByTaskId(null));
     }
 }

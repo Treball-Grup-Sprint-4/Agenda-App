@@ -5,6 +5,7 @@ import com.agenda.common.persistence.DatabaseConnection;
 import com.agenda.event.model.Event;
 import com.agenda.event.model.EventId;
 import com.agenda.event.model.RecurrenceType;
+import com.agenda.task.model.Task;
 import com.agenda.task.model.TaskId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -185,7 +186,13 @@ class EventSqlDaoTest {
 
     @Test
     void shouldThrowExceptionWhenUpdatingNonExistingEvent() {
-        Event event = new Event(new EventId(999999), "EventSqlDaoTest Non existing",
+        Event savedEvent = eventSqlDao.save(new Event("EventSqlDaoTest Deleted event",
+                LocalDate.of(2026, 12, 8)));
+
+        eventSqlDao.deleteById(savedEvent.getEventId());
+
+        Event event = new Event(
+                savedEvent.getEventId(), "EventSqlDaoTest Non existing",
                 LocalDate.of(2026, 12, 8), LocalDateTime.now(), RecurrenceType.NONE,
                 null, List.of());
 
@@ -194,9 +201,15 @@ class EventSqlDaoTest {
 
     @Test
     void shouldThrowExceptionWhenAssociatingNonExistingTask() {
+        TaskSqlDao taskSqlDao = new TaskSqlDao();
+
+        Task savedTask = taskSqlDao.save(new Task("EventSqlDaoTest Deleted task", null));
+
+        taskSqlDao.deleteById(savedTask.getId());
+
         Event event = new Event("EventSqlDaoTest Invalid task", LocalDate.of(2026, 11, 10));
 
-        event.addTask(new TaskId(999999));
+        event.addTask(savedTask.getId());
 
         assertThrows(PersistenceException.class, () -> eventSqlDao.save(event));
     }
@@ -430,5 +443,30 @@ class EventSqlDaoTest {
                 assertNull(resultSet.getObject("event_id"));
             }
         }
+    }
+
+    @Test
+    void shouldThrowExceptionWhenSavingNullEvent() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.save(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindingByNullEventId() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.findById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingByNullEventId() {
+        assertThrows(IllegalArgumentException.class, () -> eventSqlDao.deleteById(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistingEvent() {
+        Event savedEvent = eventSqlDao.save(new Event("EventSqlDaoTest Deleted event",
+                LocalDate.of(2026, 12, 8)));
+
+        eventSqlDao.deleteById(savedEvent.getEventId());
+
+        assertThrows(PersistenceException.class, () -> eventSqlDao.deleteById(savedEvent.getEventId()));
     }
 }
