@@ -310,7 +310,11 @@ public class EventSqlDao implements EventRepository {
 
             statement.setInt(1, eventId.value());
 
-            statement.executeUpdate();
+            int deletedRows = statement.executeUpdate();
+
+            if (deletedRows == 0) {
+                throw new PersistenceException("Failed to delete event: Event ID not found");
+            }
 
         } catch (SQLException e) {
             throw new PersistenceException("Failed to delete event", e);
