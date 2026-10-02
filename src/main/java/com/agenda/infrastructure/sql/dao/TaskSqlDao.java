@@ -15,6 +15,12 @@ import java.util.Optional;
 
 public class TaskSqlDao implements TaskRepository {
 
+    private static void checkTaskId(TaskId id) {
+        if(id == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+    }
+
     @Override
     public Task save(Task task) {
         if(task == null) {
@@ -28,14 +34,14 @@ public class TaskSqlDao implements TaskRepository {
         return update(task);
     }
 
-   private Task insert(Task task) {
+    private Task insert(Task task) {
         String sql = """
                 INSERT INTO task (text, priority, status, expiration_date, completed_at, created_at)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, task.getText());
             statement.setString(2, task.getPriority().name());
@@ -70,7 +76,7 @@ public class TaskSqlDao implements TaskRepository {
 
         } catch(SQLException e) {
             throw new PersistenceException("Error saving task", e);
-       }
+        }
     }
 
     private Task update(Task task) {
@@ -81,7 +87,7 @@ public class TaskSqlDao implements TaskRepository {
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, task.getText());
             statement.setString(2, task.getPriority().name());
@@ -122,8 +128,8 @@ public class TaskSqlDao implements TaskRepository {
         List<Task> tasks = new ArrayList<>();
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery()) {
 
             while(resultSet.next()){
                 tasks.add(mapTask(resultSet));
@@ -148,9 +154,7 @@ public class TaskSqlDao implements TaskRepository {
 
     @Override
     public Optional<Task> findById(TaskId id) {
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(id);
 
         String sql = """
                 SELECT id, text, priority, status, expiration_date, created_at, completed_at
@@ -159,7 +163,7 @@ public class TaskSqlDao implements TaskRepository {
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id.value());
 
@@ -179,9 +183,7 @@ public class TaskSqlDao implements TaskRepository {
 
     @Override
     public void deleteById(TaskId id) {
-        if(id == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(id);
 
         String sql = """
                 DELETE FROM task
@@ -189,7 +191,7 @@ public class TaskSqlDao implements TaskRepository {
                 """;
 
         try(Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id.value());
 
             int updatedRows = statement.executeUpdate();
