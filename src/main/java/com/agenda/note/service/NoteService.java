@@ -30,6 +30,10 @@ public class NoteService {
 
     public NoteDto create(NoteDto noteDto) {
 
+        if (noteDto == null) {
+            throw new IllegalArgumentException("Note DTO must not be NULL");
+        }
+
         taskRepository.findById(noteDto.taskId()).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + noteDto.taskId().value() + " not found"));
 
@@ -45,6 +49,14 @@ public class NoteService {
     }
 
     public NoteDto update(NoteId noteId, NoteDto noteDto) {
+
+        if (noteDto == null) {
+            throw new IllegalArgumentException("Note DTO must not be NULL");
+        }
+
+        if (noteId == null) {
+            throw new IllegalArgumentException("Note ID must not be NULL");
+        }
 
         Note note = noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note with ID " +
                 noteId.value() + " not found"));
@@ -62,6 +74,10 @@ public class NoteService {
 
     public void delete(NoteId noteId) {
 
+        if (noteId == null) {
+            throw new IllegalArgumentException("Note ID must not be NULL");
+        }
+
         noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note with ID " + noteId.value() +
                 " not found"));
 
@@ -74,6 +90,10 @@ public class NoteService {
 
     public List<NoteDto> findByTaskId(TaskId taskId) {
 
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task with ID " + taskId.value() +
                 " not found"));
 
@@ -81,6 +101,11 @@ public class NoteService {
     }
 
     public NoteDto findById(NoteId noteId) {
+
+        if (noteId == null) {
+            throw new IllegalArgumentException("Note ID must not be NULL");
+        }
+
         Note note = noteRepository.findById(noteId).orElseThrow(() ->
                 new NoteNotFoundException("Note with ID " + noteId.value() + " not found"));
 
