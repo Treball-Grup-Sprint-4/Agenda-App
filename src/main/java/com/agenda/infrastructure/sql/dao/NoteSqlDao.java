@@ -149,6 +149,11 @@ public class NoteSqlDao implements NoteRepository {
 
     @Override
     public List<Note> findByTaskId(TaskId taskId) {
+
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+
         String sql = """
             SELECT id, content, created_at, task_id
             FROM note
