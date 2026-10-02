@@ -422,6 +422,21 @@ class EventServiceTest {
     }
 
     @Test
+    void shouldReturnNextOccurrenceDateForRecurringEvent() {
+        EventRepository eventRepository = new FakeEventRepository();
+        TaskRepository taskRepository = new FakeTaskRepository();
+        EventService service = new EventService(eventRepository, taskRepository, new RecurrenceFactory(), List.of());
+
+        service.create(new EventDto(null, "Annual event",
+                LocalDate.of(2024, 10, 10), null, RecurrenceType.ANNUAL,
+                null, List.of()));
+
+        List<EventDto> result = service.findUpcoming(LocalDate.of(2026, 9, 28));
+
+        assertEquals(LocalDate.of(2026, 10, 10), result.getFirst().eventDate());
+    }
+
+    @Test
     void shouldNotFindRecurringEventWhenRecurrenceHasEnded() {
         EventRepository eventRepository = new FakeEventRepository();
         TaskRepository taskRepository = new FakeTaskRepository();
@@ -471,6 +486,8 @@ class EventServiceTest {
         service.checkUpcomingEvents(LocalDate.of(2026, 9, 28));
 
         assertEquals(1, observer.notifiedEvents.size());
+
+        assertEquals(LocalDate.of(2026, 9, 29), observer.notifiedEvents.getFirst().eventDate());
     }
 
     @Test
