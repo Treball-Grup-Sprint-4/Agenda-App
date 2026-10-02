@@ -28,18 +28,41 @@ public class NoteService {
         this.taskRepository = taskRepository;
     }
 
-    public NoteDto create(NoteDto noteDto) {
-
+    private static void checkNoteDto(NoteDto noteDto) {
         if (noteDto == null) {
             throw new IllegalArgumentException("Note DTO must not be NULL");
         }
+    }
 
-        if (noteDto.taskId() == null) {
+    private static void checkNoteId(NoteId noteId) {
+        if (noteId == null) {
+            throw new IllegalArgumentException("Note ID must not be NULL");
+        }
+    }
+
+    private static void checkTaskId(TaskId taskId) {
+        if (taskId == null) {
             throw new IllegalArgumentException("Task ID must not be NULL");
         }
+    }
 
-        taskRepository.findById(noteDto.taskId()).orElseThrow(() ->
-                new TaskNotFoundException("Task with ID " + noteDto.taskId().value() + " not found"));
+    private Note findNoteOrThrow(NoteId noteId) {
+        return noteRepository.findById(noteId).orElseThrow(() ->
+                new NoteNotFoundException("Note with ID " + noteId.value() + " not found"));
+    }
+
+    private void checkTaskExists(TaskId taskId) {
+        taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task with ID " + taskId.value() + " not found"));
+    }
+
+    public NoteDto create(NoteDto noteDto) {
+
+        checkNoteDto(noteDto);
+
+        checkTaskId(noteDto.taskId());
+
+        checkTaskExists(noteDto.taskId());
 
         Note note = new Note(noteDto.content(), noteDto.taskId());
 
@@ -54,23 +77,15 @@ public class NoteService {
 
     public NoteDto update(NoteId noteId, NoteDto noteDto) {
 
-        if (noteDto == null) {
-            throw new IllegalArgumentException("Note DTO must not be NULL");
-        }
+        checkNoteDto(noteDto);
 
-        if (noteId == null) {
-            throw new IllegalArgumentException("Note ID must not be NULL");
-        }
+        checkNoteId(noteId);
 
-        if (noteDto.taskId() == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(noteDto.taskId());
 
-        Note note = noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note with ID " +
-                noteId.value() + " not found"));
+        Note note = findNoteOrThrow(noteId);
 
-        taskRepository.findById(noteDto.taskId()).orElseThrow(() ->
-                        new TaskNotFoundException("Task with ID " + noteDto.taskId().value() + " not found"));
+        checkTaskExists(noteDto.taskId());
 
         note.updateContent(noteDto.content());
         note.changeTask(noteDto.taskId());
@@ -82,12 +97,9 @@ public class NoteService {
 
     public void delete(NoteId noteId) {
 
-        if (noteId == null) {
-            throw new IllegalArgumentException("Note ID must not be NULL");
-        }
+        checkNoteId(noteId);
 
-        noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note with ID " + noteId.value() +
-                " not found"));
+        findNoteOrThrow(noteId);
 
         noteRepository.deleteById(noteId);
     }
@@ -98,26 +110,21 @@ public class NoteService {
 
     public List<NoteDto> findByTaskId(TaskId taskId) {
 
-        if (taskId == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(taskId);
 
-        taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task with ID " + taskId.value() +
-                " not found"));
+        checkTaskExists(taskId);
 
         return noteRepository.findByTaskId(taskId).stream().map(this::toDto).toList();
     }
 
     public NoteDto findById(NoteId noteId) {
 
-        if (noteId == null) {
-            throw new IllegalArgumentException("Note ID must not be NULL");
-        }
+        checkNoteId(noteId);
 
-        Note note = noteRepository.findById(noteId).orElseThrow(() ->
-                new NoteNotFoundException("Note with ID " + noteId.value() + " not found"));
+        Note note = findNoteOrThrow(noteId);
 
         return toDto(note);
     }
 
 }
+
