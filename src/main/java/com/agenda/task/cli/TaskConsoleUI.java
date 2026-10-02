@@ -18,24 +18,6 @@ public class TaskConsoleUI {
         this.scanner = scanner;
     }
 
-    private void showMenu() {
-        System.out.println("""
-          
-            --- TASK ---
-            1. Create task
-            2. Update task
-            3. Delete task
-            4. List all
-            5. Mark as completed
-            6. List pending
-            7. List completed
-            8. Filter by priority
-            9. Filter by status
-            10. Filter by date
-            11. Sort tasks
-            0. Back
-            """);
-    }
     public void runTaskConsole() {
 
         boolean exit = false;
@@ -100,6 +82,25 @@ public class TaskConsoleUI {
                 default: System.out.println("Wrong option (choose a number from 0 to 11)");
             }
         }
+    }
+
+    private void showMenu() {
+        System.out.println("""
+          
+            --- TASK ---
+            1. Create task
+            2. Update task
+            3. Delete task
+            4. List all
+            5. Mark as completed
+            6. List pending
+            7. List completed
+            8. Filter by priority
+            9. Filter by status
+            10. Filter by date
+            11. Sort tasks
+            0. Back
+            """);
     }
 
     private void createTask() {
