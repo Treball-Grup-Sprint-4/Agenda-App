@@ -49,11 +49,43 @@ public class EventService {
                 event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds());
     }
 
-    public EventDto create(EventDto dto) {
-
+    private static void checkEventDto(EventDto dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Event DTO must not be NULL");
         }
+    }
+
+    private static void checkEventId(EventId eventId) {
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+    }
+
+    private static void checkTaskId(TaskId taskId) {
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+    }
+
+    private static void checkDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
+    }
+
+    private Event findEventOrThrow(EventId eventId) {
+        return eventRepository.findById(eventId).orElseThrow(() ->
+                new EventNotFoundException("Event with ID not found"));
+    }
+
+    private void checkTaskExists(TaskId taskId) {
+        taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task with ID not found"));
+    }
+
+    public EventDto create(EventDto dto) {
+
+        checkEventDto(dto);
 
         Event event = new Event(dto.text(), dto.eventDate());
 
@@ -66,28 +98,20 @@ public class EventService {
 
     public EventDto findById(EventId eventId) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
+        Event event = findEventOrThrow(eventId);
 
         return toDto(event);
     }
 
     public EventDto update(EventId eventId, EventDto dto) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        if (dto == null) {
-            throw new IllegalArgumentException("Event DTO must not be NULL");
-        }
+        checkEventDto(dto);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
+        Event event = findEventOrThrow(eventId);
 
         event.updateDetails(dto.text(), dto.eventDate());
 
@@ -100,11 +124,9 @@ public class EventService {
 
     public void delete(EventId eventId) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event with ID not found"));
+        findEventOrThrow(eventId);
 
         eventRepository.deleteById(eventId);
     }
@@ -115,18 +137,13 @@ public class EventService {
 
     public void addTask(EventId eventId, TaskId taskId) {
 
-        if (taskId == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(taskId);
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
+        Event event = findEventOrThrow(eventId);
 
-        taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task with ID not found"));
+        checkTaskExists(taskId);
 
         boolean taskAssignedToAnotherEvent = eventRepository.findAll().stream()
                 .filter(existingEvent -> !existingEvent.getEventId().equals(eventId))
@@ -143,12 +160,9 @@ public class EventService {
 
     public void configureRecurrence(EventId eventId, RecurrenceType recurrenceType, LocalDate repeatUntil) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
+        Event event = findEventOrThrow(eventId);
 
         event.configureRecurrence(recurrenceType, repeatUntil);
 
@@ -157,9 +171,7 @@ public class EventService {
 
     public List<EventDto> findUpcoming(LocalDate date) {
 
-        if (date == null) {
-            throw new IllegalArgumentException("Date must not be NULL");
-        }
+        checkDate(date);
 
         List<EventDto> upcomingEvents = new ArrayList<>();
 
@@ -188,9 +200,7 @@ public class EventService {
 
     public void checkUpcomingEvents(LocalDate date) {
 
-        if (date == null) {
-            throw new IllegalArgumentException("Date must not be NULL");
-        }
+        checkDate(date);
 
         LocalDate notificationDate = date.plusDays(1);
 
@@ -210,19 +220,13 @@ public class EventService {
 
     public void removeTask(EventId eventId, TaskId taskId) {
 
-        if (eventId == null) {
-            throw new IllegalArgumentException("Event ID must not be NULL");
-        }
+        checkEventId(eventId);
 
-        if (taskId == null) {
-            throw new IllegalArgumentException("Task ID must not be NULL");
-        }
+        checkTaskId(taskId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new EventNotFoundException("Event with ID not found"));
+        Event event = findEventOrThrow(eventId);
 
-        taskRepository.findById(taskId).orElseThrow(() ->
-                new TaskNotFoundException("Task with ID not found"));
+        checkTaskExists(taskId);
 
         if (!event.getTaskIds().contains(taskId)) {
             throw new IllegalArgumentException("Task is not assigned to this event");
@@ -232,5 +236,4 @@ public class EventService {
 
         eventRepository.save(event);
     }
-
 }
