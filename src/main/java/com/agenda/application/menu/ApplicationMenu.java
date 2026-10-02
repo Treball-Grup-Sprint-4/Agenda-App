@@ -40,9 +40,19 @@ public class ApplicationMenu {
                     // eventConsoleUi.runEventConsole();
                     break;
                 }
+                case "2": {
+                    taskConsoleUI.runTaskConsole();
+                    break;
+                }
+                case "3": {
+                    // noteConsoleUI.runNoteConsole();
+                    break;
+                }
+                case "0": {
+                    exit = true;
+                }
+                default: System.out.println("Wrong option (choose a number between 0 and 3)");
             }
-
-
         }
     }
 }
