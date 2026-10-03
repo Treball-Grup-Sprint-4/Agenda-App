@@ -19,7 +19,7 @@ public class ApplicationMenu {
         this.noteConsoleUI = noteConsoleUI;
     }
 
-    public static void displayAppMenu() {
+    public void displayAppMenu() {
         boolean exit = false;
 
         while(!exit) {
@@ -50,6 +50,7 @@ public class ApplicationMenu {
                 }
                 case "0": {
                     exit = true;
+                    break;
                 }
                 default: System.out.println("Wrong option (choose a number between 0 and 3)");
             }
