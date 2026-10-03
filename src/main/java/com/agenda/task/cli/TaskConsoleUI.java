@@ -1,5 +1,7 @@
 package com.agenda.task.cli;
 
+import com.agenda.note.dto.NoteDto;
+import com.agenda.note.service.NoteService;
 import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.*;
 import com.agenda.task.service.TaskService;
@@ -11,9 +13,11 @@ import java.util.Scanner;
 public class TaskConsoleUI {
     private final TaskService service;
     private final Scanner scanner;
+    private final NoteService noteService;
 
-    public TaskConsoleUI(TaskService taskService, Scanner scanner) {
+    public TaskConsoleUI(TaskService taskService, NoteService noteService, Scanner scanner) {
         this.service = taskService;
+        this.noteService = noteService;
         this.scanner = scanner;
     }
 
@@ -258,26 +262,27 @@ public class TaskConsoleUI {
     }
 
 
-    private static void taskLister(List<TaskDto> tasks) {
-        tasks.forEach((taskDto) -> { System.out.format(
-                "ID: %d\nText: %s\nCreated at: %s\nPriority: %s\nStatus: %s\n",
-                taskDto.taskId().value(),
-                taskDto.text(),
-                taskDto.createdAt(),
-                taskDto.priority().name(),
-                taskDto.status().name());
+    private void taskLister(List<TaskDto> tasks) {
+        tasks.forEach(taskDto -> {
+            System.out.format("ID: %d\nText: %s\nCreated at: %s\nPriority: %s\nStatus: %s\n", taskDto.taskId().value(),
+                    taskDto.text(), taskDto.createdAt(), taskDto.priority().name(), taskDto.status().name());
+
             System.out.print("Expiration date: ");
-            if(taskDto.expirationDate() == null) {
-                System.out.println("-");
-            } else {
-                System.out.format("%s\n", taskDto.expirationDate());
-            }
+            System.out.println(taskDto.expirationDate() == null ? "-" : taskDto.expirationDate());
+
             System.out.print("Completed at: ");
-            if(taskDto.completedAt() == null) {
-                System.out.println("-");
+            System.out.println(taskDto.completedAt() == null ? "-" : taskDto.completedAt());
+
+            List<NoteDto> notes = noteService.findByTaskId(taskDto.taskId());
+
+            if (notes.isEmpty()) {
+                System.out.println("Notes: ");
             } else {
-                System.out.format("%s\n", taskDto.completedAt());
+                System.out.println("Notes:");
+                notes.forEach(note -> System.out.println("  - ID: " + note.noteId().value() +
+                                " | " + note.content()));
             }
+
             System.out.println();
         });
     }

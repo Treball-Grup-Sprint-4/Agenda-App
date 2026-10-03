@@ -4,7 +4,11 @@ import com.agenda.event.dto.EventDto;
 import com.agenda.event.model.EventId;
 import com.agenda.event.model.RecurrenceType;
 import com.agenda.event.service.EventService;
+import com.agenda.note.dto.NoteDto;
+import com.agenda.note.service.NoteService;
+import com.agenda.task.dto.TaskDto;
 import com.agenda.task.model.TaskId;
+import com.agenda.task.service.TaskService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,10 +16,16 @@ import java.util.Scanner;
 
 public class EventConsoleUI {
     private final EventService eventService;
+    private final TaskService taskService;
+    private final NoteService noteService;
     private final Scanner scanner;
 
-    public EventConsoleUI(EventService eventService, Scanner scanner) {
+    public EventConsoleUI(EventService eventService, TaskService taskService, NoteService noteService,
+                          Scanner scanner) {
+
         this.eventService = eventService;
+        this.taskService = taskService;
+        this.noteService = noteService;
         this.scanner = scanner;
     }
 
@@ -26,12 +36,23 @@ public class EventConsoleUI {
             1. Create event
             2. Update event
             3. Delete event
-            4. List upcoming events
-            5. Add task to event
-            6. Remove task from event
-            7. Configure recurrence
+            4. List all events
+            5. List upcoming events
+            6. Add task to event
+            7. Remove task from event
+            8. Configure recurrence
             0. Return to main menu
             """);
+    }
+
+    private RecurrenceType readRecurrenceType() {
+        String input = scanner.nextLine().trim();
+
+        if (input.isBlank()) {
+            return RecurrenceType.NONE;
+        }
+
+        return RecurrenceType.valueOf(input.toUpperCase());
     }
 
     public void createEvent() {
@@ -50,8 +71,8 @@ public class EventConsoleUI {
             }
         }
 
-        System.out.print("Recurrence (NONE, WEEKLY, MONTHLY, ANNUAL): ");
-        RecurrenceType recurrenceType = RecurrenceType.valueOf(scanner.nextLine().trim().toUpperCase());
+        System.out.print("Recurrence (WEEKLY, MONTHLY, ANNUAL, press Enter for NONE): ");
+        RecurrenceType recurrenceType = readRecurrenceType();
 
         LocalDate repeatUntil = null;
 
@@ -124,6 +145,17 @@ public class EventConsoleUI {
         System.out.println("Event deleted successfully.");
     }
 
+    public void listEvents() {
+        List<EventDto> events = eventService.findAll();
+
+        if (events.isEmpty()) {
+            System.out.println("No events found.");
+            return;
+        }
+
+        events.forEach(this::printEvent);
+    }
+
     public void listUpcomingEvents() {
         System.out.print("Use current date? (Y/N): ");
         String useCurrentDate = scanner.nextLine();
@@ -144,9 +176,7 @@ public class EventConsoleUI {
             return;
         }
 
-        events.forEach(event -> System.out.println("ID: " + event.eventId().value() +
-                "\nText: " + event.text() + "\nDate: " + event.eventDate() + "\nRecurrence: " + event.recurrenceType() +
-                "\n"));
+        events.forEach(this::printEvent);
     }
 
     public void addTaskToEvent() {
@@ -194,5 +224,30 @@ public class EventConsoleUI {
         eventService.configureRecurrence(eventId, recurrenceType, repeatUntil);
 
         System.out.println("Event recurrence configured successfully.");
+    }
+
+    private void printEvent(EventDto event) {
+        System.out.println("ID: " + event.eventId().value() + "\nText: " + event.text() +
+                "\nDate: " + event.eventDate() + "\nRecurrence: " + event.recurrenceType());
+
+        if (event.taskIds().isEmpty()) {
+            System.out.println("Tasks: ");
+        } else {
+            System.out.println("Tasks:");
+
+            for (TaskId taskId : event.taskIds()) {
+                TaskDto task = taskService.findById(taskId);
+
+                System.out.println("  - Task ID: " + task.taskId().value() + " | " + task.text());
+
+                List<NoteDto> notes = noteService.findByTaskId(taskId);
+
+                for (NoteDto note : notes) {
+                    System.out.println("      Note ID: " + note.noteId().value() + " | " + note.content());
+                }
+            }
+        }
+
+        System.out.println();
     }
 }
