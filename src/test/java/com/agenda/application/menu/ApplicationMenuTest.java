@@ -32,10 +32,11 @@ class ApplicationMenuTest {
 
     private ApplicationMenu createMenu(Scanner scanner) {
         NoteConsoleUI noteConsoleUI = new NoteConsoleUI(null, scanner);
-        TaskConsoleUI taskConsoleUI = new TaskConsoleUI(null, scanner);
-        EventConsoleUI eventConsoleUI = new EventConsoleUI(null, scanner);
+        TaskConsoleUI taskConsoleUI = new TaskConsoleUI(null, null, scanner);
 
-        return new ApplicationMenu(noteConsoleUI, taskConsoleUI,eventConsoleUI, scanner);
+        EventConsoleUI eventConsoleUI = new EventConsoleUI(null, null, null, scanner);
+
+        return new ApplicationMenu(noteConsoleUI, taskConsoleUI, eventConsoleUI, null, scanner);
     }
 
     @Test

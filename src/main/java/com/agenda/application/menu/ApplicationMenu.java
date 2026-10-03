@@ -1,5 +1,6 @@
 package com.agenda.application.menu;
 
+import com.agenda.application.service.DatabaseCleanupService;
 import com.agenda.common.utils.ConsoleExceptionHandler;
 import com.agenda.event.cli.EventConsoleUI;
 import com.agenda.note.cli.NoteConsoleUI;
@@ -12,15 +13,17 @@ public class ApplicationMenu {
     private final NoteConsoleUI noteConsoleUI;
     private final TaskConsoleUI taskConsoleUI;
     private final EventConsoleUI eventConsoleUI;
+    private final DatabaseCleanupService databaseCleanupService;
     private final Scanner scanner;
 
     public ApplicationMenu(NoteConsoleUI noteConsoleUI,
                            TaskConsoleUI taskConsoleUI,
-                           EventConsoleUI eventConsoleUI,
+                           EventConsoleUI eventConsoleUI, DatabaseCleanupService databaseCleanupService,
                            Scanner scanner) {
         this.noteConsoleUI = noteConsoleUI;
         this.taskConsoleUI = taskConsoleUI;
         this.eventConsoleUI = eventConsoleUI;
+        this.databaseCleanupService = databaseCleanupService;
         this.scanner = scanner;
     }
 
@@ -36,6 +39,7 @@ public class ApplicationMenu {
                 case "1" -> noteMenu();
                 case "2" -> taskMenu();
                 case "3" -> eventMenu();
+                case "4" -> executeAndContinue(this::deleteAllData);
                 case "0" -> running = false;
                 default -> executeAndContinue(() -> {
                     throw new IllegalArgumentException("Invalid option.");
@@ -53,6 +57,7 @@ public class ApplicationMenu {
                 1. Note
                 2. Task
                 3. Event
+                4. Delete all data
                 0. App close
                 """);
 
@@ -124,16 +129,32 @@ public class ApplicationMenu {
                 case "1" -> executeAndContinue(eventConsoleUI::createEvent);
                 case "2" -> executeAndContinue(eventConsoleUI::updateEvent);
                 case "3" -> executeAndContinue(eventConsoleUI::deleteEvent);
-                case "4" -> executeAndContinue(eventConsoleUI::listUpcomingEvents);
-                case "5" -> executeAndContinue(eventConsoleUI::addTaskToEvent);
-                case "6" -> executeAndContinue(eventConsoleUI::removeTaskFromEvent);
-                case "7" -> executeAndContinue(eventConsoleUI::configureRecurrence);
+                case "4" -> executeAndContinue(eventConsoleUI::listEvents);
+                case "5" -> executeAndContinue(eventConsoleUI::listUpcomingEvents);
+                case "6" -> executeAndContinue(eventConsoleUI::addTaskToEvent);
+                case "7" -> executeAndContinue(eventConsoleUI::removeTaskFromEvent);
+                case "8" -> executeAndContinue(eventConsoleUI::configureRecurrence);
                 case "0" -> running = false;
                 default -> executeAndContinue(() -> {
                     throw new IllegalArgumentException("Invalid option.");
                 });
             }
         }
+    }
+
+    private void deleteAllData() {
+        System.out.print("Are you sure you want to delete ALL database content? (Y/N): ");
+
+        String confirmation = scanner.nextLine().trim();
+
+        if (!confirmation.equalsIgnoreCase("Y")) {
+            System.out.println("Database deletion cancelled.");
+            return;
+        }
+
+        databaseCleanupService.deleteAll();
+
+        System.out.println("All database content deleted successfully.");
     }
 
     private void executeAndContinue(Runnable action) {

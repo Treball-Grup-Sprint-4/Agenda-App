@@ -1,6 +1,7 @@
 package com.agenda.application.launcher;
 
 import com.agenda.application.menu.ApplicationMenu;
+import com.agenda.application.service.DatabaseCleanupService;
 import com.agenda.event.cli.EventConsoleUI;
 import com.agenda.event.service.EventService;
 import com.agenda.event.service.NotificationService;
@@ -30,13 +31,17 @@ public class ApplicationLauncher {
             NoteService noteService = new NoteService(noteRepository, taskRepository);
             EventService eventService = new EventService(eventRepository, taskRepository, new RecurrenceFactory(),
                     List.of(new NotificationService()));
+            DatabaseCleanupService databaseCleanupService = new DatabaseCleanupService(noteRepository,
+                    taskRepository, eventRepository);
 
-            TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
+            TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, noteService, scanner);
+
             NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
-            EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, scanner);
+
+            EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, taskService, noteService, scanner);
 
             ApplicationMenu applicationMenu = new ApplicationMenu(noteConsoleUI, taskConsoleUI, eventConsoleUI,
-                    scanner);
+                    databaseCleanupService, scanner);
 
             applicationMenu.run();
         }
