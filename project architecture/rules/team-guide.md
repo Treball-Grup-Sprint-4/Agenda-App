@@ -369,6 +369,7 @@ DateSortStrategy
 Orden:
 Priority: LOW → MEDIUM → HIGH
 Status: PENDING → COMPLETED
+Date: PRÓXIMA → LEJANA → NULL AL FINAL
 
 ### Factory
 ```text
