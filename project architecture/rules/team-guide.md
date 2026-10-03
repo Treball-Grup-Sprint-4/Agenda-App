@@ -6,6 +6,8 @@ Esta guía resume las decisiones principales del proyecto para que todo el equip
 ```text
 Main
   ↓
+ApplicationLauncher
+  ↓
 ApplicationMenu
   ↓
 ConsoleUI
@@ -20,7 +22,8 @@ MySQL
 ```
 
 Reglas:
-- Main: punto de entrada de la aplicación y montaje de dependencias.
+- Main: punto de entrada de la aplicación.
+- ApplicationLauncher: montaje y conexión de dependencias.
 - ApplicationMenu: menú principal y navegación entre las distintas ConsoleUI.
 - ConsoleExceptionHandler: gestión común de excepciones de consola.
 - UI: entrada/salida por consola.
@@ -36,7 +39,9 @@ Reglas:
 src/main/java/com/agenda/
 ├── application/
 │   ├── Main.java
-│   └── menu/
+│   ├── launcher/
+│   ├── menu/
+│   └── service/
 ├── common/
 │   ├── exception/
 │   ├── persistence/
@@ -80,19 +85,32 @@ src/test/java/com/agenda/
 ### Application
 ```text
 Main
+ApplicationLauncher
 ApplicationMenu
+DatabaseCleanupService
 ConsoleExceptionHandler
 ```
 
 Main
-- arranca la aplicación
-- crea y conecta dependencias
-- inicia ApplicationMenu
+- punto de entrada de la aplicación
+- inicia ApplicationLauncher
+
+ApplicationLauncher
+- monta las dependencias de la aplicación
+- crea repositories, services y ConsoleUI
+- crea ApplicationMenu
+- inicia la aplicación con run()
 
 ApplicationMenu
-- start()
+- run()
 - muestra el menú principal
 - dirige a TaskConsoleUI, NoteConsoleUI y EventConsoleUI
+- permite borrar todo el contenido de la base de datos previa confirmación del usuario
+
+DatabaseCleanupService
+- deleteAll()
+- coordina el borrado completo de Notes, Tasks y Events
+- lanza `EmptyDatabaseException` si no existe contenido guardado
 
 ConsoleExceptionHandler
 - execute(Runnable action)
@@ -182,6 +200,8 @@ WEEKLY
 MONTHLY
 ```
 
+En `EventConsoleUI`, dejar el campo de recurrencia vacío y pulsar Enter selecciona `NONE`.
+
 Event guarda:
 ```text
 List<TaskId>
@@ -252,6 +272,8 @@ NoteService
 EventService
 ```
 
+Además existe `DatabaseCleanupService` como servicio global de aplicación para coordinar el borrado completo de la base de datos.
+
 No crear Services o UseCases separados por cada operación salvo que lo decidamos más adelante.
 
 Métodos principales:
@@ -282,12 +304,16 @@ EventService
 - create(...)
 - update(...)
 - delete(...)
+- findAll()
 - findUpcoming(...)
 - addTask(...)
 - removeTask(...)
 - configureRecurrence(...)
 - addObserver(...)
 - checkUpcomingEvents(...)
+
+DatabaseCleanupService
+- deleteAll()
 ```
 
 `filterByDate(LocalDate date)` devuelve las Tasks cuya `expirationDate` coincide exactamente con la fecha indicada.
@@ -321,6 +347,10 @@ Preferencia en BD:
 ON DELETE CASCADE
 ```
 
+Al listar una Task:
+- se muestran sus datos e ID
+- si tiene Notes asociadas, se muestran también sus IDs y contenido
+
 ### Event → Task
 - un Event puede tener varias Tasks
 - una Task puede existir sin Event
@@ -342,6 +372,18 @@ se borran sus Tasks asociadas
 se borran también las Notes de esas Tasks
 ```
 
+Al listar un Event:
+- se muestran sus datos e ID
+- si tiene Tasks asociadas, se muestran también sus IDs y contenido
+- si una Task asociada tiene Notes, se muestran también sus IDs y contenido
+
+### Limpieza completa de BD
+- se inicia desde el menú principal
+- requiere confirmación `Y/N`
+- si no existe contenido guardado, se lanza `EmptyDatabaseException`
+- si existe contenido, `DatabaseCleanupService` borra Notes → Tasks → Events
+- al completarse correctamente se muestra un mensaje de éxito
+
 ## 10. Patrones
 ### Repository
 ```text
@@ -359,6 +401,7 @@ DateSortStrategy
 Orden:
 Priority: LOW → MEDIUM → HIGH
 Status: PENDING → COMPLETED
+Date: PRÓXIMA → LEJANA → NULL AL FINAL
 
 ### Factory
 ```text
@@ -421,6 +464,7 @@ No puede:
 TaskNotFoundException
 NoteNotFoundException
 EventNotFoundException
+EmptyDatabaseException
 PersistenceException
 ```
 
