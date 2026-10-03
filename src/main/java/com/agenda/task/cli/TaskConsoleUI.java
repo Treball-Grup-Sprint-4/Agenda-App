@@ -26,7 +26,7 @@ public class TaskConsoleUI {
 
             showMenu();
 
-            System.out.print("Choose an option");
+            System.out.println("Choose an option:");
             String userOption = scanner.nextLine();
 
 
