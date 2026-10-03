@@ -22,6 +22,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        ApplicationMenu applicationMenu = prepareMenu();
+        applicationMenu.displayAppMenu();
+
+    }
+
+    private static ApplicationMenu prepareMenu() {
         Scanner scanner = new Scanner(System.in);
 
         EventRepository eventSqlDao = new EventSqlDao();
@@ -36,17 +42,15 @@ public class Main {
         TaskService taskService = new TaskService(taskSqlDao);
         NoteService noteService = new NoteService(noteSqlDao, taskSqlDao);
 
-            EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, scanner);
-            TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
-            NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
+        EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, scanner);
+        TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
+        NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
 
-            ApplicationMenu applicationMenu = new ApplicationMenu(
-                    scanner,
-                    eventConsoleUI,
-                    taskConsoleUI,
-                    noteConsoleUI);
-
-            applicationMenu.displayAppMenu();
-
+        ApplicationMenu applicationMenu = new ApplicationMenu(
+                scanner,
+                eventConsoleUI,
+                taskConsoleUI,
+                noteConsoleUI);
+        return applicationMenu;
     }
 }
