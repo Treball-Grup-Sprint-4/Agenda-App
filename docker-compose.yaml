@@ -22,6 +22,8 @@ services:
   my-java-app:
     build: .
     container_name: java-agenda-app-container
+    stdin_open: true
+    tty: true
     environment:
       DB_HOST: agenda-app-database
       DB_PORT: 3306
