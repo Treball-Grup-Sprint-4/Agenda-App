@@ -19,7 +19,7 @@ public class ApplicationMenu {
         this.noteConsoleUI = noteConsoleUI;
     }
 
-    public void displayAppMenu() {
+    public static void displayAppMenu() {
         boolean exit = false;
 
         while(!exit) {
