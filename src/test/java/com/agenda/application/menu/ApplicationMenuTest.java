@@ -1,5 +1,6 @@
 package com.agenda.application.menu;
 
+import com.agenda.application.service.DatabaseCleanupService;
 import com.agenda.event.cli.EventConsoleUI;
 import com.agenda.note.cli.NoteConsoleUI;
 import com.agenda.task.cli.TaskConsoleUI;
@@ -11,8 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationMenuTest {
 
@@ -37,6 +37,20 @@ class ApplicationMenuTest {
         EventConsoleUI eventConsoleUI = new EventConsoleUI(null, null, null, scanner);
 
         return new ApplicationMenu(noteConsoleUI, taskConsoleUI, eventConsoleUI, null, scanner);
+    }
+
+    private static class FakeDatabaseCleanupService extends DatabaseCleanupService {
+
+        private boolean deleteAllCalled;
+
+        FakeDatabaseCleanupService() {
+            super(null, null, null);
+        }
+
+        @Override
+        public void deleteAll() {
+            deleteAllCalled = true;
+        }
     }
 
     @Test
@@ -90,5 +104,43 @@ class ApplicationMenuTest {
         assertTrue(result.contains("--- TASK ---"));
         assertTrue(result.contains("--- EVENTS ---"));
         assertTrue(result.contains("Program closed."));
+    }
+
+    @Test
+    void shouldDeleteAllDataWhenUserConfirms() {
+        Scanner scanner = new Scanner("4\nY\n\n0\n");
+
+        FakeDatabaseCleanupService cleanupService = new FakeDatabaseCleanupService();
+
+        NoteConsoleUI noteConsoleUI = new NoteConsoleUI(null, scanner);
+        TaskConsoleUI taskConsoleUI = new TaskConsoleUI(null, null, scanner);
+        EventConsoleUI eventConsoleUI = new EventConsoleUI(null, null, null, scanner);
+
+        ApplicationMenu menu = new ApplicationMenu(noteConsoleUI, taskConsoleUI, eventConsoleUI, cleanupService,
+                scanner);
+
+        menu.run();
+
+        assertTrue(cleanupService.deleteAllCalled);
+        assertTrue(output.toString().contains("All database content deleted successfully."));
+    }
+
+    @Test
+    void shouldNotDeleteAllDataWhenUserCancels() {
+        Scanner scanner = new Scanner("4\nN\n\n0\n");
+
+        FakeDatabaseCleanupService cleanupService = new FakeDatabaseCleanupService();
+
+        NoteConsoleUI noteConsoleUI = new NoteConsoleUI(null, scanner);
+        TaskConsoleUI taskConsoleUI = new TaskConsoleUI(null, null, scanner);
+        EventConsoleUI eventConsoleUI = new EventConsoleUI(null, null, null, scanner);
+
+        ApplicationMenu menu = new ApplicationMenu(noteConsoleUI, taskConsoleUI, eventConsoleUI, cleanupService,
+                scanner);
+
+        menu.run();
+
+        assertFalse(cleanupService.deleteAllCalled);
+        assertTrue(output.toString().contains("Database deletion cancelled."));
     }
 }
