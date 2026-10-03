@@ -39,7 +39,7 @@ Reglas:
 src/main/java/com/agenda/
 ├── application/
 │   ├── Main.java
-│   ├── launcher.java
+│   ├── launcher/
 │   ├── menu/
 │   └── service/
 ├── common/
