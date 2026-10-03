@@ -32,7 +32,7 @@ public class ApplicationMenu {
             0. Exit
             """);
 
-            System.out.print("Choose an option");
+            System.out.println("Choose an option:");
             String userOption = scanner.nextLine().trim();
 
             switch(userOption) {
