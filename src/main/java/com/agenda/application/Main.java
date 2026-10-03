@@ -41,6 +41,6 @@ public class Main {
             NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
 
             ApplicationMenu.displayAppMenu();
-            
+
     }
 }
