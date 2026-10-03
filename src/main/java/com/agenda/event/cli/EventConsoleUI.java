@@ -207,8 +207,8 @@ public class EventConsoleUI {
         System.out.print("Event ID: ");
         EventId eventId = new EventId(Integer.parseInt(scanner.nextLine()));
 
-        System.out.print("Recurrence (NONE, WEEKLY, MONTHLY, ANNUAL): ");
-        RecurrenceType recurrenceType = RecurrenceType.valueOf(scanner.nextLine().trim().toUpperCase());
+        System.out.print("Recurrence (WEEKLY, MONTHLY, ANNUAL, press Enter for NONE): ");
+        RecurrenceType recurrenceType = readRecurrenceType();
 
         LocalDate repeatUntil = null;
 
