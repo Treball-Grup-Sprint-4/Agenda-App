@@ -40,7 +40,13 @@ public class Main {
             TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
             NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
 
-            ApplicationMenu.displayAppMenu();
+            ApplicationMenu applicationMenu = new ApplicationMenu(
+                    scanner,
+                    eventConsoleUI,
+                    taskConsoleUI,
+                    noteConsoleUI);
+
+            applicationMenu.displayAppMenu();
 
     }
 }
