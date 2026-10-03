@@ -21,7 +21,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         ApplicationMenu applicationMenu = prepareMenu();
         applicationMenu.displayAppMenu();
 
@@ -45,12 +44,11 @@ public class Main {
         EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, scanner);
         TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
         NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
-
-        ApplicationMenu applicationMenu = new ApplicationMenu(
+        
+        return new ApplicationMenu(
                 scanner,
                 eventConsoleUI,
                 taskConsoleUI,
                 noteConsoleUI);
-        return applicationMenu;
     }
 }
