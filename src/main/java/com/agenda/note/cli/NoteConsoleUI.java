@@ -26,7 +26,7 @@ public class NoteConsoleUI {
             3. Delete note
             4. List notes
             5. List notes by task
-            0. Back
+            0. Return to main menu
             """);
     }
 

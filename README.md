@@ -83,13 +83,41 @@ task
 - Usar JDK 25 y Language Level 25.
 - Si Maven no se detecta automáticamente, hacer clic derecho sobre `pom.xml` → `Add as Maven Project`.
 
-Para ejecutar los tests de conexión a MySQL desde IntelliJ, configurar estas variables de entorno en la Run Configuration:
+#### Ejecutar la aplicación
 
+Para ejecutar `Main` desde IntelliJ mientras MySQL se ejecuta en Docker, configurar estas variables de entorno en la Run Configuration de `Main`:
+
+```text
 DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=agenda-app-database
 DB_USER=root
 DB_PASSWORD=<password definido en .env>
+```
+
+El archivo `.env` es utilizado por Docker Compose, pero IntelliJ no carga automáticamente estas variables al ejecutar la aplicación.
+
+#### Ejecutar tests con JUnit
+
+Los tests que acceden a MySQL también necesitan estas variables de entorno.
+
+En IntelliJ:
+
+`Run → Edit Configurations → JUnit`
+
+Añadir en `Environment variables`:
+
+```text
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=agenda-app-database
+DB_USER=root
+DB_PASSWORD=<password definido en .env>
+```
+
+Añadir cada variable correctamente en la configuración de IntelliJ y comprobar que los tests utilizan JDK 25 y las dependencias Maven del proyecto.
+
+Los tests unitarios que no acceden a la base de datos no necesitan esta configuración.
 
 ## UML
 ![Agenda-App-UML.svg](docs/Agenda-App-UML.svg)
