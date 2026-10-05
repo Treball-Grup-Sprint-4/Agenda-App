@@ -97,6 +97,28 @@ DB_PASSWORD=<password definido en .env>
 
 El archivo `.env` es utilizado por Docker Compose, pero IntelliJ no carga automáticamente estas variables al ejecutar la aplicación.
 
+#### Ejecutar la aplicación con Docker
+
+La aplicación también se puede ejecutar completamente desde Docker, sin necesidad de iniciar `Main` desde IntelliJ.
+
+Primero, levantar la base de datos:
+
+```bash
+docker compose up -d --build agenda-app-database
+```
+
+Después, ejecutar la aplicación Java de forma interactiva:
+
+```bash
+docker compose run --rm -it my-java-app
+```
+
+La opción `-it` permite utilizar el menú de consola mediante `Scanner`.
+
+La opción `--rm` elimina automáticamente el contenedor de la aplicación Java cuando se cierra el programa.
+
+La base de datos permanece activa en su propio contenedor y los datos se conservan mediante el volumen configurado en Docker Compose.
+
 #### Ejecutar tests con JUnit
 
 Los tests que acceden a MySQL también necesitan estas variables de entorno.
