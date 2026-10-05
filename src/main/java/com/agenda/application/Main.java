@@ -44,7 +44,7 @@ public class Main {
         EventConsoleUI eventConsoleUI = new EventConsoleUI(eventService, scanner);
         TaskConsoleUI taskConsoleUI = new TaskConsoleUI(taskService, scanner);
         NoteConsoleUI noteConsoleUI = new NoteConsoleUI(noteService, scanner);
-        
+
         return new ApplicationMenu(
                 scanner,
                 eventConsoleUI,
