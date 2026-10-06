@@ -32,7 +32,7 @@ public class EventSqlDao implements EventRepository {
             VALUES (?, ?, ?, ?, ?)
             """;
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
 
             connection.setAutoCommit(false);
 
@@ -94,7 +94,7 @@ public class EventSqlDao implements EventRepository {
             WHERE id = ?
             """;
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
 
             connection.setAutoCommit(false);
 
@@ -230,7 +230,7 @@ public class EventSqlDao implements EventRepository {
         WHERE id = ?
         """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, eventId.value());
@@ -266,7 +266,7 @@ public class EventSqlDao implements EventRepository {
 
         Map<EventId, Event> events = new LinkedHashMap<>();
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
@@ -311,7 +311,7 @@ public class EventSqlDao implements EventRepository {
         WHERE id = ?
         """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, eventId.value());
