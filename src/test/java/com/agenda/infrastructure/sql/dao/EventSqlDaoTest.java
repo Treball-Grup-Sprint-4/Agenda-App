@@ -28,7 +28,7 @@ class EventSqlDaoTest {
 
     @AfterEach
     void tearDown() throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement taskStatement = connection.prepareStatement(
                      "DELETE FROM task WHERE text LIKE 'EventSqlDaoTest%'");
              PreparedStatement eventStatement = connection.prepareStatement(
@@ -56,7 +56,7 @@ class EventSqlDaoTest {
     void shouldPersistAssociatedTaskWhenSavingNewEvent() throws SQLException {
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP)
@@ -93,7 +93,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at, event_id)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
@@ -124,7 +124,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP)
@@ -231,7 +231,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement taskStatement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at, event_id)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
@@ -250,7 +250,7 @@ class EventSqlDaoTest {
             }
         }
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement noteStatement = connection.prepareStatement("""
                  INSERT INTO note (content, created_at, task_id)
                  VALUES (?, CURRENT_TIMESTAMP, ?)
@@ -263,7 +263,7 @@ class EventSqlDaoTest {
 
         eventSqlDao.deleteById(savedEvent.getEventId());
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  SELECT
                      (SELECT COUNT(*) FROM task WHERE id = ?) AS task_count,
@@ -291,7 +291,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement taskStatement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at, event_id)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
@@ -310,7 +310,7 @@ class EventSqlDaoTest {
             }
         }
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  INSERT INTO note (content, created_at, task_id)
                  VALUES (?, CURRENT_TIMESTAMP, ?)
@@ -321,7 +321,7 @@ class EventSqlDaoTest {
             statement.executeUpdate();
         }
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM task WHERE id = ?")) {
 
             statement.setInt(1, taskId);
@@ -330,7 +330,7 @@ class EventSqlDaoTest {
 
         assertTrue(eventSqlDao.findById(savedEvent.getEventId()).isPresent());
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("SELECT COUNT(*) FROM note WHERE task_id = ?")) {
 
@@ -351,7 +351,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
                  INSERT INTO task (text, priority, status, created_at, event_id)
                  VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
@@ -400,7 +400,7 @@ class EventSqlDaoTest {
 
         int taskId;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
              INSERT INTO task (text, priority, status, created_at, event_id)
              VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
@@ -429,7 +429,7 @@ class EventSqlDaoTest {
 
         assertTrue(updatedEvent.getTaskIds().isEmpty());
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("""
          SELECT event_id
          FROM task

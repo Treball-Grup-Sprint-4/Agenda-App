@@ -32,7 +32,7 @@ class TaskSqlDaoTest {
 
     @AfterEach
     void tearDown() throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM task WHERE id = ?")) {
 
