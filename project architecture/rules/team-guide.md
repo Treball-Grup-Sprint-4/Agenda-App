@@ -419,6 +419,13 @@ EventObserver
 NotificationService
 ```
 
+### Singleton
+```text
+DatabaseConnection
+- existe una única instancia de `DatabaseConnection`
+- se accede mediante `getInstance()`
+- cada llamada a `getConnection()` crea una nueva `Connection` JDBC
+
 ## 11. Responsabilidad por capa
 
 ### ConsoleUI

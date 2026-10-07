@@ -119,6 +119,18 @@ La opción `--rm` elimina automáticamente el contenedor de la aplicación Java 
 
 La base de datos permanece activa en su propio contenedor y los datos se conservan mediante el volumen configurado en Docker Compose.
 
+Para detener los contenedores:
+
+```bash
+docker compose down
+```
+
+Para detener los contenedores y eliminar también los datos persistidos:
+
+```bash
+docker compose down -v
+```
+
 #### Ejecutar tests con JUnit
 
 Los tests que acceden a MySQL también necesitan estas variables de entorno.

@@ -26,12 +26,17 @@
 <text x="-250.000" y="1315.983" text-anchor="middle" class="title">Main</text>
 <text x="-329.703" y="1353.983" class="member">+main(String[] args)</text>
 </g><g id="class-DatabaseConnection" class="node" data-color-id="color-1">
-<path d="M 1334.115 600.083 L 1556.154 600.883 L 1555.554 741.083 L 1334.815 740.683 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
-<path d="M 1334.615 601.183 L 1555.354 600.083 M 1555.854 600.583 L 1556.554 740.283 M 1556.154 741.083 L 1334.115 741.583 M 1334.115 741.083 L 1333.615 600.283" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1334.115 600.083 L 1556.154 600.883 L 1555.554 800.083 L 1334.815 799.683 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 1334.615 601.183 L 1555.354 600.083 M 1555.854 600.583 L 1556.554 799.283 M 1556.154 800.083 L 1334.115 800.583 M 1334.115 800.083 L 1333.615 600.283" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
 <path d="M 1334.115 639.083 C 1395.176 639.583, 1456.237 638.633, 1556.154 639.083" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
 <text x="1445.135" y="618.083" text-anchor="middle" class="title">DatabaseConnection</text>
-<text x="1346.115" y="656.083" class="member">+getConnection()</text>
-<text x="1346.115" y="674.083" class="member">+testConnection()</text>
+<text x="1346.115" y="656.083" class="member">-INSTANCE: DatabaseConnection</text>
+<text x="1346.115" y="674.083" class="member">-url: String</text>
+<text x="1346.115" y="692.083" class="member">-user: String</text>
+<text x="1346.115" y="710.083" class="member">-password: String</text>
+<text x="1346.115" y="728.083" class="member">-DatabaseConnection()</text>
+<text x="1346.115" y="746.083" class="member">+getInstance()</text>
+<text x="1346.115" y="764.083" class="member">+getConnection()</text>
 </g><g id="class-TaskConsoleUI" class="node" data-color-id="color-2">
 <path d="M 241.000 2254.033 L 473.195 2254.833 L 472.595 2608.033 L 241.700 2607.633 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
 <path d="M 241.500 2255.133 L 472.395 2254.033 M 472.895 2254.533 L 473.595 2607.233 M 473.195 2608.033 L 241.000 2608.533 M 241.000 2608.033 L 240.500 2254.233" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
