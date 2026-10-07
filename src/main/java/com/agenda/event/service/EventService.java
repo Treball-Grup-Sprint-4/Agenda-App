@@ -1,0 +1,239 @@
+package com.agenda.event.service;
+
+import com.agenda.common.exception.EventNotFoundException;
+import com.agenda.event.dto.EventDto;
+import com.agenda.event.model.Event;
+import com.agenda.event.model.EventId;
+import com.agenda.event.model.RecurrenceType;
+import com.agenda.event.repository.EventRepository;
+import com.agenda.task.repository.TaskRepository;
+import com.agenda.common.exception.TaskNotFoundException;
+import com.agenda.task.model.TaskId;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EventService {
+    private final EventRepository eventRepository;
+    private final TaskRepository taskRepository;
+    private final RecurrenceFactory recurrenceFactory;
+    private final List<EventObserver> observers;
+
+    public EventService(EventRepository eventRepository, TaskRepository taskRepository,
+                        RecurrenceFactory recurrenceFactory, List<EventObserver> observers) {
+        if (eventRepository == null) {
+            throw new IllegalArgumentException("EventRepository must not be NULL");
+        }
+
+        if (taskRepository == null) {
+            throw new IllegalArgumentException("TaskRepository must not be NULL");
+        }
+
+        if (recurrenceFactory == null) {
+            throw new IllegalArgumentException("RecurrenceFactory must not be NULL");
+        }
+
+        if (observers == null) {
+            throw new IllegalArgumentException("Observers must not be NULL");
+        }
+
+        this.eventRepository = eventRepository;
+        this.taskRepository = taskRepository;
+        this.recurrenceFactory = recurrenceFactory;
+        this.observers = new ArrayList<>(observers);
+    }
+
+    private EventDto toDto(Event event) {
+        return new EventDto(event.getEventId(), event.getText(), event.getEventDate(), event.getCreatedAt(),
+                event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds());
+    }
+
+    private static void checkEventDto(EventDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Event DTO must not be NULL");
+        }
+    }
+
+    private static void checkEventId(EventId eventId) {
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be NULL");
+        }
+    }
+
+    private static void checkTaskId(TaskId taskId) {
+        if (taskId == null) {
+            throw new IllegalArgumentException("Task ID must not be NULL");
+        }
+    }
+
+    private static void checkDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date must not be NULL");
+        }
+    }
+
+    private Event findEventOrThrow(EventId eventId) {
+        return eventRepository.findById(eventId).orElseThrow(() ->
+                new EventNotFoundException("Event with ID not found"));
+    }
+
+    private void checkTaskExists(TaskId taskId) {
+        taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task with ID not found"));
+    }
+
+    public EventDto create(EventDto dto) {
+
+        checkEventDto(dto);
+
+        Event event = new Event(dto.text(), dto.eventDate());
+
+        event.configureRecurrence(dto.recurrenceType(), dto.repeatUntil());
+
+        Event savedEvent = eventRepository.save(event);
+
+        return toDto(savedEvent);
+    }
+
+    public EventDto findById(EventId eventId) {
+
+        checkEventId(eventId);
+
+        Event event = findEventOrThrow(eventId);
+
+        return toDto(event);
+    }
+
+    public EventDto update(EventId eventId, EventDto dto) {
+
+        checkEventId(eventId);
+
+        checkEventDto(dto);
+
+        Event event = findEventOrThrow(eventId);
+
+        event.updateDetails(dto.text(), dto.eventDate());
+
+        event.configureRecurrence(dto.recurrenceType(), dto.repeatUntil());
+
+        Event updatedEvent = eventRepository.save(event);
+
+        return toDto(updatedEvent);
+    }
+
+    public void delete(EventId eventId) {
+
+        checkEventId(eventId);
+
+        findEventOrThrow(eventId);
+
+        eventRepository.deleteById(eventId);
+    }
+
+    public List<EventDto> findAll() {
+        return eventRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    public void addTask(EventId eventId, TaskId taskId) {
+
+        checkTaskId(taskId);
+
+        checkEventId(eventId);
+
+        Event event = findEventOrThrow(eventId);
+
+        checkTaskExists(taskId);
+
+        boolean taskAssignedToAnotherEvent = eventRepository.findAll().stream()
+                .filter(existingEvent -> !existingEvent.getEventId().equals(eventId))
+                .anyMatch(existingEvent -> existingEvent.getTaskIds().contains(taskId));
+
+        if (taskAssignedToAnotherEvent) {
+            throw new IllegalArgumentException("La tarea solo se puede asociar a un evento.");
+        }
+
+        event.addTask(taskId);
+
+        eventRepository.save(event);
+    }
+
+    public void configureRecurrence(EventId eventId, RecurrenceType recurrenceType, LocalDate repeatUntil) {
+
+        checkEventId(eventId);
+
+        Event event = findEventOrThrow(eventId);
+
+        event.configureRecurrence(recurrenceType, repeatUntil);
+
+        eventRepository.save(event);
+    }
+
+    public List<EventDto> findUpcoming(LocalDate date) {
+
+        checkDate(date);
+
+        List<EventDto> upcomingEvents = new ArrayList<>();
+
+        for (Event event : eventRepository.findAll()) {
+            RecurrencePolicy policy = recurrenceFactory.create(event.getRecurrenceType());
+
+            LocalDate nextDate = policy.nextDate(event.getEventDate(), date, event.getRepeatUntil());
+
+            if (nextDate != null) {
+                upcomingEvents.add(new EventDto(event.getEventId(), event.getText(), nextDate, event.getCreatedAt(),
+                        event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds()));
+            }
+        }
+
+        return upcomingEvents;
+    }
+
+    public void addObserver(EventObserver observer) {
+
+        if (observer == null) {
+            throw new IllegalArgumentException("Observer must not be NULL");
+        }
+
+        observers.add(observer);
+    }
+
+    public void checkUpcomingEvents(LocalDate date) {
+
+        checkDate(date);
+
+        LocalDate notificationDate = date.plusDays(1);
+
+        eventRepository.findAll().forEach(event -> {
+            RecurrencePolicy policy = recurrenceFactory.create(event.getRecurrenceType());
+
+            LocalDate nextDate = policy.nextDate(event.getEventDate(), notificationDate, event.getRepeatUntil());
+
+            if (notificationDate.equals(nextDate)) {
+                EventDto dto = new EventDto(event.getEventId(), event.getText(), nextDate, event.getCreatedAt(),
+                        event.getRecurrenceType(), event.getRepeatUntil(), event.getTaskIds());
+
+                observers.forEach(observer -> observer.notify(dto));
+            }
+        });
+    }
+
+    public void removeTask(EventId eventId, TaskId taskId) {
+
+        checkEventId(eventId);
+
+        checkTaskId(taskId);
+
+        Event event = findEventOrThrow(eventId);
+
+        checkTaskExists(taskId);
+
+        if (!event.getTaskIds().contains(taskId)) {
+            throw new IllegalArgumentException("Task is not assigned to this event");
+        }
+
+        event.removeTask(taskId);
+
+        eventRepository.save(event);
+    }
+}

@@ -1,0 +1,412 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="export-svg" width="100%" class="classDiagram" style="max-width: 3670.90625px; background: rgb(255,255,255);" viewBox="-500 4 3670.90625 3135.13330078125" role="graphics-document document" aria-roledescription="classDiagram">
+<defs>
+  <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#28253D" stroke-width="1.2"/></marker>
+  <marker id="triangle" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1,1 L10,6 L1,11 Z" fill="#fff" stroke="#28253D" stroke-width="1.2"/></marker>
+</defs>
+<style>
+  text { fill:#28253D; font-family:"Arial",sans-serif; }
+  .title { font-size:15px; font-weight:700; }
+  .stereotype { font-size:11px; font-style:italic; }
+  .member { font-size:11.7px; }
+  .relation { fill:none; stroke:#28253D; stroke-width:1.45; stroke-linejoin:round; stroke-linecap:round; }
+  .edge-label { font-size:11.5px; fill:#28253D; paint-order:stroke; stroke:#fff; stroke-width:5px; stroke-linejoin:round; }
+</style>
+<rect x="-500" y="4" width="3670.90625" height="3135.13330078125" fill="#ffffff"/>
+
+<g class="edges">
+<path id="edge-TaskConsoleUI_TaskService" d="M473.1953125,2442.7 L495.992,2442.7 L495.992,2845.133 L747.766,2845.133" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskConsoleUI_TaskDto" d="M473.195,2353.367 L495.992,2353.367 L495.992,2095.733 L509.992,2095.733" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteConsoleUI_NoteService" d="M465.052,386.5 L759.895,386.5" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteConsoleUI_NoteDto" d="M465.052,454.833 L495.992,454.833 L495.992,617 L509.992,617" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventConsoleUI_EventService" d="M475.992,1406 L495.992,1406 L495.992,1802.233 L509.992,1802.233" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventConsoleUI_EventDto" d="M475.992,1325 L495.992,1325 L495.992,1051.417 L509.992,1051.417" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskService_TaskRepository" d="M1095.992,2767.633 L1235.25,2767.633 L1235.25,1847.283 L1309.25,1847.283" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskService_Task" d="M1095.992,2922.633 L1295.25,2922.633 L1295.25,2851.333 L2304.375,2851.333 L2304.375,2358.7 L2338.375,2358.7" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskService_TaskSortStrategy" d="M1095.992,2845.133 L1255.25,2845.133 L1255.25,2662.733 L1309.25,2662.733" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteService_NoteRepository" d="M1091.949,340.5 L1195.25,340.5 L1195.25,158.667 L1309.25,158.667" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteService_TaskRepository" d="M1091.949,432.5 L1255.25,432.5 L1255.25,1736.883 L1309.25,1736.883" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteService_Note" d="M1091.949,386.5 L1333.877,386.5" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventService_EventRepository" d="M1175.25,1761.067 L1275.25,1761.067 L1275.25,1578.75 L1309.25,1578.75" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventService_TaskRepository" d="M1175.25,1802.233 L1195.25,1802.233 L1195.25,1810.483 L1309.25,1810.483" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventService_Event" d="M1175.25,1884.567 L1195.25,1884.567 L1195.25,2349.817 L1706.75,2349.817" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventService_RecurrenceFactory" d="M1175.25,1843.4 L1215.25,1843.4 L1215.25,2198.983 L1309.25,2198.983" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventService_EventObserver" d="M1175.25,1719.9 L1235.25,1719.9 L1235.25,871.75 L1309.25,871.75" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskSqlDao_TaskRepository" d="M1175.25,1552.467 L1195.25,1552.467 L1195.25,1773.683 L1298,1773.683" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-NoteSqlDao_NoteRepository" d="M1175.25,90.333 L1298,90.333" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-EventSqlDao_EventRepository" d="M1175.25,1363.833 L1275.25,1363.833 L1275.25,1517.417 L1298,1517.417" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-TaskSqlDao_DatabaseConnection" d="M1175.25,1532.133 L1215.25,1532.133 L1215.25,700.833 L1328.115,700.833" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoteSqlDao_DatabaseConnection" d="M1175.25,110.667 L1275.25,110.667 L1275.25,640.333 L1328.115,640.333" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventSqlDao_DatabaseConnection" d="M1175.25,1343.5 L1195.25,1343.5 L1195.25,670.583 L1328.115,670.583" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-DatabaseConnection_MySQL" d="M1556.154,670.583 L1706.75,670.583" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-Task_TaskId" d="M2969.328,2227.7 L2989.328,2227.7 L2989.328,2101.7 L3003.328,2101.7" class="relation" stroke-dasharray="none"/><path id="edge-Task_Priority" d="M2969.328,2358.7 L2989.328,2358.7 L2989.328,2405.2 L3003.328,2405.2" class="relation" stroke-dasharray="none"/><path id="edge-Task_TaskStatus" d="M2969.328,2293.2 L2989.328,2293.2 L2989.328,2246.7 L3003.328,2246.7" class="relation" stroke-dasharray="none"/><path id="edge-Note_NoteId" d="M1604.541,336.75 L1632.75,336.75 L1632.75,326 L1706.75,326" class="relation" stroke-dasharray="none"/><path id="edge-Note_TaskId" d="M1604.541,386.5 L2989.328,386.5 L2989.328,2071.2 L3003.328,2071.2" class="relation" stroke-dasharray="none"/><path id="edge-Event_EventId" d="M2224.375,2264.917 L2244.375,2264.917 L2244.375,2025.95 L2338.375,2025.95" class="relation" stroke-dasharray="none"/><path id="edge-Event_RecurrenceType" d="M2224.375,2434.717 L2324.375,2434.717 L2324.375,2599.117 L2338.375,2599.117" class="relation" stroke-dasharray="none"/><path id="edge-Event_TaskId" d="M2224.375,2321.517 L2264.375,2321.517 L2264.375,2086.45 L3003.328,2086.45" class="relation" stroke-dasharray="none"/><path id="edge-PrioritySortStrategy_TaskSortStrategy" d="M1175.25,2478.633 L1255.25,2478.633 L1255.25,2614.333 L1298,2614.333" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-StatusSortStrategy_TaskSortStrategy" d="M1175.25,2599.633 L1195.25,2599.633 L1195.25,2638.533 L1298,2638.533" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-DateSortStrategy_TaskSortStrategy" d="M1175.25,3090.633 L1275.25,3090.633 L1275.25,2686.933 L1298,2686.933" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-RecurrenceFactory_RecurrencePolicy" d="M1612.75,2198.983 L1632.75,2198.983 L1632.75,1575.417 L1706.75,1575.417" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-NoRecurrencePolicy_RecurrencePolicy" d="M1612.75,1123.583 L1672.75,1123.583 L1672.75,1514.917 L1695.5,1514.917" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-AnnualRecurrencePolicy_RecurrencePolicy" d="M1612.75,1365.583 L1632.75,1365.583 L1632.75,1555.25 L1695.5,1555.25" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-WeeklyRecurrencePolicy_RecurrencePolicy" d="M1612.75,1002.583 L1692.75,1002.583 L1692.75,1494.75 L1695.5,1494.75" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-MonthlyRecurrencePolicy_RecurrencePolicy" d="M1612.75,1244.583 L1652.75,1244.583 L1652.75,1535.083 L1695.5,1535.083" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-NotificationService_EventObserver" d="M1175.25,805.5 L1275.25,805.5 L1275.25,831.417 L1298,831.417" class="relation" stroke-dasharray="7 5" marker-end="url(#triangle)"/><path id="edge-Note_Task" d="M1604.541,436.25 L2284.375,436.25 L2284.375,2227.7 L2338.375,2227.7" class="relation" stroke-dasharray="none"/><path id="edge-Event_Task" d="M2230.375,2378.117 L2284.375,2378.117 L2284.375,2293.2 L2344.375,2293.2" class="relation" stroke-dasharray="none"/><path id="edge-Main_ApplicationLauncher" d="M-250,1297.983 L-250,1186" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationLauncher_ApplicationMenu" d="M-152,1120 L-125,1120 L-125,1055 L245,1055 L245,1070 L252.297,1070" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationMenu_NoteConsoleUI" d="M258.297,1095 L215.406,1095 L215.406,420.667 L251.286,420.667" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationMenu_TaskConsoleUI" d="M258.297,1145 L215.406,1145 L215.406,2398.033 L235,2398.033" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationMenu_EventConsoleUI" d="M350,1180 L350,1208" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationMenu_ConsoleExceptionHandler" d="M350,1060 L350,966" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-TaskConsoleUI_NoteService" d="M473.195,2510 L505,2510 L505,480 L760,480" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventConsoleUI_TaskService" d="M475.992,1450 L485,1450 L485,2720 L747.766,2720" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-EventConsoleUI_NoteService" d="M475.992,1285 L485,1285 L485,450 L759.895,450" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-ApplicationMenu_DatabaseCleanupService" d="M441.703,1095 L490,1095 L490,900 L825,900 L825,1110 L829,1110" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-DatabaseCleanupService_NoteRepository" d="M1125,1080 L1175,1080 L1175,205 L1309.25,205" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-DatabaseCleanupService_EventRepository" d="M1125,1110 L1290,1110 L1290,1548.083 L1309.25,1548.083" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/><path id="edge-DatabaseCleanupService_TaskRepository" d="M1125,1140 L1270,1140 L1270,1792.083 L1309.25,1792.083" class="relation" stroke-dasharray="none" marker-end="url(#arrow)"/>
+</g>
+<text x="1945" y="426" class="edge-label">belongs to</text>
+<text x="2253" y="2358" class="edge-label">0..1</text>
+<g class="nodes">
+<g id="class-Main" class="node" data-color-id="color-0">
+<path d="M -341.703 1297.983 L -158.297 1298.783 L -158.897 1417.983 L -341.003 1417.583 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M -341.203 1299.083 L -159.097 1297.983 M -158.597 1298.483 L -157.897 1417.183 M -158.297 1417.983 L -341.703 1418.483 M -341.703 1417.983 L -342.203 1298.183" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M -341.703 1336.983 C -291.266 1337.483, -240.830 1336.533, -158.297 1336.983" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="-250.000" y="1315.983" text-anchor="middle" class="title">Main</text>
+<text x="-329.703" y="1353.983" class="member">+main(String[] args)</text>
+</g><g id="class-DatabaseConnection" class="node" data-color-id="color-1">
+<path d="M 1334.115 600.083 L 1556.154 600.883 L 1555.554 800.083 L 1334.815 799.683 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 1334.615 601.183 L 1555.354 600.083 M 1555.854 600.583 L 1556.554 799.283 M 1556.154 800.083 L 1334.115 800.583 M 1334.115 800.083 L 1333.615 600.283" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1334.115 639.083 C 1395.176 639.583, 1456.237 638.633, 1556.154 639.083" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
+<text x="1445.135" y="618.083" text-anchor="middle" class="title">DatabaseConnection</text>
+<text x="1346.115" y="656.083" class="member">-INSTANCE: DatabaseConnection</text>
+<text x="1346.115" y="674.083" class="member">-url: String</text>
+<text x="1346.115" y="692.083" class="member">-user: String</text>
+<text x="1346.115" y="710.083" class="member">-password: String</text>
+<text x="1346.115" y="728.083" class="member">-DatabaseConnection()</text>
+<text x="1346.115" y="746.083" class="member">+getInstance()</text>
+<text x="1346.115" y="764.083" class="member">+getConnection()</text>
+</g><g id="class-TaskConsoleUI" class="node" data-color-id="color-2">
+<path d="M 241.000 2254.033 L 473.195 2254.833 L 472.595 2608.033 L 241.700 2607.633 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
+<path d="M 241.500 2255.133 L 472.395 2254.033 M 472.895 2254.533 L 473.595 2607.233 M 473.195 2608.033 L 241.000 2608.533 M 241.000 2608.033 L 240.500 2254.233" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
+<path d="M 241.000 2293.033 C 304.854 2293.533, 368.707 2292.583, 473.195 2293.033" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<text x="357.098" y="2272.033" text-anchor="middle" class="title">TaskConsoleUI</text>
+<text x="253.000" y="2310.033" class="member">+showMenu()</text>
+<text x="253.000" y="2328.033" class="member">+createTask()</text>
+<text x="253.000" y="2346.033" class="member">+updateTask()</text>
+<text x="253.000" y="2364.033" class="member">+deleteTask()</text>
+<text x="253.000" y="2382.033" class="member">+completeTask()</text>
+<text x="253.000" y="2400.033" class="member">+listTasks()</text>
+<text x="253.000" y="2418.033" class="member">+listPendingTasks()</text>
+<text x="253.000" y="2436.033" class="member">+listCompletedTasks()</text>
+<text x="253.000" y="2454.033" class="member">+listTasksByPriority()</text>
+<text x="253.000" y="2472.033" class="member">+listTasksByStatus()</text>
+<text x="253.000" y="2490.033" class="member">+listTasksByDate()</text>
+<text x="253.000" y="2508.033" class="member">+sortTasks()</text>
+</g><g id="class-TaskDto" class="node" data-color-id="color-3">
+<path d="M 515.992 1975.733 L 770.586 1976.533 L 769.986 2215.733 L 516.692 2215.333 Z" fill="#ECFEFF" stroke="#22D3EE" stroke-width="1.7"/>
+<path d="M 516.492 1976.833 L 769.786 1975.733 M 770.286 1976.233 L 770.986 2214.933 M 770.586 2215.733 L 515.992 2216.233 M 515.992 2215.733 L 515.492 1975.933" fill="none" stroke="#22D3EE" stroke-width="1.05" opacity="0.82"/>
+<path d="M 515.992 2014.733 C 586.005 2015.233, 656.019 2014.283, 770.586 2014.733" fill="none" stroke="#22D3EE" stroke-width="1.35"/>
+<text x="643.289" y="1993.733" text-anchor="middle" class="title">TaskDto</text>
+<text x="527.992" y="2031.733" class="member">+TaskId taskId</text>
+<text x="527.992" y="2049.733" class="member">+String text</text>
+<text x="527.992" y="2067.733" class="member">+Priority priority</text>
+<text x="527.992" y="2085.733" class="member">+TaskStatus status</text>
+<text x="527.992" y="2103.733" class="member">+LocalDate expirationDate</text>
+<text x="527.992" y="2121.733" class="member">+LocalDateTime createdAt</text>
+<text x="527.992" y="2139.733" class="member">+LocalDateTime completedAt</text>
+</g><g id="class-TaskService" class="node" data-color-id="color-4">
+<path d="M 753.766 2680.133 L 1095.992 2680.933 L 1095.392 3035.133 L 754.466 3034.733 Z" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.7"/>
+<path d="M 754.266 2681.233 L 1095.192 2680.133 M 1095.692 2680.633 L 1096.392 3034.333 M 1095.992 3035.133 L 753.766 3035.633 M 753.766 3035.133 L 753.266 2680.333" fill="none" stroke="#4ADE80" stroke-width="1.05" opacity="0.82"/>
+<path d="M 753.766 2719.133 C 847.878 2719.633, 941.990 2718.683, 1095.992 2719.133" fill="none" stroke="#4ADE80" stroke-width="1.35"/>
+<text x="924.879" y="2698.133" text-anchor="middle" class="title">TaskService</text>
+<text x="765.766" y="2736.133" class="member">+create(TaskDto dto)</text>
+<text x="765.766" y="2754.133" class="member">+update(TaskId taskId, TaskDto dto)</text>
+<text x="765.766" y="2772.133" class="member">+delete(TaskId taskId)</text>
+<text x="765.766" y="2790.133" class="member">+complete(TaskId taskId)</text>
+<text x="765.766" y="2808.133" class="member">+findAll()</text>
+<text x="765.766" y="2826.133" class="member">+findById(TaskId taskId): TaskDto</text>
+<text x="765.766" y="2844.133" class="member">+findPending()</text>
+<text x="765.766" y="2862.133" class="member">+findCompleted()</text>
+<text x="765.766" y="2880.133" class="member">+filterByPriority(Priority priority)</text>
+<text x="765.766" y="2898.133" class="member">+filterByStatus(TaskStatus status)</text>
+<text x="765.766" y="2916.133" class="member">+filterByDate(LocalDate date)</text>
+<text x="765.766" y="2934.133" class="member">+sortTasks(TaskSortStrategy strategy)</text>
+</g><g id="class-TaskRepository" class="node" data-color-id="color-5">
+<path d="M 1315.250 1690.083 L 1587.344 1690.883 L 1586.744 1894.083 L 1315.950 1893.683 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.7"/>
+<path d="M 1315.750 1691.183 L 1586.544 1690.083 M 1587.044 1690.583 L 1587.744 1893.283 M 1587.344 1894.083 L 1315.250 1894.583 M 1315.250 1894.083 L 1314.750 1690.283" fill="none" stroke="#A78BFA" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 1749.083 C 1390.076 1749.583, 1464.902 1748.633, 1587.344 1749.083" fill="none" stroke="#A78BFA" stroke-width="1.35"/>
+<text x="1451.297" y="1708.083" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1451.297" y="1728.083" text-anchor="middle" class="title">TaskRepository</text>
+<text x="1327.250" y="1766.083" class="member">+save(Task task)</text>
+<text x="1327.250" y="1784.083" class="member">+findById(TaskId taskId)</text>
+<text x="1327.250" y="1802.083" class="member">+findAll()</text>
+<text x="1327.250" y="1820.083" class="member">+deleteById(TaskId taskId)</text>
+</g><g id="class-Task" class="node" data-color-id="color-6">
+<path d="M 2344.375 2152.200 L 2969.328 2153.000 L 2968.728 2434.200 L 2345.075 2433.800 Z" fill="#FEF2F2" stroke="#F87171" stroke-width="1.7"/>
+<path d="M 2344.875 2153.300 L 2968.528 2152.200 M 2969.028 2152.700 L 2969.728 2433.400 M 2969.328 2434.200 L 2344.375 2434.700 M 2344.375 2434.200 L 2343.875 2152.400" fill="none" stroke="#F87171" stroke-width="1.05" opacity="0.82"/>
+<path d="M 2344.375 2191.200 C 2516.237 2191.700, 2688.099 2190.750, 2969.328 2191.200" fill="none" stroke="#F87171" stroke-width="1.35"/>
+<path d="M 2344.375 2326.200 C 2516.237 2326.700, 2688.099 2325.750, 2969.328 2326.200" fill="none" stroke="#F87171" stroke-width="1.35"/>
+<text x="2656.852" y="2170.200" text-anchor="middle" class="title">Task</text>
+<text x="2356.375" y="2208.200" class="member">-TaskId taskId</text>
+<text x="2356.375" y="2226.200" class="member">-String text</text>
+<text x="2356.375" y="2244.200" class="member">-TaskPriority priority</text>
+<text x="2356.375" y="2262.200" class="member">-TaskStatus status</text>
+<text x="2356.375" y="2280.200" class="member">-LocalDateTime createdAt</text>
+<text x="2356.375" y="2298.200" class="member">-LocalDate expirationDate</text>
+<text x="2356.375" y="2316.200" class="member">-LocalDateTime completedAt</text>
+<text x="2356.375" y="2342.200" class="member">+markAsCompleted()</text>
+<text x="2356.375" y="2360.200" class="member">+updateDetails(TaskStatus status, TaskPriority priority, LocalDate expirationDate)</text>
+</g><g id="class-TaskId" class="node" data-color-id="color-7">
+<path d="M 3009.328 2045.950 L 3080.516 2046.750 L 3079.916 2126.950 L 3010.028 2126.550 Z" fill="#FEFCE8" stroke="#FACC15" stroke-width="1.7"/>
+<path d="M 3009.828 2047.050 L 3079.716 2045.950 M 3080.216 2046.450 L 3080.916 2126.150 M 3080.516 2126.950 L 3009.328 2127.450 M 3009.328 2126.950 L 3008.828 2046.150" fill="none" stroke="#FACC15" stroke-width="1.05" opacity="0.82"/>
+<path d="M 3009.328 2084.950 C 3028.905 2085.450, 3048.481 2084.500, 3080.516 2084.950" fill="none" stroke="#FACC15" stroke-width="1.35"/>
+<text x="3044.922" y="2063.950" text-anchor="middle" class="title">TaskId</text>
+</g><g id="class-TaskPriority" class="node" data-color-id="color-8">
+<path d="M 38.109 1080.983 L 169.297 1081.783 L 168.697 1257.983 L 38.809 1257.583 Z" fill="#EEF2FF" stroke="#818CF8" stroke-width="1.7"/>
+<path d="M 38.609 1082.083 L 168.497 1080.983 M 168.997 1081.483 L 169.697 1257.183 M 169.297 1257.983 L 38.109 1258.483 M 38.109 1257.983 L 37.609 1081.183" fill="none" stroke="#818CF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 38.109 1139.983 C 74.186 1140.483, 110.263 1139.533, 169.297 1139.983" fill="none" stroke="#818CF8" stroke-width="1.35"/>
+<text x="103.703" y="1098.983" text-anchor="middle" class="stereotype">«enumeration»</text>
+<text x="103.703" y="1118.983" text-anchor="middle" class="title">TaskPriority</text>
+<text x="50.109" y="1156.983" class="member">LOW</text>
+<text x="50.109" y="1174.983" class="member">MEDIUM</text>
+<text x="50.109" y="1192.983" class="member">HIGH</text>
+</g><g id="class-TaskStatus" class="node" data-color-id="color-9">
+<path d="M 3009.328 2168.700 L 3162.906 2169.500 L 3162.306 2324.700 L 3010.028 2324.300 Z" fill="#F7FEE7" stroke="#A3E635" stroke-width="1.7"/>
+<path d="M 3009.828 2169.800 L 3162.106 2168.700 M 3162.606 2169.200 L 3163.306 2323.900 M 3162.906 2324.700 L 3009.328 2325.200 M 3009.328 2324.700 L 3008.828 2168.900" fill="none" stroke="#A3E635" stroke-width="1.05" opacity="0.82"/>
+<path d="M 3009.328 2227.700 C 3051.562 2228.200, 3093.796 2227.250, 3162.906 2227.700" fill="none" stroke="#A3E635" stroke-width="1.35"/>
+<text x="3086.117" y="2186.700" text-anchor="middle" class="stereotype">«enumeration»</text>
+<text x="3086.117" y="2206.700" text-anchor="middle" class="title">TaskStatus</text>
+<text x="3021.328" y="2244.700" class="member">PENDING</text>
+<text x="3021.328" y="2262.700" class="member">COMPLETED</text>
+</g><g id="class-NoteConsoleUI" class="node" data-color-id="color-10">
+<path d="M 257.286 308.167 L 465.052 308.967 L 464.452 533.167 L 257.986 532.767 Z" fill="#F0F9FF" stroke="#38BDF8" stroke-width="1.7"/>
+<path d="M 257.786 309.267 L 464.252 308.167 M 464.752 308.667 L 465.452 532.367 M 465.052 533.167 L 257.286 533.667 M 257.286 533.167 L 256.786 308.367" fill="none" stroke="#38BDF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 257.286 347.167 C 314.422 347.667, 371.558 346.717, 465.052 347.167" fill="none" stroke="#38BDF8" stroke-width="1.35"/>
+<text x="361.169" y="326.167" text-anchor="middle" class="title">NoteConsoleUI</text>
+<text x="269.286" y="364.167" class="member">+showMenu()</text>
+<text x="269.286" y="382.167" class="member">+createNote()</text>
+<text x="269.286" y="400.167" class="member">+updateNote()</text>
+<text x="269.286" y="418.167" class="member">+deleteNote()</text>
+<text x="269.286" y="436.167" class="member">+listNotes()</text>
+<text x="269.286" y="454.167" class="member">+listNotesByTask()</text>
+</g><g id="class-NoteDto" class="node" data-color-id="color-11">
+<path d="M 515.992 528.500 L 751.469 529.300 L 750.869 705.500 L 516.692 705.100 Z" fill="#FFF1F2" stroke="#FB7185" stroke-width="1.7"/>
+<path d="M 516.492 529.600 L 750.669 528.500 M 751.169 529.000 L 751.869 704.700 M 751.469 705.500 L 515.992 706.000 M 515.992 705.500 L 515.492 528.700" fill="none" stroke="#FB7185" stroke-width="1.05" opacity="0.82"/>
+<path d="M 515.992 567.500 C 580.748 568.000, 645.504 567.050, 751.469 567.500" fill="none" stroke="#FB7185" stroke-width="1.35"/>
+<text x="633.730" y="546.500" text-anchor="middle" class="title">NoteDto</text>
+<text x="527.992" y="584.500" class="member">+NoteId noteId</text>
+<text x="527.992" y="602.500" class="member">+String content</text>
+<text x="527.992" y="620.500" class="member">+LocalDateTime createdAt</text>
+<text x="527.992" y="638.500" class="member">+TaskId taskId</text>
+</g><g id="class-NoteService" class="node" data-color-id="color-0">
+<path d="M 765.895 284.500 L 1091.949 285.300 L 1091.349 509.500 L 766.595 509.100 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M 766.395 285.600 L 1091.149 284.500 M 1091.649 285.000 L 1092.349 508.700 M 1091.949 509.500 L 765.895 510.000 M 765.895 509.500 L 765.395 284.700" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M 765.895 323.500 C 855.560 324.000, 945.225 323.050, 1091.949 323.500" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="928.922" y="302.500" text-anchor="middle" class="title">NoteService</text>
+<text x="777.895" y="340.500" class="member">+create(NoteDto dto)</text>
+<text x="777.895" y="358.500" class="member">+update(NoteId noteId, NoteDto dto)</text>
+<text x="777.895" y="376.500" class="member">+delete(NoteId noteId)</text>
+<text x="777.895" y="394.500" class="member">+findAll()</text>
+<text x="777.895" y="412.500" class="member">+findByTaskId(TaskId taskId)</text>
+<text x="777.895" y="430.500" class="member">+findById(NoteId noteId)</text>
+</g><g id="class-NoteRepository" class="node" data-color-id="color-1">
+<path d="M 1315.250 12.000 L 1601.406 12.800 L 1600.806 237.000 L 1315.950 236.600 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 1315.750 13.100 L 1600.606 12.000 M 1601.106 12.500 L 1601.806 236.200 M 1601.406 237.000 L 1315.250 237.500 M 1315.250 237.000 L 1314.750 12.200" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 71.000 C 1393.943 71.500, 1472.636 70.550, 1601.406 71.000" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
+<text x="1458.328" y="30.000" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1458.328" y="50.000" text-anchor="middle" class="title">NoteRepository</text>
+<text x="1327.250" y="88.000" class="member">+save(Note note)</text>
+<text x="1327.250" y="106.000" class="member">+findById(NoteId noteId)</text>
+<text x="1327.250" y="124.000" class="member">+findAll()</text>
+<text x="1327.250" y="142.000" class="member">+findByTaskId(TaskId taskId)</text>
+<text x="1327.250" y="160.000" class="member">+deleteById(NoteId noteId)</text>
+</g><g id="class-Note" class="node" data-color-id="color-2">
+<path d="M 1339.877 277.000 L 1604.541 277.800 L 1603.941 496.000 L 1340.577 495.600 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
+<path d="M 1340.377 278.100 L 1603.741 277.000 M 1604.241 277.500 L 1604.941 495.200 M 1604.541 496.000 L 1339.877 496.500 M 1339.877 496.000 L 1339.377 277.200" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1339.877 316.000 C 1412.660 316.500, 1485.442 315.550, 1604.541 316.000" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<path d="M 1339.877 397.000 C 1412.660 397.500, 1485.442 396.550, 1604.541 397.000" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<text x="1472.209" y="295.000" text-anchor="middle" class="title">Note</text>
+<text x="1351.877" y="333.000" class="member">-NoteId noteId</text>
+<text x="1351.877" y="351.000" class="member">-String content</text>
+<text x="1351.877" y="369.000" class="member">-LocalDateTime createdAt</text>
+<text x="1351.877" y="387.000" class="member">-TaskId taskId</text>
+<text x="1351.877" y="413.000" class="member">+updateContent(String content)</text>
+<text x="1351.877" y="431.000" class="member">+changeTask(TaskId taskId)</text>
+</g><g id="class-NoteId" class="node" data-color-id="color-3">
+<path d="M 1712.750 285.500 L 1784.500 286.300 L 1783.900 366.500 L 1713.450 366.100 Z" fill="#ECFEFF" stroke="#22D3EE" stroke-width="1.7"/>
+<path d="M 1713.250 286.600 L 1783.700 285.500 M 1784.200 286.000 L 1784.900 365.700 M 1784.500 366.500 L 1712.750 367.000 M 1712.750 366.500 L 1712.250 285.700" fill="none" stroke="#22D3EE" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1712.750 324.500 C 1732.481 325.000, 1752.213 324.050, 1784.500 324.500" fill="none" stroke="#22D3EE" stroke-width="1.35"/>
+<text x="1748.625" y="303.500" text-anchor="middle" class="title">NoteId</text>
+</g><g id="class-EventConsoleUI" class="node" data-color-id="color-4">
+<path d="M 235.406 1203.983 L 475.992 1204.783 L 475.392 1511.983 L 236.106 1511.583 Z" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.7"/>
+<path d="M 235.906 1205.083 L 475.192 1203.983 M 475.692 1204.483 L 476.392 1511.183 M 475.992 1511.983 L 235.406 1512.483 M 235.406 1511.983 L 234.906 1204.183" fill="none" stroke="#4ADE80" stroke-width="1.05" opacity="0.82"/>
+<path d="M 235.406 1242.983 C 301.567 1243.483, 367.729 1242.533, 475.992 1242.983" fill="none" stroke="#4ADE80" stroke-width="1.35"/>
+<text x="355.699" y="1221.983" text-anchor="middle" class="title">EventConsoleUI</text>
+<text x="247.406" y="1259.983" class="member">+showMenu()</text>
+<text x="247.406" y="1277.983" class="member">+createEvent()</text>
+<text x="247.406" y="1295.983" class="member">+updateEvent()</text>
+<text x="247.406" y="1313.983" class="member">+deleteEvent()</text>
+<text x="247.406" y="1331.983" class="member">+listEvents()</text>
+<text x="247.406" y="1349.983" class="member">+listUpcomingEvents()</text>
+<text x="247.406" y="1367.983" class="member">+addTaskToEvent()</text>
+<text x="247.406" y="1385.983" class="member">+removeTaskFromEvent()</text>
+<text x="247.406" y="1403.983" class="member">+configureRecurrence()</text>
+</g><g id="class-EventDto" class="node" data-color-id="color-5">
+<path d="M 515.992 931.417 L 799.977 932.217 L 799.377 1171.417 L 516.692 1171.017 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.7"/>
+<path d="M 516.492 932.517 L 799.177 931.417 M 799.677 931.917 L 800.377 1170.617 M 799.977 1171.417 L 515.992 1171.917 M 515.992 1171.417 L 515.492 931.617" fill="none" stroke="#A78BFA" stroke-width="1.05" opacity="0.82"/>
+<path d="M 515.992 970.417 C 594.088 970.917, 672.184 969.967, 799.977 970.417" fill="none" stroke="#A78BFA" stroke-width="1.35"/>
+<text x="657.984" y="949.417" text-anchor="middle" class="title">EventDto</text>
+<text x="527.992" y="987.417" class="member">+EventId eventId</text>
+<text x="527.992" y="1005.417" class="member">+String text</text>
+<text x="527.992" y="1023.417" class="member">+LocalDate eventDate</text>
+<text x="527.992" y="1041.417" class="member">+LocalDateTime createdAt</text>
+<text x="527.992" y="1059.417" class="member">+RecurrenceType recurrenceType</text>
+<text x="527.992" y="1077.417" class="member">+LocalDate repeatUntil</text>
+<text x="527.992" y="1095.417" class="member">+List&lt;TaskId&gt; taskIds</text>
+</g><g id="class-EventService" class="node" data-color-id="color-6">
+<path d="M 515.992 1647.733 L 1175.250 1648.533 L 1174.650 1967.233 L 516.692 1966.833 Z" fill="#FEF2F2" stroke="#F87171" stroke-width="1.7"/>
+<path d="M 516.492 1648.833 L 1174.450 1647.733 M 1174.950 1648.233 L 1175.650 1966.433 M 1175.250 1967.233 L 515.992 1967.733 M 515.992 1967.233 L 515.492 1647.933" fill="none" stroke="#F87171" stroke-width="1.05" opacity="0.82"/>
+<path d="M 515.992 1686.733 C 697.288 1687.233, 878.584 1686.283, 1175.250 1686.733" fill="none" stroke="#F87171" stroke-width="1.35"/>
+<text x="845.621" y="1665.733" text-anchor="middle" class="title">EventService</text>
+<text x="527.992" y="1703.733" class="member">+create(EventDto dto)</text>
+<text x="527.992" y="1721.733" class="member">+update(EventId eventId, EventDto dto)</text>
+<text x="527.992" y="1739.733" class="member">+delete(EventId eventId)</text>
+<text x="527.992" y="1757.733" class="member">+findAll()</text>
+<text x="527.992" y="1775.733" class="member">+findUpcoming(LocalDate date)</text>
+<text x="527.992" y="1793.733" class="member">+addTask(EventId eventId, TaskId taskId)</text>
+<text x="527.992" y="1811.733" class="member">+configureRecurrence(EventId eventId, RecurrenceType type, LocalDate repeatUntil)</text>
+<text x="527.992" y="1829.733" class="member">+addObserver(EventObserver observer)</text>
+<text x="527.992" y="1847.733" class="member">+checkUpcomingEvents(LocalDate date)</text>
+<text x="527.992" y="1865.733" class="member">+removeTask(EventId eventId, TaskId taskId)</text>
+</g><g id="class-EventRepository" class="node" data-color-id="color-7">
+<path d="M 1315.250 1446.083 L 1606.109 1446.883 L 1605.509 1650.083 L 1315.950 1649.683 Z" fill="#FEFCE8" stroke="#FACC15" stroke-width="1.7"/>
+<path d="M 1315.750 1447.183 L 1605.309 1446.083 M 1605.809 1446.583 L 1606.509 1649.283 M 1606.109 1650.083 L 1315.250 1650.583 M 1315.250 1650.083 L 1314.750 1446.283" fill="none" stroke="#FACC15" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 1505.083 C 1395.236 1505.583, 1475.223 1504.633, 1606.109 1505.083" fill="none" stroke="#FACC15" stroke-width="1.35"/>
+<text x="1460.680" y="1464.083" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1460.680" y="1484.083" text-anchor="middle" class="title">EventRepository</text>
+<text x="1327.250" y="1522.083" class="member">+save(Event event)</text>
+<text x="1327.250" y="1540.083" class="member">+findById(EventId eventId)</text>
+<text x="1327.250" y="1558.083" class="member">+findAll()</text>
+<text x="1327.250" y="1576.083" class="member">+deleteById(EventId eventId)</text>
+</g><g id="class-Event" class="node" data-color-id="color-8">
+<path d="M 1712.750 2198.317 L 2224.375 2199.117 L 2223.775 2522.317 L 1713.450 2521.917 Z" fill="#EEF2FF" stroke="#818CF8" stroke-width="1.7"/>
+<path d="M 1713.250 2199.417 L 2223.575 2198.317 M 2224.075 2198.817 L 2224.775 2521.517 M 2224.375 2522.317 L 1712.750 2522.817 M 1712.750 2522.317 L 1712.250 2198.517" fill="none" stroke="#818CF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1712.750 2237.317 C 1853.447 2237.817, 1994.144 2236.867, 2224.375 2237.317" fill="none" stroke="#818CF8" stroke-width="1.35"/>
+<path d="M 1712.750 2372.317 C 1853.447 2372.817, 1994.144 2371.867, 2224.375 2372.317" fill="none" stroke="#818CF8" stroke-width="1.35"/>
+<text x="1968.562" y="2216.317" text-anchor="middle" class="title">Event</text>
+<text x="1724.750" y="2254.317" class="member">-EventId eventId</text>
+<text x="1724.750" y="2272.317" class="member">-String text</text>
+<text x="1724.750" y="2290.317" class="member">-LocalDate eventDate</text>
+<text x="1724.750" y="2308.317" class="member">-LocalDateTime createdAt</text>
+<text x="1724.750" y="2326.317" class="member">-RecurrenceType recurrenceType</text>
+<text x="1724.750" y="2344.317" class="member">-LocalDate repeatUntil</text>
+<text x="1724.750" y="2362.317" class="member">-List&lt;TaskId&gt; taskIds</text>
+<text x="1724.750" y="2388.317" class="member">+updateDetails(String text, LocalDate eventDate)</text>
+<text x="1724.750" y="2406.317" class="member">+configureRecurrence(RecurrenceType type, LocalDate repeatUntil)</text>
+<text x="1724.750" y="2424.317" class="member">+addTask(TaskId taskId)</text>
+<text x="1724.750" y="2442.317" class="member">+removeTask(TaskId taskId)</text>
+</g><g id="class-EventId" class="node" data-color-id="color-9">
+<path d="M 2344.375 1985.450 L 2422.562 1986.250 L 2421.963 2066.450 L 2345.075 2066.050 Z" fill="#F7FEE7" stroke="#A3E635" stroke-width="1.7"/>
+<path d="M 2344.875 1986.550 L 2421.762 1985.450 M 2422.262 1985.950 L 2422.963 2065.650 M 2422.562 2066.450 L 2344.375 2066.950 M 2344.375 2066.450 L 2343.875 1985.650" fill="none" stroke="#A3E635" stroke-width="1.05" opacity="0.82"/>
+<path d="M 2344.375 2024.450 C 2365.877 2024.950, 2387.378 2024.000, 2422.562 2024.450" fill="none" stroke="#A3E635" stroke-width="1.35"/>
+<text x="2383.469" y="2003.450" text-anchor="middle" class="title">EventId</text>
+</g><g id="class-RecurrenceType" class="node" data-color-id="color-10">
+<path d="M 2344.375 2500.117 L 2485.148 2500.917 L 2484.548 2698.117 L 2345.075 2697.717 Z" fill="#F0F9FF" stroke="#38BDF8" stroke-width="1.7"/>
+<path d="M 2344.875 2501.217 L 2484.348 2500.117 M 2484.848 2500.617 L 2485.548 2697.317 M 2485.148 2698.117 L 2344.375 2698.617 M 2344.375 2698.117 L 2343.875 2500.317" fill="none" stroke="#38BDF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 2344.375 2559.117 C 2383.088 2559.617, 2421.800 2558.667, 2485.148 2559.117" fill="none" stroke="#38BDF8" stroke-width="1.35"/>
+<text x="2414.762" y="2518.117" text-anchor="middle" class="stereotype">«enumeration»</text>
+<text x="2414.762" y="2538.117" text-anchor="middle" class="title">RecurrenceType</text>
+<text x="2356.375" y="2576.117" class="member">NONE</text>
+<text x="2356.375" y="2594.117" class="member">ANNUAL</text>
+<text x="2356.375" y="2612.117" class="member">WEEKLY</text>
+<text x="2356.375" y="2630.117" class="member">MONTHLY</text>
+</g><g id="class-TaskSortStrategy" class="node" data-color-id="color-11">
+<path d="M 1315.250 2580.133 L 1488.844 2580.933 L 1488.244 2721.133 L 1315.950 2720.733 Z" fill="#FFF1F2" stroke="#FB7185" stroke-width="1.7"/>
+<path d="M 1315.750 2581.233 L 1488.044 2580.133 M 1488.544 2580.633 L 1489.244 2720.333 M 1488.844 2721.133 L 1315.250 2721.633 M 1315.250 2721.133 L 1314.750 2580.333" fill="none" stroke="#FB7185" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 2639.133 C 1362.988 2639.633, 1410.727 2638.683, 1488.844 2639.133" fill="none" stroke="#FB7185" stroke-width="1.35"/>
+<text x="1402.047" y="2598.133" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1402.047" y="2618.133" text-anchor="middle" class="title">TaskSortStrategy</text>
+<text x="1327.250" y="2656.133" class="member">+sort(tasks)</text>
+</g><g id="class-PrioritySortStrategy" class="node" data-color-id="color-0">
+<path d="M 1004.938 2438.133 L 1175.250 2438.933 L 1174.650 2519.133 L 1005.638 2518.733 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M 1005.438 2439.233 L 1174.450 2438.133 M 1174.950 2438.633 L 1175.650 2518.333 M 1175.250 2519.133 L 1004.938 2519.633 M 1004.938 2519.133 L 1004.438 2438.333" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1004.938 2477.133 C 1051.773 2477.633, 1098.609 2476.683, 1175.250 2477.133" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="1090.094" y="2456.133" text-anchor="middle" class="title">PrioritySortStrategy</text>
+</g><g id="class-StatusSortStrategy" class="node" data-color-id="color-1">
+<path d="M 1012.922 2559.133 L 1175.250 2559.933 L 1174.650 2640.133 L 1013.622 2639.733 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 1013.422 2560.233 L 1174.450 2559.133 M 1174.950 2559.633 L 1175.650 2639.333 M 1175.250 2640.133 L 1012.922 2640.633 M 1012.922 2640.133 L 1012.422 2559.333" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1012.922 2598.133 C 1057.562 2598.633, 1102.202 2597.683, 1175.250 2598.133" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
+<text x="1094.086" y="2577.133" text-anchor="middle" class="title">StatusSortStrategy</text>
+</g><g id="class-DateSortStrategy" class="node" data-color-id="color-2">
+<path d="M 1027.203 3050.133 L 1175.250 3050.933 L 1174.650 3131.133 L 1027.903 3130.733 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
+<path d="M 1027.703 3051.233 L 1174.450 3050.133 M 1174.950 3050.633 L 1175.650 3130.333 M 1175.250 3131.133 L 1027.203 3131.633 M 1027.203 3131.133 L 1026.703 3050.333" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1027.203 3089.133 C 1067.916 3089.633, 1108.629 3088.683, 1175.250 3089.133" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<text x="1101.227" y="3068.133" text-anchor="middle" class="title">DateSortStrategy</text>
+</g><g id="class-RecurrenceFactory" class="node" data-color-id="color-3">
+<path d="M 1315.250 2138.983 L 1612.750 2139.783 L 1612.150 2258.983 L 1315.950 2258.583 Z" fill="#ECFEFF" stroke="#22D3EE" stroke-width="1.7"/>
+<path d="M 1315.750 2140.083 L 1611.950 2138.983 M 1612.450 2139.483 L 1613.150 2258.183 M 1612.750 2258.983 L 1315.250 2259.483 M 1315.250 2258.983 L 1314.750 2139.183" fill="none" stroke="#22D3EE" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 2177.983 C 1397.062 2178.483, 1478.875 2177.533, 1612.750 2177.983" fill="none" stroke="#22D3EE" stroke-width="1.35"/>
+<text x="1464.000" y="2156.983" text-anchor="middle" class="title">RecurrenceFactory</text>
+<text x="1327.250" y="2194.983" class="member">+create(RecurrenceType type)</text>
+</g><g id="class-RecurrencePolicy" class="node" data-color-id="color-4">
+<path d="M 1712.750 1464.583 L 2111.539 1465.383 L 2110.939 1605.583 L 1713.450 1605.183 Z" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.7"/>
+<path d="M 1713.250 1465.683 L 2110.739 1464.583 M 2111.239 1465.083 L 2111.939 1604.783 M 2111.539 1605.583 L 1712.750 1606.083 M 1712.750 1605.583 L 1712.250 1464.783" fill="none" stroke="#4ADE80" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1712.750 1523.583 C 1822.417 1524.083, 1932.084 1523.133, 2111.539 1523.583" fill="none" stroke="#4ADE80" stroke-width="1.35"/>
+<text x="1912.145" y="1482.583" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1912.145" y="1502.583" text-anchor="middle" class="title">RecurrencePolicy</text>
+<text x="1724.750" y="1540.583" class="member">+nextDate(eventDate, fromDate, repeatUntil)</text>
+</g><g id="class-NoRecurrencePolicy" class="node" data-color-id="color-5">
+<path d="M 1453.359 1083.083 L 1612.750 1083.883 L 1612.150 1164.083 L 1454.059 1163.683 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.7"/>
+<path d="M 1453.859 1084.183 L 1611.950 1083.083 M 1612.450 1083.583 L 1613.150 1163.283 M 1612.750 1164.083 L 1453.359 1164.583 M 1453.359 1164.083 L 1452.859 1083.283" fill="none" stroke="#A78BFA" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1453.359 1122.083 C 1497.192 1122.583, 1541.024 1121.633, 1612.750 1122.083" fill="none" stroke="#A78BFA" stroke-width="1.35"/>
+<text x="1533.055" y="1101.083" text-anchor="middle" class="title">NoRecurrencePolicy</text>
+</g><g id="class-AnnualRecurrencePolicy" class="node" data-color-id="color-6">
+<path d="M 1423.125 1325.083 L 1612.750 1325.883 L 1612.150 1406.083 L 1423.825 1405.683 Z" fill="#FEF2F2" stroke="#F87171" stroke-width="1.7"/>
+<path d="M 1423.625 1326.183 L 1611.950 1325.083 M 1612.450 1325.583 L 1613.150 1405.283 M 1612.750 1406.083 L 1423.125 1406.583 M 1423.125 1406.083 L 1422.625 1325.283" fill="none" stroke="#F87171" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1423.125 1364.083 C 1475.272 1364.583, 1527.419 1363.633, 1612.750 1364.083" fill="none" stroke="#F87171" stroke-width="1.35"/>
+<text x="1517.938" y="1343.083" text-anchor="middle" class="title">AnnualRecurrencePolicy</text>
+</g><g id="class-WeeklyRecurrencePolicy" class="node" data-color-id="color-7">
+<path d="M 1419.766 962.083 L 1612.750 962.883 L 1612.150 1043.083 L 1420.466 1042.683 Z" fill="#FEFCE8" stroke="#FACC15" stroke-width="1.7"/>
+<path d="M 1420.266 963.183 L 1611.950 962.083 M 1612.450 962.583 L 1613.150 1042.283 M 1612.750 1043.083 L 1419.766 1043.583 M 1419.766 1043.083 L 1419.266 962.283" fill="none" stroke="#FACC15" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1419.766 1001.083 C 1472.836 1001.583, 1525.907 1000.633, 1612.750 1001.083" fill="none" stroke="#FACC15" stroke-width="1.35"/>
+<text x="1516.258" y="980.083" text-anchor="middle" class="title">WeeklyRecurrencePolicy</text>
+</g><g id="class-MonthlyRecurrencePolicy" class="node" data-color-id="color-8">
+<path d="M 1414.719 1204.083 L 1612.750 1204.883 L 1612.150 1285.083 L 1415.419 1284.683 Z" fill="#EEF2FF" stroke="#818CF8" stroke-width="1.7"/>
+<path d="M 1415.219 1205.183 L 1611.950 1204.083 M 1612.450 1204.583 L 1613.150 1284.283 M 1612.750 1285.083 L 1414.719 1285.583 M 1414.719 1285.083 L 1414.219 1204.283" fill="none" stroke="#818CF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1414.719 1243.083 C 1469.177 1243.583, 1523.636 1242.633, 1612.750 1243.083" fill="none" stroke="#818CF8" stroke-width="1.35"/>
+<text x="1513.734" y="1222.083" text-anchor="middle" class="title">MonthlyRecurrencePolicy</text>
+</g><g id="class-EventObserver" class="node" data-color-id="color-9">
+<path d="M 1315.250 781.083 L 1559.055 781.883 L 1558.455 922.083 L 1315.950 921.683 Z" fill="#F7FEE7" stroke="#A3E635" stroke-width="1.7"/>
+<path d="M 1315.750 782.183 L 1558.255 781.083 M 1558.755 781.583 L 1559.455 921.283 M 1559.055 922.083 L 1315.250 922.583 M 1315.250 922.083 L 1314.750 781.283" fill="none" stroke="#A3E635" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1315.250 840.083 C 1382.296 840.583, 1449.343 839.633, 1559.055 840.083" fill="none" stroke="#A3E635" stroke-width="1.35"/>
+<text x="1437.152" y="799.083" text-anchor="middle" class="stereotype">«interface»</text>
+<text x="1437.152" y="819.083" text-anchor="middle" class="title">EventObserver</text>
+<text x="1327.250" y="857.083" class="member">+notify(EventDto event)</text>
+</g><g id="class-NotificationService" class="node" data-color-id="color-10">
+<path d="M 914.992 745.500 L 1175.250 746.300 L 1174.650 865.500 L 915.692 865.100 Z" fill="#F0F9FF" stroke="#38BDF8" stroke-width="1.7"/>
+<path d="M 915.492 746.600 L 1174.450 745.500 M 1174.950 746.000 L 1175.650 864.700 M 1175.250 865.500 L 914.992 866.000 M 914.992 865.500 L 914.492 745.700" fill="none" stroke="#38BDF8" stroke-width="1.05" opacity="0.82"/>
+<path d="M 914.992 784.500 C 986.563 785.000, 1058.134 784.050, 1175.250 784.500" fill="none" stroke="#38BDF8" stroke-width="1.35"/>
+<text x="1045.121" y="763.500" text-anchor="middle" class="title">NotificationService</text>
+<text x="926.992" y="801.500" class="member">+notify(EventDto event)</text>
+</g><g id="class-TaskSqlDao" class="node" data-color-id="color-11">
+<path d="M 1071.859 1501.800 L 1175.250 1502.600 L 1174.650 1582.800 L 1072.559 1582.400 Z" fill="#FFF1F2" stroke="#FB7185" stroke-width="1.7"/>
+<path d="M 1072.359 1502.900 L 1174.450 1501.800 M 1174.950 1502.300 L 1175.650 1582.000 M 1175.250 1582.800 L 1071.859 1583.300 M 1071.859 1582.800 L 1071.359 1502.000" fill="none" stroke="#FB7185" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1071.859 1540.800 C 1100.292 1541.300, 1128.724 1540.350, 1175.250 1540.800" fill="none" stroke="#FB7185" stroke-width="1.35"/>
+<text x="1123.555" y="1519.800" text-anchor="middle" class="title">TaskSqlDao</text>
+</g><g id="class-NoteSqlDao" class="node" data-color-id="color-0">
+<path d="M 1071.156 60.000 L 1175.250 60.800 L 1174.650 141.000 L 1071.856 140.600 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M 1071.656 61.100 L 1174.450 60.000 M 1174.950 60.500 L 1175.650 140.200 M 1175.250 141.000 L 1071.156 141.500 M 1071.156 141.000 L 1070.656 60.200" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1071.156 99.000 C 1099.782 99.500, 1128.408 98.550, 1175.250 99.000" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="1123.203" y="78.000" text-anchor="middle" class="title">NoteSqlDao</text>
+</g><g id="class-EventSqlDao" class="node" data-color-id="color-1">
+<path d="M 1064.859 1313.167 L 1175.250 1313.967 L 1174.650 1394.167 L 1065.559 1393.767 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 1065.359 1314.267 L 1174.450 1313.167 M 1174.950 1313.667 L 1175.650 1393.367 M 1175.250 1394.167 L 1064.859 1394.667 M 1064.859 1394.167 L 1064.359 1313.367" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1064.859 1352.167 C 1095.217 1352.667, 1125.574 1351.717, 1175.250 1352.167" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
+<text x="1120.055" y="1331.167" text-anchor="middle" class="title">EventSqlDao</text>
+</g><g id="class-MySQL" class="node" data-color-id="color-2">
+<path d="M 1712.750 630.083 L 1781.281 630.883 L 1780.681 711.083 L 1713.450 710.683 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
+<path d="M 1713.250 631.183 L 1780.481 630.083 M 1780.981 630.583 L 1781.681 710.283 M 1781.281 711.083 L 1712.750 711.583 M 1712.750 711.083 L 1712.250 630.283" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
+<path d="M 1712.750 669.083 C 1731.596 669.583, 1750.442 668.633, 1781.281 669.083" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<text x="1747.016" y="648.083" text-anchor="middle" class="title">MySQL</text>
+</g><g id="class-Priority" class="node" data-color-id="color-3">
+<path d="M 3009.328 2364.700 L 3087.938 2365.500 L 3087.338 2445.700 L 3010.028 2445.300 Z" fill="#ECFEFF" stroke="#22D3EE" stroke-width="1.7"/>
+<path d="M 3009.828 2365.800 L 3087.137 2364.700 M 3087.637 2365.200 L 3088.338 2444.900 M 3087.938 2445.700 L 3009.328 2446.200 M 3009.328 2445.700 L 3008.828 2364.900" fill="none" stroke="#22D3EE" stroke-width="1.05" opacity="0.82"/>
+<path d="M 3009.328 2403.700 C 3030.946 2404.200, 3052.563 2403.250, 3087.938 2403.700" fill="none" stroke="#22D3EE" stroke-width="1.35"/>
+<text x="3048.633" y="2382.700" text-anchor="middle" class="title">Priority</text>
+</g><g id="class-ApplicationLauncher" class="node" data-color-id="color-0">
+<path d="M -348.000 1060.000 L -152.000 1060.800 L -152.600 1180.000 L -347.300 1179.600 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M -347.500 1061.100 L -152.800 1060.000 M -152.300 1060.500 L -151.600 1179.200 M -152.000 1180.000 L -348.000 1180.500 M -348.000 1180.000 L -348.500 1060.200" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M -348.000 1099.000 C -294.100 1099.500, -240.200 1098.550, -152.000 1099.000" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="-250.000" y="1078.000" text-anchor="middle" class="title">ApplicationLauncher</text>
+<text x="-336.000" y="1116.000" class="member">+run()</text>
+</g><g id="class-ApplicationMenu" class="node" data-color-id="color-0">
+<path d="M 258.297 1060.000 L 441.703 1060.800 L 441.103 1180.000 L 258.997 1179.600 Z" fill="#FDF4FF" stroke="#E879F9" stroke-width="1.7"/>
+<path d="M 258.797 1061.100 L 440.903 1060.000 M 441.403 1060.500 L 442.103 1179.200 M 441.703 1180.000 L 258.297 1180.500 M 258.297 1180.000 L 257.797 1060.200" fill="none" stroke="#E879F9" stroke-width="1.05" opacity="0.82"/>
+<path d="M 258.297 1099.000 C 308.734 1099.500, 359.170 1098.550, 441.703 1099.000" fill="none" stroke="#E879F9" stroke-width="1.35"/>
+<text x="350.000" y="1078.000" text-anchor="middle" class="title">ApplicationMenu</text>
+<text x="270.297" y="1116.000" class="member">+run()</text>
+</g><g id="class-ConsoleExceptionHandler" class="node" data-color-id="color-1">
+<path d="M 219.871 840.000 L 480.129 840.800 L 479.529 960.000 L 220.571 959.600 Z" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.7"/>
+<path d="M 220.371 841.100 L 479.329 840.000 M 479.829 840.500 L 480.529 959.200 M 480.129 960.000 L 219.871 960.500 M 219.871 960.000 L 219.371 840.200" fill="none" stroke="#2DD4BF" stroke-width="1.05" opacity="0.82"/>
+<path d="M 219.871 879.000 C 291.442 879.500, 363.013 878.550, 480.129 879.000" fill="none" stroke="#2DD4BF" stroke-width="1.35"/>
+<text x="350.000" y="858.000" text-anchor="middle" class="title">ConsoleExceptionHandler</text>
+<text x="231.871" y="896.000" class="member">+execute(Runnable action)</text>
+</g><g id="class-DatabaseCleanupService" class="node" data-color-id="color-2">
+<path d="M 835.000 1050.000 L 1125.000 1050.800 L 1124.400 1170.000 L 835.700 1169.600 Z" fill="#FFF7ED" stroke="#FB923C" stroke-width="1.7"/>
+<path d="M 835.500 1051.100 L 1124.200 1050.000 M 1124.700 1050.500 L 1125.400 1169.200 M 1125.000 1170.000 L 835.000 1170.500 M 835.000 1170.000 L 834.500 1050.200" fill="none" stroke="#FB923C" stroke-width="1.05" opacity="0.82"/>
+<path d="M 835.000 1089.000 C 914.750 1089.500, 994.500 1088.550, 1125.000 1089.000" fill="none" stroke="#FB923C" stroke-width="1.35"/>
+<text x="980.000" y="1068.000" text-anchor="middle" class="title">DatabaseCleanupService</text>
+<text x="847.000" y="1106.000" class="member">+deleteAll()</text>
+</g>
+</g>
+
+<g id="application-menu-navigation-note">
+  <path d="M -470 740 L -55 740 L -25 770 L -25 1045 L -470 1045 Z M -55 740 L -55 770 L -25 770"
+        fill="#ffffff" stroke="#28253D" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="-447" y="775" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#28253D">ApplicationMenu — navigation</text>
+  <line x1="-447" y1="788" x2="-48" y2="788" stroke="#28253D" stroke-width="1"/>
+  <text x="-447" y="818" font-family="Arial, sans-serif" font-size="15" fill="#28253D">
+    <tspan x="-447" dy="0" font-weight="700">Main menu:</tspan>
+    <tspan x="-447" dy="24">Note · Task · Event · Delete all data · App close</tspan>
+    <tspan x="-447" dy="30">Selecting the number for Note, Task or Event</tspan>
+    <tspan x="-447" dy="22">opens the corresponding ConsoleUI submenu.</tspan>
+    <tspan x="-447" dy="30">Each submenu contains its ConsoleUI options + Return to main menu.</tspan>
+    <tspan x="-447" dy="30">Return to main menu → returns only to the main menu.</tspan>
+    <tspan x="-447" dy="30">App close → exists only in the main menu and closes</tspan>
+    <tspan x="-447" dy="22">the program.</tspan>
+  </text>
+  <path d="M -25 1000 L 215 1000 L 215 1120 L 252 1120" fill="none" stroke="#28253D" stroke-width="1.5" stroke-dasharray="7 5"/>
+</g>
+</svg>
