@@ -32,7 +32,7 @@ class NoteSqlDaoTest {
                 VALUES (?, 'MEDIUM', 'PENDING', CURRENT_TIMESTAMP)
                 """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, "NoteSqlDaoTest");
@@ -48,7 +48,7 @@ class NoteSqlDaoTest {
 
     @AfterEach
     void tearDown() throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
 
             try (PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM note WHERE task_id = ?")) {

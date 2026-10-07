@@ -40,7 +40,7 @@ public class TaskSqlDao implements TaskRepository {
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
-        try(Connection connection = DatabaseConnection.getConnection();
+        try(Connection connection = DatabaseConnection.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, task.getText());
@@ -86,7 +86,7 @@ public class TaskSqlDao implements TaskRepository {
                 WHERE id = ?
                 """;
 
-        try(Connection connection = DatabaseConnection.getConnection();
+        try(Connection connection = DatabaseConnection.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, task.getText());
@@ -127,7 +127,7 @@ public class TaskSqlDao implements TaskRepository {
 
         List<Task> tasks = new ArrayList<>();
 
-        try(Connection connection = DatabaseConnection.getConnection();
+        try(Connection connection = DatabaseConnection.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery()) {
 
@@ -162,7 +162,7 @@ public class TaskSqlDao implements TaskRepository {
                 WHERE id = ?
                 """;
 
-        try(Connection connection = DatabaseConnection.getConnection();
+        try(Connection connection = DatabaseConnection.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id.value());
@@ -190,7 +190,7 @@ public class TaskSqlDao implements TaskRepository {
                 WHERE id = ?
                 """;
 
-        try(Connection connection = DatabaseConnection.getConnection();
+        try(Connection connection = DatabaseConnection.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id.value());
 

@@ -5,27 +5,28 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    public static Connection getConnection() throws SQLException {
+
+    private final static DatabaseConnection INSTANCE = new DatabaseConnection();
+    private final String url;
+    private final String user;
+    private final String password;
+
+    private DatabaseConnection() {
+
         String host = System.getenv().getOrDefault("DB_HOST", "localhost");
         String port = System.getenv().getOrDefault("DB_PORT", "3306");
         String dbName = System.getenv().getOrDefault("DB_NAME", "agenda-app-database");
-        String user = System.getenv().getOrDefault("DB_USER", "root");
-        String password = System.getenv().getOrDefault("DB_PASSWORD", "");
 
-        String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
-
-        return DriverManager.getConnection(url, user, password);
+        this.url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
+        this.user = System.getenv().getOrDefault("DB_USER", "root");
+        this.password = System.getenv().getOrDefault("DB_PASSWORD", "");
     }
 
-    public static void testConnection() {
-        try (Connection connection = getConnection()) {
-            System.out.printf(
-                    "Connected successfully. Catalog %s%n",
-                    connection.getCatalog()
-            );
-        } catch (SQLException e) {
-            System.err.println("Failed to connect to database");
-            e.printStackTrace();
-        }
+    public static DatabaseConnection getInstance() {
+        return INSTANCE;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, password);
     }
 }

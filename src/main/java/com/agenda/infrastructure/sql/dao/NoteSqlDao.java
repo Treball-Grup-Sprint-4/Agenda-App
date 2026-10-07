@@ -31,7 +31,7 @@ public class NoteSqlDao implements NoteRepository {
             VALUES (?, ?, ?)
             """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, note.getContent());
             statement.setTimestamp(2, Timestamp.valueOf(note.getCreatedAt()));
@@ -61,7 +61,7 @@ public class NoteSqlDao implements NoteRepository {
             WHERE id = ?
             """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, note.getContent());
             statement.setInt(2, note.getTaskId().value());
@@ -109,7 +109,7 @@ public class NoteSqlDao implements NoteRepository {
         WHERE id = ?
         """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, noteId.value());
@@ -136,7 +136,7 @@ public class NoteSqlDao implements NoteRepository {
 
         List<Note> notes = new ArrayList<>();
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
@@ -166,7 +166,7 @@ public class NoteSqlDao implements NoteRepository {
 
         List<Note> notes = new ArrayList<>();
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, taskId.value());
@@ -193,7 +193,7 @@ public class NoteSqlDao implements NoteRepository {
         WHERE id = ?
         """;
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, noteId.value());
 
