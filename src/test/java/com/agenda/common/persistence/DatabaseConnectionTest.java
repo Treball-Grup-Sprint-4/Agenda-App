@@ -19,4 +19,9 @@ class DatabaseConnectionTest {
         }
     }
 
+    @Test
+    void shouldReturnSAmeInstance() {
+        assertSame(DatabaseConnection.getInstance(), DatabaseConnection.getInstance());
+    }
+
 }
