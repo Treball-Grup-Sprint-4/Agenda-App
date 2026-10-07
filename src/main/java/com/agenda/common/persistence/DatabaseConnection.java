@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static DatabaseConnection INSTANCE;
+    private final static DatabaseConnection INSTANCE = new DatabaseConnection();
     private final String url;
     private final String user;
     private final String password;
@@ -23,9 +23,6 @@ public class DatabaseConnection {
     }
 
     public static DatabaseConnection getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new DatabaseConnection();
-        }
         return INSTANCE;
     }
 
