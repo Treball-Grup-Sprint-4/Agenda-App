@@ -41,6 +41,7 @@ public class EventConsoleUI {
             6. Add task to event
             7. Remove task from event
             8. Configure recurrence
+            9. Check notifications
             0. Return to main menu
             """);
     }
@@ -224,6 +225,11 @@ public class EventConsoleUI {
         eventService.configureRecurrence(eventId, recurrenceType, repeatUntil);
 
         System.out.println("Event recurrence configured successfully.");
+    }
+
+    public void checkNotifications() {
+        System.out.println("Checking notifications for tomorrow...");
+        eventService.checkUpcomingEvents(LocalDate.now());
     }
 
     private void printEvent(EventDto event) {

@@ -134,6 +134,7 @@ public class ApplicationMenu {
                 case "6" -> executeAndContinue(eventConsoleUI::addTaskToEvent);
                 case "7" -> executeAndContinue(eventConsoleUI::removeTaskFromEvent);
                 case "8" -> executeAndContinue(eventConsoleUI::configureRecurrence);
+                case "9" -> executeAndContinue(eventConsoleUI::checkNotifications);
                 case "0" -> running = false;
                 default -> executeAndContinue(() -> {
                     throw new IllegalArgumentException("Invalid option.");
